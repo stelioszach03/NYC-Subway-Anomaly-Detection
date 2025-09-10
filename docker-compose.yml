@@ -1,0 +1,63 @@
+services:
+  db:
+    image: timescale/timescaledb:latest-pg16
+    environment:
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_DB: mta
+    ports:
+      - "5432:5432"
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres -d mta"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  api:
+    build:
+      context: .
+      dockerfile: docker/Dockerfile.api
+    env_file:
+      - infra/.env
+    depends_on:
+      - db
+    ports:
+      - "8000:8000"
+    volumes:
+      - ./gtfs_subway:/data/gtfs:ro
+
+  worker:
+    build:
+      context: .
+      dockerfile: docker/Dockerfile.worker
+    env_file:
+      - infra/.env
+    depends_on:
+      - db
+    volumes:
+      - ./gtfs_subway:/data/gtfs:rw
+
+  trainer:
+    build:
+      context: .
+      dockerfile: docker/Dockerfile.worker
+    env_file:
+      - infra/.env
+    depends_on:
+      - db
+    command: ["python", "-m", "worker.ml_online"]
+    volumes:
+      - ./gtfs_subway:/data/gtfs:rw
+
+  ui:
+    build:
+      context: .
+      dockerfile: docker/Dockerfile.ui
+      args:
+        NEXT_PUBLIC_MAPBOX_TOKEN: ${MAPBOX_TOKEN}
+        UI_BACKEND_URL: ${UI_BACKEND_URL:-http://api:8000}
+    depends_on:
+      - api
+    environment:
+      - UI_BACKEND_URL=http://api:8000
+    ports:
+      - "3000:3000"
