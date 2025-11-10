@@ -1,0 +1,32 @@
+FROM python:3.11-slim
+
+ENV PYTHONDONTWRITEBYTECODE=1 \
+    PYTHONUNBUFFERED=1 \
+    PIP_NO_CACHE_DIR=1
+
+RUN apt-get update && apt-get install -y --no-install-recommends \
+    gcc build-essential libpq-dev \
+ && rm -rf /var/lib/apt/lists/*
+
+WORKDIR /app
+
+RUN pip install --no-cache-dir \
+    river==0.21.0 \
+    numpy \
+    pandas \
+    protobuf \
+    httpx \
+    pytz \
+    python-dotenv \
+    "psycopg[binary]" \
+    SQLAlchemy \
+    loguru \
+    pydantic-settings \
+    gtfs-realtime-bindings
+
+COPY worker /app/worker
+COPY api/app /app/api/app
+
+VOLUME ["/data/gtfs"]
+
+CMD ["python", "-m", "worker.collector"]

@@ -1,0 +1,24 @@
+FROM node:20-alpine AS deps
+WORKDIR /app
+COPY ui/package.json ./
+RUN npm install --no-audit --no-fund
+
+FROM node:20-alpine AS build
+WORKDIR /app
+COPY --from=deps /app/node_modules ./node_modules
+COPY ui ./
+
+# Build-time env for public token
+ARG NEXT_PUBLIC_MAPBOX_TOKEN
+ENV NEXT_PUBLIC_MAPBOX_TOKEN=${NEXT_PUBLIC_MAPBOX_TOKEN}
+ARG UI_BACKEND_URL
+ENV UI_BACKEND_URL=${UI_BACKEND_URL}
+
+RUN npm run build
+
+FROM node:20-alpine AS runner
+WORKDIR /app
+ENV NODE_ENV=production
+COPY --from=build /app .
+EXPOSE 3000
+CMD ["npm", "run", "start"]

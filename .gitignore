@@ -1,0 +1,43 @@
+# Python
+__pycache__/
+*.py[cod]
+*.pyc
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+.coverage
+coverage.xml
+
+# Environments
+.venv/
+venv/
+*.env
+.env
+infra/.env
+
+# macOS
+.DS_Store
+
+# Node / Frontend
+node_modules/
+dist/
+build/
+ui/node_modules/
+ui/.next/
+ui/playwright-report/
+ui/test-results/
+
+# VSCode
+.vscode/
+
+# Docker
+*.log
+
+# Large artifacts / models / data
+gtfs_subway/**
+!gtfs_subway/.gitkeep
+infra/data/gtfs/
+gtfs_subway/*.zip
+*.pkl
+*.pickle
+.cache/
