@@ -34,18 +34,18 @@ def _fetch_headways(window_sec: int) -> pd.DataFrame:
 
     with SessionLocal() as session:
         stmt = (
-            select(Score.route_id, Score.stop_id, Score.observed_ts, Score.residual)
+            select(Score.route_id, Score.stop_id, Score.observed_ts, Score.headway_sec)
             .where(Score.observed_ts >= cutoff)
-            .where(Score.anomaly_score == 0)
+            .where(Score.headway_sec.is_not(None))
         )
         rows = session.execute(stmt).all()
 
     if not rows:
         return pd.DataFrame(columns=["route_id", "stop_id", "observed_ts", "headway_sec", "hour"])
 
-    df = pd.DataFrame(rows, columns=["route_id", "stop_id", "observed_ts", "residual"])  # type: ignore[arg-type]
+    df = pd.DataFrame(rows, columns=["route_id", "stop_id", "observed_ts", "headway_sec"])  # type: ignore[arg-type]
     # Keep positive headways only
-    df["headway_sec"] = pd.to_numeric(df["residual"], errors="coerce")
+    df["headway_sec"] = pd.to_numeric(df["headway_sec"], errors="coerce")
     df = df[df["headway_sec"].notna() & (df["headway_sec"] > 0)]
     if df.empty:
         return pd.DataFrame(columns=["route_id", "stop_id", "observed_ts", "headway_sec", "hour"])
@@ -124,9 +124,8 @@ def get_features_batch(window_sec: int = 300, return_df: bool = True) -> pd.Data
 
 def latest_batch_for_training(limit: int = 128) -> list[Dict]:
     """
-    Query newest 'limit' rows from scores ordered by observed_ts desc, and produce feature rows:
-    {route_id, stop_id, headway_sec, hour, residual}.
-    If insufficient rows found, generate a tiny synthetic batch.
+    Query oldest unscored rows and produce feature rows:
+    {id, route_id, stop_id, headway_sec, hour}.
     """
     engine = get_engine()
     SessionLocal = sessionmaker(bind=engine, autoflush=False, autocommit=False, future=True)
@@ -134,30 +133,26 @@ def latest_batch_for_training(limit: int = 128) -> list[Dict]:
     rows: list[Dict] = []
     with SessionLocal() as session:
         stmt = (
-            select(Score.route_id, Score.stop_id, Score.observed_ts, Score.residual)
-            .order_by(Score.observed_ts.desc())
+            select(
+                Score.id,
+                Score.route_id,
+                Score.stop_id,
+                Score.observed_ts,
+                Score.headway_sec,
+            )
+            .where(Score.headway_sec.is_not(None))
+            .where(Score.predicted_headway_sec.is_(None))
+            .order_by(Score.observed_ts.asc())
             .limit(limit)
         )
         data = session.execute(stmt).all()
-        for route_id, stop_id, ts, residual in data:
+        for row_id, route_id, stop_id, ts, headway in data:
             hour = (pd.Timestamp(ts).tz_convert("UTC") if hasattr(ts, 'tzinfo') and ts.tzinfo else pd.Timestamp(ts, tz='UTC')).hour
-            headway_sec = float(residual) if residual is not None else float('nan')
             rows.append({
+                "id": int(row_id),
                 "route_id": route_id,
                 "stop_id": stop_id,
                 "hour": int(hour),
-                "headway_sec": headway_sec if headway_sec == headway_sec else 0.0,
-                "residual": float(residual) if residual is not None else 0.0,
-            })
-
-    if not rows:
-        # Minimal synthetic fallback
-        for i in range(min(10, limit)):
-            rows.append({
-                "route_id": f"SYN{i%3}",
-                "stop_id": f"SS{i%5}",
-                "hour": int(pd.Timestamp.utcnow().hour),
-                "headway_sec": float(300 + (i * 5) % 120),
-                "residual": 0.0,
+                "headway_sec": float(headway) if headway is not None else 0.0,
             })
     return rows

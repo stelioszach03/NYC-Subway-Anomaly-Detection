@@ -13,6 +13,8 @@ type Row = {
   route_id: string;
   stop_id: string;
   stop_name?: string;
+  headway_sec?: number;
+  predicted_headway_sec?: number;
   anomaly_score?: number;
   residual?: number;
 };
@@ -65,6 +67,7 @@ export const AnomalyTable: React.FC<{ route: string }> = ({ route }) => {
               <th className="px-2 py-1 text-left">Observed (NYC)</th>
               <th className="px-2 py-1 text-left">Route</th>
               <th className="px-2 py-1 text-left">Stop</th>
+              <th className="px-2 py-1 text-left">Headway</th>
               <th className="px-2 py-1 text-left">Score</th>
               <th className="px-2 py-1 text-left">Residual</th>
             </tr>
@@ -85,6 +88,12 @@ export const AnomalyTable: React.FC<{ route: string }> = ({ route }) => {
                 </td>
                 <td className="px-2 py-1">{r.route_id}</td>
                 <td className="px-2 py-1">{r.stop_name || r.stop_id}</td>
+                <td className="px-2 py-1">
+                  {typeof r.headway_sec === 'number' ? `${r.headway_sec.toFixed(0)}s` : '—'}
+                  {typeof r.predicted_headway_sec === 'number' ? (
+                    <div className="text-xs text-gray-500">pred {r.predicted_headway_sec.toFixed(0)}s</div>
+                  ) : null}
+                </td>
                 <td className="px-2 py-1">
                   <Badge style={{ backgroundColor: scoreToColor(r.anomaly_score ?? 0), color: '#111' }}>
                     {(r.anomaly_score ?? 0).toFixed(2)}

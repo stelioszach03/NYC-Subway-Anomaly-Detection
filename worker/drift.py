@@ -21,7 +21,10 @@ class DriftMonitor:
 
     def update(self, value: float) -> bool:
         self.adwin.update(value)
-        if self.adwin.change_detected:
+        changed = bool(
+            getattr(self.adwin, "drift_detected", False) or getattr(self.adwin, "change_detected", False)
+        )
+        if changed:
             log.warning("ADWIN change detected: width={} est={}", self.adwin.width, self.adwin.estimation)
             return True
         return False
@@ -60,4 +63,3 @@ def load_latest_model(models_dir: str) -> Optional[object]:
     except Exception as e:
         log.warning("failed to load model: {}", repr(e))
         return None
-

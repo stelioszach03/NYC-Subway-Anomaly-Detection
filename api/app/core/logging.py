@@ -17,14 +17,25 @@ def _configure_once() -> None:
         return
     settings = get_settings()
     _logger.remove()
-    _logger.add(
-        sys.stdout,
-        level=settings.LOG_LEVEL,
-        enqueue=True,
-        backtrace=False,
-        diagnose=False,
-        serialize=True,  # JSON lines for easy ingestion
-    )
+    try:
+        _logger.add(
+            sys.stdout,
+            level=settings.LOG_LEVEL,
+            enqueue=True,
+            backtrace=False,
+            diagnose=False,
+            serialize=True,  # JSON lines for easy ingestion
+        )
+    except Exception:
+        # Some restricted runtimes disallow semaphore creation required by enqueue=True.
+        _logger.add(
+            sys.stdout,
+            level=settings.LOG_LEVEL,
+            enqueue=False,
+            backtrace=False,
+            diagnose=False,
+            serialize=True,
+        )
     _configured = True
 
 

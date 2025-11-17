@@ -21,6 +21,8 @@ class AnomalyItem(BaseModel):
     route_id: str
     stop_id: str
     stop_name: str | None = None
+    headway_sec: float | None = None
+    predicted_headway_sec: float | None = None
     anomaly_score: float | None = None
     residual: float | None = None
     observed_ts_utc: str | None = None
@@ -54,6 +56,8 @@ async def list_anomalies(window: str = Query(default="15m"), route_id: str = Que
                 Score.event_ts,
                 Score.route_id,
                 Score.stop_id,
+                Score.headway_sec,
+                Score.predicted_headway_sec,
                 Score.anomaly_score,
                 Score.residual,
             )
@@ -66,12 +70,14 @@ async def list_anomalies(window: str = Query(default="15m"), route_id: str = Que
 
     stops = {s["stop_id"]: s for s in _load_stops()}
     out: List[Dict] = []
-    for observed_ts, event_ts, r, sid, score, res in rows:
+    for observed_ts, event_ts, r, sid, headway, predicted, score, res in rows:
         name = stops.get(sid, {}).get("stop_name")
         item: Dict = {
             "route_id": r,
             "stop_id": sid,
             "stop_name": name,
+            "headway_sec": float(headway) if headway is not None else None,
+            "predicted_headway_sec": float(predicted) if predicted is not None else None,
             "anomaly_score": float(score) if score is not None else None,
             "residual": float(res) if res is not None else None,
         }

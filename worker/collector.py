@@ -139,8 +139,10 @@ def _upsert_scores(session: Session, events: Iterable[Tuple[str, str, int]], las
                 event_ts=event_ts,
                 route_id=route_id,
                 stop_id=stop_id,
+                headway_sec=float(headway) if headway is not None else None,
+                predicted_headway_sec=None,
                 anomaly_score=0.0,
-                residual=0.0 if headway is None else float(headway),
+                residual=None,
                 window_sec=window_sec,
             )
         )

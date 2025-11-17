@@ -24,6 +24,7 @@ Web Check (verified on current MTA official pages):
 
 - Real-time GTFS-RT ingestion (Subway; no API key required)
 - Online learning with River (residuals + anomaly score)
+- Stateful model persistence + drift-aware resets (ADWIN)
 - Drift detection and rolling updates
 - Next.js + Mapbox UI for live heatmap and anomaly table
 
@@ -49,6 +50,7 @@ Notes
 ### Local Development & Tests
 - `make setup-dev` → create venv and install dev dependencies
 - Unit tests: `make test`
+- Health checks: `make healthtest` (expects API at `http://localhost:8000`)
 - Integration (live feeds): `DB_URL=postgresql://postgres:postgres@localhost:5432/mta TEST_ALLOW_NETWORK=1 make itest-host`
 - UI tests (Playwright):
   - `cd ui && npm install && npm run dev &`
@@ -94,12 +96,17 @@ Notes
   - Returns a GeoJSON FeatureCollection; each feature.properties contains anomaly_score, residual, observed_* (primary), and optional event_*.
 - `GET /api/stops`, `GET /api/routes`
   - Served with `Cache-Control: public, max-age=600` and weak `ETag`.
+- `GET /api/health/deep`
+  - Deep checks for DB freshness, GTFS availability, and model telemetry file health.
+- `GET /api/model/telemetry`
+  - Returns persisted online-model stats (`rows_seen`, `rows_updated`, `drift_events`, `mae_ema`, `last_run_utc`) when available.
 
 ### UI Notes
 - Map has two stable layers: stations under anomalies.
 - Anomaly circles use `scoreToColor(score)` and radius interpolation: 0→4, 0.5→6, 0.85→8, 1.0→10 (opacity 0.8).
 - Popups show “Observed: … • … ago” and optional “ETA: …”.
 - Table shows “Observed (NYC)”, relative time, and muted ETA.
+- Table now includes actual vs predicted headway for faster triage.
 - Next.js rewrite proxies `/api` to `:8000` (see `ui/next.config.js`).
 
 ### Time Semantics

@@ -13,18 +13,32 @@ export function useRoutes() {
   return routes;
 }
 
-export function useSummary(win = '15m') {
+export function useSummary(win = '15m', tickMs?: number) {
   const [summary, setSummary] = useState<any>();
   useEffect(() => {
+    let aborted = false;
     const ctrl = new AbortController();
-    const url = new URL('/api/summary', window.location.origin);
-    url.searchParams.set('window', win);
-    fetch(url.toString(), { signal: ctrl.signal })
-      .then((r) => r.json())
-      .then(setSummary)
-      .catch(() => {});
-    return () => ctrl.abort();
-  }, [win]);
+    let interval: any;
+    const run = async () => {
+      const url = new URL('/api/summary', window.location.origin);
+      url.searchParams.set('window', win);
+      try {
+        const r = await fetch(url.toString(), { signal: ctrl.signal });
+        if (!r.ok) return;
+        const d = await r.json();
+        if (!aborted) setSummary(d);
+      } catch {
+        // no-op
+      }
+    };
+    run();
+    if (tickMs && tickMs > 0) interval = setInterval(run, tickMs);
+    return () => {
+      aborted = true;
+      ctrl.abort();
+      if (interval) clearInterval(interval);
+    };
+  }, [win, tickMs]);
   return summary;
 }
 
@@ -72,4 +86,30 @@ export function useHeatmap(route = 'All', win = '60m', tickMs?: number) {
     };
   }, [route, win, tickMs]);
   return data;
+}
+
+export function useModelTelemetry(tickMs?: number) {
+  const [telemetry, setTelemetry] = useState<any>();
+  useEffect(() => {
+    let aborted = false;
+    let interval: any;
+    const run = async () => {
+      if (typeof document !== 'undefined' && document.hidden) return;
+      try {
+        const r = await fetch('/api/model/telemetry');
+        if (!r.ok) return;
+        const d = await r.json();
+        if (!aborted) setTelemetry(d);
+      } catch {
+        // no-op
+      }
+    };
+    run();
+    if (tickMs && tickMs > 0) interval = setInterval(run, tickMs);
+    return () => {
+      aborted = true;
+      if (interval) clearInterval(interval);
+    };
+  }, [tickMs]);
+  return telemetry;
 }

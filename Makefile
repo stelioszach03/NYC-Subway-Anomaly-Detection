@@ -4,7 +4,7 @@ VENVDIR := .venv
 
 .PHONY: help
 help:
-	@echo "Targets: init, api, worker, docker-up, docker-down, docker-build"
+	@echo "Targets: init, setup-dev, api, worker, docker-up, docker-down, docker-build, test, itest, healthtest"
 
 .PHONY: init
 init:
@@ -63,3 +63,7 @@ itest:
 .PHONY: itest-host
 itest-host:
 	DB_URL=postgresql://postgres:postgres@localhost:5432/mta TEST_ALLOW_NETWORK=1 PYTHONPATH=. ./.venv/bin/pytest -q -m integration
+
+.PHONY: healthtest
+healthtest:
+	./scripts/healthtest.sh
