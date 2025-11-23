@@ -59,27 +59,46 @@ async def get_heatmap(
     SessionLocal = sessionmaker(bind=engine, autoflush=False, autocommit=False, future=True)
 
     with SessionLocal() as session:
-        base = (
+        ranked = (
             select(
-                Score.stop_id,
-                func.avg(Score.anomaly_score).label("avg_score"),
-                func.avg(Score.residual).label("avg_res"),
-                func.avg(Score.headway_sec).label("avg_headway"),
-                func.avg(Score.predicted_headway_sec).label("avg_pred_headway"),
-                func.max(Score.observed_ts).label("max_observed_ts"),
-                func.max(Score.event_ts).label("max_event_ts"),
-                func.max(Score.route_id).label("route_id"),
+                Score.stop_id.label("stop_id"),
+                Score.route_id.label("route_id"),
+                Score.observed_ts.label("observed_ts"),
+                Score.event_ts.label("event_ts"),
+                Score.anomaly_score.label("anomaly_score"),
+                Score.residual.label("residual"),
+                Score.headway_sec.label("headway_sec"),
+                Score.predicted_headway_sec.label("predicted_headway_sec"),
+                func.row_number()
+                .over(
+                    partition_by=Score.stop_id,
+                    order_by=(Score.anomaly_score.desc(), Score.observed_ts.desc()),
+                )
+                .label("rn"),
             )
             .where(Score.observed_ts <= target_ts)
             .where(Score.observed_ts >= since)
+            .where(Score.predicted_headway_sec.is_not(None))
         )
         if route_id and route_id.lower() != "all":
-            base = base.where(Score.route_id == route_id)
-        base = base.group_by(Score.stop_id)
-        rows = session.execute(base).all()
+            ranked = ranked.where(Score.route_id == route_id)
+
+        ranked_sub = ranked.subquery()
+        rows = session.execute(
+            select(
+                ranked_sub.c.stop_id,
+                ranked_sub.c.route_id,
+                ranked_sub.c.observed_ts,
+                ranked_sub.c.event_ts,
+                ranked_sub.c.anomaly_score,
+                ranked_sub.c.residual,
+                ranked_sub.c.headway_sec,
+                ranked_sub.c.predicted_headway_sec,
+            ).where(ranked_sub.c.rn == 1)
+        ).all()
 
     features: List[dict] = []
-    for sid, avg_s, avg_r, avg_h, avg_pred_h, obs_ts_row, evt_ts_row, r_id in rows:
+    for sid, r_id, obs_ts_row, evt_ts_row, score_row, residual_row, headway_row, pred_headway_row in rows:
         st = stop_map.get(sid)
         if not st:
             continue
@@ -88,10 +107,10 @@ async def get_heatmap(
             "stop_id": sid,
             "stop_name": st.get("stop_name"),
             "route_id": r_id,
-            "anomaly_score": float(avg_s) if avg_s is not None else 0.0,
-            "residual": float(avg_r) if avg_r is not None else 0.0,
-            "headway_sec": float(avg_h) if avg_h is not None else None,
-            "predicted_headway_sec": float(avg_pred_h) if avg_pred_h is not None else None,
+            "anomaly_score": float(score_row) if score_row is not None else 0.0,
+            "residual": float(residual_row) if residual_row is not None else 0.0,
+            "headway_sec": float(headway_row) if headway_row is not None else None,
+            "predicted_headway_sec": float(pred_headway_row) if pred_headway_row is not None else None,
         }
         # Add observed timestamp pack (primary)
         ts_observed = obs_ts_row or target_ts

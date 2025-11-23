@@ -1,24 +1,19 @@
 import React from 'react';
-import { Badge } from './ui/Badge';
-
-const items = [
-  { color: '#7dd3fc', label: '0.0 – 0.4' },
-  { color: '#fbbf24', label: '0.4 – 0.6' },
-  { color: '#fb923c', label: '0.6 – 0.85' },
-  { color: '#ef4444', label: '> 0.85' },
-];
+import { SCORE_BANDS } from '../lib/utils';
 
 export const Legend: React.FC = () => (
-  <div className="flex flex-col gap-2">
-    <div className="text-xs uppercase tracking-wide text-gray-500">Anomaly Scale</div>
-    <div className="grid grid-cols-2 gap-2">
-      {items.map((i) => (
-        <div key={i.label} className="flex items-center gap-2">
-          <span className="h-3 w-3 rounded-full" style={{ backgroundColor: i.color }} />
-          <span className="text-sm text-gray-700">{i.label}</span>
+  <div className="rounded-xl border border-slate-200 bg-white p-3 shadow-sm">
+    <div className="text-[11px] uppercase tracking-[0.14em] text-slate-500">Anomaly Scale</div>
+    <div className="mt-2 grid grid-cols-1 gap-2 text-xs">
+      {SCORE_BANDS.map((band) => (
+        <div key={band.id} className="flex items-center justify-between rounded-lg border border-slate-200 bg-slate-50 px-2 py-1.5">
+          <div className="flex items-center gap-2">
+            <span className="h-2.5 w-2.5 rounded-full" style={{ backgroundColor: band.color }} />
+            <span className="font-medium text-slate-700">{band.label}</span>
+          </div>
+          <span className="text-slate-500">{band.tone}</span>
         </div>
       ))}
     </div>
   </div>
 );
-

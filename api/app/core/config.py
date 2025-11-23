@@ -21,6 +21,7 @@ class Settings(BaseSettings):
     MTA_GTFS_STATIC_PATH: str = "/data/gtfs/mta_gtfs_static.zip"
     GTFS_STATIC_DIR: str = "/data/gtfs"
     MODEL_TELEMETRY_PATH: str = "/data/gtfs/models/telemetry.json"
+    MODEL_DL_TELEMETRY_PATH: str = "/data/gtfs/models/dl_shadow_telemetry.json"
 
     # Logging
     LOG_LEVEL: str = "INFO"
@@ -43,6 +44,7 @@ def _env_signature() -> tuple:
         "MTA_GTFS_STATIC_PATH",
         "GTFS_STATIC_DIR",
         "MODEL_TELEMETRY_PATH",
+        "MODEL_DL_TELEMETRY_PATH",
         "LOG_LEVEL",
     )
     return tuple((k, os.environ.get(k)) for k in keys)

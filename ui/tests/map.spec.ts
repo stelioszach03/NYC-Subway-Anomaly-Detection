@@ -9,14 +9,14 @@ test.describe('Map page', () => {
     }
   });
 
-  test('renders map + sidebar basics', async ({ page }) => {
+  test('renders map + control bar basics', async ({ page }) => {
     await page.goto('/map');
-    await expect(page.getByText('NYC Subway Anomalies')).toBeVisible();
+    await expect(page.getByText('NYC Subway Anomaly Command Center')).toBeVisible();
     await expect(page.locator('select')).toBeVisible();
     await expect(page.locator('select')).toHaveValue('All');
     const canvas = page.locator('.mapboxgl-canvas');
     await expect(canvas).toBeVisible({ timeout: 10_000 });
-    // Check stops length > 100 via client-side fetch
+
     const n = await page.evaluate(async () => {
       const r = await fetch('/api/stops');
       const d = await r.json();

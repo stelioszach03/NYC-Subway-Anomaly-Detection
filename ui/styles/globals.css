@@ -1,14 +1,60 @@
+@import url('https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700&display=swap');
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
-html, body, #__next { height: 100%; }
-body { @apply m-0; font-family: system-ui, -apple-system, Segoe UI, Roboto, 'Helvetica Neue', Arial, 'Noto Sans', 'Apple Color Emoji', 'Segoe UI Emoji'; }
-
-.blink {
-  animation: blink 1.5s infinite;
+html,
+body,
+#__next {
+  height: 100%;
 }
-@keyframes blink {
-  0%, 100% { opacity: 1; }
-  50% { opacity: .4; }
+
+body {
+  margin: 0;
+  color: #0f172a;
+  font-family: 'Manrope', 'Segoe UI', 'Helvetica Neue', Arial, sans-serif;
+  background:
+    radial-gradient(960px circle at 14% -10%, rgba(59, 130, 246, 0.12), transparent 55%),
+    radial-gradient(920px circle at 95% 12%, rgba(16, 185, 129, 0.08), transparent 52%),
+    linear-gradient(180deg, #eef4fb 0%, #f8fafc 38%, #f1f5f9 100%);
+}
+
+* {
+  scrollbar-width: thin;
+  scrollbar-color: rgba(148, 163, 184, 0.7) rgba(241, 245, 249, 0.5);
+}
+
+.panel-glass {
+  background: rgba(255, 255, 255, 0.94);
+  border: 1px solid rgba(203, 213, 225, 0.95);
+  box-shadow: 0 10px 30px rgba(15, 23, 42, 0.12);
+  backdrop-filter: blur(8px);
+}
+
+.live-dot {
+  animation: pulse 1.55s infinite;
+}
+
+@keyframes pulse {
+  0%,
+  100% {
+    transform: scale(1);
+    opacity: 1;
+  }
+  50% {
+    transform: scale(0.88);
+    opacity: 0.6;
+  }
+}
+
+.mapboxgl-popup-content {
+  border-radius: 12px;
+  border: 1px solid #cbd5e1;
+  background: rgba(255, 255, 255, 0.98);
+  box-shadow: 0 14px 28px rgba(15, 23, 42, 0.16);
+}
+
+.mapboxgl-popup-close-button {
+  color: #334155;
 }

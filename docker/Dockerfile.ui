@@ -8,11 +8,13 @@ WORKDIR /app
 COPY --from=deps /app/node_modules ./node_modules
 COPY ui ./
 
-# Build-time env for public token
+# Build-time env for public token and base path
 ARG NEXT_PUBLIC_MAPBOX_TOKEN
 ENV NEXT_PUBLIC_MAPBOX_TOKEN=${NEXT_PUBLIC_MAPBOX_TOKEN}
 ARG UI_BACKEND_URL
 ENV UI_BACKEND_URL=${UI_BACKEND_URL}
+ARG NEXT_PUBLIC_BASE_PATH
+ENV NEXT_PUBLIC_BASE_PATH=${NEXT_PUBLIC_BASE_PATH}
 
 RUN npm run build
 

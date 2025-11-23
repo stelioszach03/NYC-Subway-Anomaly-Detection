@@ -22,7 +22,8 @@ RUN pip install --no-cache-dir \
     SQLAlchemy \
     loguru \
     pydantic-settings \
-    gtfs-realtime-bindings
+    gtfs-realtime-bindings \
+ && pip install --no-cache-dir torch==2.5.1
 
 COPY worker /app/worker
 COPY api/app /app/api/app

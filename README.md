@@ -1,121 +1,178 @@
-<!--
-Web Check (verified on current MTA official pages):
+# NYC Subway Anomaly Detection
 
-1) Subway GTFS-RT access policy:
-   - The official MTA Real-time Data Feeds page states: "Accounts and API keys are no longer required to access these feeds." — https://api.mta.info/
+Real-time anomaly intelligence for NYC Subway operations using GTFS-RT, online machine learning, and an interactive monitoring UI.
 
-2) Current Subway GTFS-RT feed endpoints (GTFS-RT by line family):
-   - ACE: https://api-endpoint.mta.info/Dataservice/mtagtfsfeeds/nyct%2Fgtfs-ace
-   - BDFM: https://api-endpoint.mta.info/Dataservice/mtagtfsfeeds/nyct%2Fgtfs-bdfm
-   - G:   https://api-endpoint.mta.info/Dataservice/mtagtfsfeeds/nyct%2Fgtfs-g
-   - JZ:  https://api-endpoint.mta.info/Dataservice/mtagtfsfeeds/nyct%2Fgtfs-jz
-   - NQRW:https://api-endpoint.mta.info/Dataservice/mtagtfsfeeds/nyct%2Fgtfs-nqrw
-   - L:   https://api-endpoint.mta.info/Dataservice/mtagtfsfeeds/nyct%2Fgtfs-l
-   - SI:  https://api-endpoint.mta.info/Dataservice/mtagtfsfeeds/nyct%2Fgtfs-si
-   - 1234567 (numbered lines): https://api-endpoint.mta.info/Dataservice/mtagtfsfeeds/nyct%2Fgtfs
+[![Python](https://img.shields.io/badge/Python-3.11%2B-3776AB?logo=python&logoColor=white)](#)
+[![FastAPI](https://img.shields.io/badge/FastAPI-API-009688?logo=fastapi&logoColor=white)](#)
+[![Next.js](https://img.shields.io/badge/Next.js-14-000000?logo=nextdotjs&logoColor=white)](#)
+[![PyTorch](https://img.shields.io/badge/PyTorch-Shadow%20SSL-EE4C2C?logo=pytorch&logoColor=white)](#)
+[![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE)
 
-3) Bus GTFS-RT policy (Bus Time APIs):
-   - The MTA Developers page states: "Real-time bus data is provided via the Bus Time set of APIs. You will need to create an account and use an API key to access the feeds." — https://new.mta.info/developers (see Realtime data → Buses; Bus Time docs: http://bt.mta.info/wiki/Developers/Index)
--->
+Live demo: `https://stelioszach.com/nyc-subway-anomaly/map`
 
-## NYC Subway Anomaly Detection (GTFS-RT + Online ML)
+## Why This Project
 
-![CI](https://img.shields.io/badge/CI-green?style=flat) [![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE)
+Subway service irregularities often emerge as headway disruptions before they appear in aggregate metrics.  
+This project ingests live GTFS-RT feed updates, learns headway behavior online, and surfaces anomalous stops/routes in a production-style command center.
 
-- Real-time GTFS-RT ingestion (Subway; no API key required)
-- Online learning with River (residuals + anomaly score)
-- Stateful model persistence + drift-aware resets (ADWIN)
-- Drift detection and rolling updates
-- Next.js + Mapbox UI for live heatmap and anomaly table
+## Core Capabilities
+
+- Real-time ingestion from MTA Subway GTFS-RT line-family feeds
+- TimescaleDB-backed event store for scored headway observations
+- Online ML scoring with River:
+  - `PARegressor` for headway prediction
+  - `HalfSpaceTrees` for anomaly signal
+  - ADWIN-based drift detection and model reset
+- Self-supervised residual calibration using rolling quantiles (no labels required)
+- PyTorch self-supervised shadow model (denoising autoencoder) for advanced telemetry and cross-checking
+- FastAPI endpoints for summary, anomalies, heatmap, telemetry, and health
+- Next.js + Mapbox operational UI with:
+  - live map overlays
+  - top anomalies table
+  - model telemetry panels
+  - base-path aware deployment (for reverse proxy/Nginx)
+
+## Architecture
 
 ```mermaid
 flowchart LR
-  MTA[GTFS-RT Feeds] -->|collector| DB[(TimescaleDB)]
-  DB -->|features| Trainer[Online ML (River)]
-  Trainer --> DB
-  DB --> API[FastAPI]
-  API --> UI[Next.js + Mapbox]
+  A[MTA GTFS-RT Subway Feeds] --> B[Collector Worker]
+  B --> C[(TimescaleDB / Postgres)]
+  C --> D[Online Trainer (River)]
+  D --> C
+  C --> E[FastAPI]
+  E --> F[Next.js UI + Mapbox]
+  C --> G[PyTorch SSL Shadow Worker]
+  G --> H[DL Shadow Telemetry JSON]
+  E --> I[/api/model/telemetry + /api/model/telemetry/dl-shadow]
 ```
 
-Notes
-- Subway feeds require no API key; Bus feeds do.
-- GTFS static should be available under `/data/gtfs` (mounted from `gtfs_subway/`).
+## Tech Stack
 
-### Quickstart (Docker)
-1) Place GTFS static ZIP or `stops.txt` in `gtfs_subway/` (repo-relative) or `infra/data/gtfs`.
-2) `cp infra/.env.example infra/.env` and set `MAPBOX_TOKEN`.
-3) `docker compose up -d db api worker trainer ui`.
-4) API: `http://localhost:8000/api/health` • UI: `http://localhost:3000/map`.
+- Backend: Python, FastAPI, SQLAlchemy
+- Data: TimescaleDB/Postgres
+- Streaming input: GTFS-Realtime protobuf feeds
+- Online ML: River
+- Deep Learning (shadow): PyTorch
+- Frontend: Next.js, React, Tailwind, Mapbox GL
+- Infra: Docker Compose
 
-### Local Development & Tests
-- `make setup-dev` → create venv and install dev dependencies
-- Unit tests: `make test`
-- Health checks: `make healthtest` (expects API at `http://localhost:8000`)
-- Integration (live feeds): `DB_URL=postgresql://postgres:postgres@localhost:5432/mta TEST_ALLOW_NETWORK=1 make itest-host`
-- UI tests (Playwright):
-  - `cd ui && npm install && npm run dev &`
-  - `npx playwright install --with-deps && npm test`
-- Full smoke (unit + integration + UI): `./scripts/full_local_smoke.sh`
+## Repository Layout
 
-### API Endpoints (selected)
-- `GET /api/summary`
-  - Response includes `last_updated_utc`, `last_updated_epoch_ms`, `last_updated_ny` computed from MAX(observed_ts).
-  - Example:
-    ```json
-    {
-      "window": "15m",
-      "stations_total": 421,
-      "trains_active": 128,
-      "anomalies_count": 37,
-      "anomalies_high": 12,
-      "anomaly_rate_perc": 8.9,
-      "last_updated_utc": "2025-09-10T20:31:02Z",
-      "last_updated_epoch_ms": 1757536262000,
-      "last_updated_ny": "2025-09-10T16:31:02-04:00"
-    }
-    ```
-- `GET /api/anomalies?window=15m&route_id=All`
-  - Each item includes observed_* and event_* timestamp packs.
-  - Example item:
-    ```json
-    {
-      "route_id": "A",
-      "stop_id": "A12N",
-      "stop_name": "Inwood-207 St",
-      "anomaly_score": 0.72,
-      "residual": 180.0,
-      "observed_ts_utc": "2025-09-10T20:30:55Z",
-      "observed_ts_epoch_ms": 1757536255000,
-      "observed_ts_ny": "2025-09-10T16:30:55-04:00",
-      "event_ts_utc": "2025-09-10T20:32:00Z",
-      "event_ts_epoch_ms": 1757536320000,
-      "event_ts_ny": "2025-09-10T16:32:00-04:00"
-    }
-    ```
-- `GET /api/heatmap?window=60m`
-  - Returns a GeoJSON FeatureCollection; each feature.properties contains anomaly_score, residual, observed_* (primary), and optional event_*.
+```text
+api/          FastAPI app (routes, models, storage, config)
+worker/       Collector + online trainer + SSL shadow worker
+ui/           Next.js dashboard (/map)
+scripts/      Health/smoke helpers
+infra/        Environment templates
+docker/       Dockerfiles
+```
+
+## Quick Start (Local Docker)
+
+### Prerequisites
+
+- Docker + Docker Compose
+- Optional Mapbox token (map still has fallback basemap without token)
+- GTFS static data (`mta_gtfs_static.zip` or `stops.txt`) under `gtfs_subway/`
+
+### Steps
+
+1. Copy environment template:
+   ```bash
+   cp infra/.env.example infra/.env
+   ```
+2. Set at least:
+   - `MAPBOX_TOKEN=...` (recommended)
+   - `DB_URL=postgresql://postgres:postgres@db:5432/mta` (default in compose)
+3. Start services:
+   ```bash
+   docker compose up -d --build db api worker trainer ui
+   ```
+4. Open:
+   - API health: `http://localhost:8000/api/health`
+   - UI map: `http://localhost:3000/map`
+
+## VPS / Base-Path Deployment
+
+For deployment behind `/nyc-subway-anomaly`:
+
+```bash
+docker compose -f docker-compose.vps.yml up -d --build
+```
+
+Default exposed ports in this profile:
+
+- API: `18600 -> 8000`
+- UI: `18700 -> 3000`
+
+The UI is built with `NEXT_PUBLIC_BASE_PATH=/nyc-subway-anomaly`.
+
+## API Reference (Selected)
+
+- `GET /api/health`  
+  Liveness status.
+- `GET /api/health/deep`  
+  Deep checks for DB freshness, GTFS availability, and model telemetry artifacts.
+- `GET /api/summary?window=15m`  
+  Dashboard KPIs (`stations_total`, `trains_active`, `anomalies_count`, `anomaly_rate_perc`, timestamps).
+- `GET /api/anomalies?window=15m&route_id=All&limit=400`  
+  Event-level anomaly rows with observed/event timestamp packs.
+- `GET /api/heatmap?window=15m&route_id=All&ts=now`  
+  GeoJSON features for map rendering.  
+  Uses top-scoring event per stop in the selected window.
 - `GET /api/stops`, `GET /api/routes`
-  - Served with `Cache-Control: public, max-age=600` and weak `ETag`.
-- `GET /api/health/deep`
-  - Deep checks for DB freshness, GTFS availability, and model telemetry file health.
 - `GET /api/model/telemetry`
-  - Returns persisted online-model stats (`rows_seen`, `rows_updated`, `drift_events`, `mae_ema`, `last_run_utc`) when available.
+- `GET /api/model/telemetry/dl-shadow`
 
-### UI Notes
-- Map has two stable layers: stations under anomalies.
-- Anomaly circles use `scoreToColor(score)` and radius interpolation: 0→4, 0.5→6, 0.85→8, 1.0→10 (opacity 0.8).
-- Popups show “Observed: … • … ago” and optional “ETA: …”.
-- Table shows “Observed (NYC)”, relative time, and muted ETA.
-- Table now includes actual vs predicted headway for faster triage.
-- Next.js rewrite proxies `/api` to `:8000` (see `ui/next.config.js`).
+## Scoring Logic
 
-### Time Semantics
-- `observed_ts`: when the datapoint was observed/ingested.
-- `event_ts`: the ETA/scheduled time from GTFS‑RT (may be null).
+For each scored event, the online trainer computes:
 
-### Screenshots
-- `docs/ui-map.png` — map + side panel
-- `docs/ui-table.png` — table with Observed/ETA
+- prediction residual
+- self-supervised residual score (rolling quantile calibration)
+- tree-based anomaly signal (HalfSpaceTrees)
+- relative error component
 
-### License
-MIT — see [LICENSE](LICENSE).
+Final anomaly score:
+
+```text
+score = clip01(
+  0.50 * ssl_residual_score
+  + 0.30 * hst_score
+  + 0.20 * relative_error_score
+)
+```
+
+Operational thresholds:
+
+- `>= 0.60`: anomaly
+- `>= 0.85`: high anomaly
+
+## Testing & Quality Gates
+
+- Dev setup:
+  ```bash
+  make setup-dev
+  ```
+- Unit tests + lint:
+  ```bash
+  make test
+  ```
+- Integration tests (host DB):
+  ```bash
+  DB_URL=postgresql://postgres:postgres@localhost:5432/mta TEST_ALLOW_NETWORK=1 make itest-host
+  ```
+- API health smoke:
+  ```bash
+  ./scripts/healthtest.sh http://localhost:8000
+  ```
+
+## Data Access Notes
+
+- MTA Subway GTFS-RT feeds: no API key required.
+- MTA Bus real-time APIs: API key required (separate policy).
+
+## License
+
+MIT. See [LICENSE](LICENSE).

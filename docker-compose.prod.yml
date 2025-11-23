@@ -1,0 +1,12 @@
+services:
+  api:
+    ports:
+      - "18600:8000"
+  db:
+    ports: []
+  worker:
+    profiles: ["disabled"]
+  trainer:
+    profiles: ["disabled"]
+  ui:
+    profiles: ["disabled"]
