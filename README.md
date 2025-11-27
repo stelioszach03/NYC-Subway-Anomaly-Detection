@@ -36,15 +36,15 @@ This project ingests live GTFS-RT feed updates, learns headway behavior online, 
 
 ```mermaid
 flowchart LR
-  A[MTA GTFS-RT Subway Feeds] --> B[Collector Worker]
-  B --> C[(TimescaleDB / Postgres)]
-  C --> D[Online Trainer (River)]
+  A["MTA GTFS-RT Subway Feeds"] --> B["Collector Worker"]
+  B --> C["TimescaleDB and Postgres"]
+  C --> D["Online Trainer (River)"]
   D --> C
-  C --> E[FastAPI]
-  E --> F[Next.js UI + Mapbox]
-  C --> G[PyTorch SSL Shadow Worker]
-  G --> H[DL Shadow Telemetry JSON]
-  E --> I[/api/model/telemetry + /api/model/telemetry/dl-shadow]
+  C --> E["FastAPI"]
+  E --> F["Next.js UI and Mapbox"]
+  C --> G["PyTorch SSL Shadow Worker"]
+  G --> H["DL Shadow Telemetry JSON"]
+  E --> I["Model Telemetry Endpoints"]
 ```
 
 ## Tech Stack
