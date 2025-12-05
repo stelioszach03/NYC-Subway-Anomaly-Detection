@@ -63,9 +63,11 @@ flowchart LR
 api/          FastAPI app (routes, models, storage, config)
 worker/       Collector + online trainer + SSL shadow worker
 ui/           Next.js dashboard (/map)
+tests/        Unit + integration tests
 scripts/      Health/smoke helpers
 infra/        Environment templates
 docker/       Dockerfiles
+docs/         Documentation assets
 ```
 
 ## Quick Start (Local Docker)
@@ -107,6 +109,11 @@ Default exposed ports in this profile:
 - UI: `18700 -> 3000`
 
 The UI is built with `NEXT_PUBLIC_BASE_PATH=/nyc-subway-anomaly`.
+
+## Repository Hygiene
+
+- Runtime model artifacts under `gtfs_subway/models/` are intentionally git-ignored.
+- Secrets are injected via environment variables (`infra/.env`) and are never committed.
 
 ## API Reference (Selected)
 
