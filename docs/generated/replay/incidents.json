@@ -1,0 +1,58 @@
+{
+  "incidents": [
+    {
+      "incident_id": "signal-delay-midtown",
+      "incident_title": "Signal delay cascades into northbound Midtown headway gap",
+      "window_start": "2026-02-05T11:45:00+00:00",
+      "window_end": "2026-02-05T12:30:00+00:00",
+      "peak_score": 1.0,
+      "detection_delay_min": -10.0,
+      "top_reasons": [
+        "station baseline deviation",
+        "rolling z-score jump",
+        "service alert context"
+      ],
+      "affected_routes": [
+        "A"
+      ],
+      "detail_path": "incidents/signal-delay-midtown.json",
+      "plot_path": "plots/signal-delay-midtown.svg"
+    },
+    {
+      "incident_id": "brooklyn-merge-bunching",
+      "incident_title": "Brooklyn merge conflict triggers bunching at Bergen St",
+      "window_start": "2026-02-05T12:30:00+00:00",
+      "window_end": "2026-02-05T13:15:00+00:00",
+      "peak_score": 1.0,
+      "detection_delay_min": -5.0,
+      "top_reasons": [
+        "service alert context",
+        "station baseline deviation",
+        "rolling z-score jump"
+      ],
+      "affected_routes": [
+        "F"
+      ],
+      "detail_path": "incidents/brooklyn-merge-bunching.json",
+      "plot_path": "plots/brooklyn-merge-bunching.svg"
+    },
+    {
+      "incident_id": "queens-rain-cascade",
+      "incident_title": "Rain-impacted dwell times cascade on the Queens corridor",
+      "window_start": "2026-02-05T13:00:00+00:00",
+      "window_end": "2026-02-05T13:50:00+00:00",
+      "peak_score": 1.0,
+      "detection_delay_min": -5.0,
+      "top_reasons": [
+        "weather pressure",
+        "station baseline deviation",
+        "rolling z-score jump"
+      ],
+      "affected_routes": [
+        "7"
+      ],
+      "detail_path": "incidents/queens-rain-cascade.json",
+      "plot_path": "plots/queens-rain-cascade.svg"
+    }
+  ]
+}

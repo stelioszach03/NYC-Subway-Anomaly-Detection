@@ -1,0 +1,90 @@
+{
+  "online_model": {
+    "threshold": 0.6,
+    "rows": 216,
+    "positives": 16,
+    "false_alarm_rate": 0.03,
+    "mean_reciprocal_rank": 0.1783874367054514,
+    "precision_at_k": {
+      "p@5": 0.8,
+      "p@10": 0.8,
+      "p@20": 0.8
+    },
+    "recall_at_k": {
+      "r@5": 0.25,
+      "r@10": 0.5,
+      "r@20": 1.0
+    },
+    "incident_detection_rate": 1.0,
+    "detected_incidents": 3,
+    "total_incidents": 3,
+    "average_lead_time_min": 6.666666666666667,
+    "average_time_to_detect_min": 0.0
+  },
+  "zscore_baseline": {
+    "threshold": 0.6,
+    "rows": 216,
+    "positives": 16,
+    "false_alarm_rate": 0.01,
+    "mean_reciprocal_rank": 0.12767399834001916,
+    "precision_at_k": {
+      "p@5": 0.8,
+      "p@10": 0.8,
+      "p@20": 0.5
+    },
+    "recall_at_k": {
+      "r@5": 0.25,
+      "r@10": 0.5,
+      "r@20": 0.625
+    },
+    "incident_detection_rate": 1.0,
+    "detected_incidents": 3,
+    "total_incidents": 3,
+    "average_lead_time_min": 5.0,
+    "average_time_to_detect_min": 5.0
+  },
+  "ewma_baseline": {
+    "threshold": 0.6,
+    "rows": 216,
+    "positives": 16,
+    "false_alarm_rate": 0.005,
+    "mean_reciprocal_rank": 0.1805411919648942,
+    "precision_at_k": {
+      "p@5": 0.8,
+      "p@10": 0.7,
+      "p@20": 0.5
+    },
+    "recall_at_k": {
+      "r@5": 0.25,
+      "r@10": 0.4375,
+      "r@20": 0.625
+    },
+    "incident_detection_rate": 1.0,
+    "detected_incidents": 3,
+    "total_incidents": 3,
+    "average_lead_time_min": 2.5,
+    "average_time_to_detect_min": 5.0
+  },
+  "threshold_baseline": {
+    "threshold": 0.6,
+    "rows": 216,
+    "positives": 16,
+    "false_alarm_rate": 0.0,
+    "mean_reciprocal_rank": 0.17363011784246868,
+    "precision_at_k": {
+      "p@5": 1.0,
+      "p@10": 0.8,
+      "p@20": 0.4
+    },
+    "recall_at_k": {
+      "r@5": 0.3125,
+      "r@10": 0.5,
+      "r@20": 0.5
+    },
+    "incident_detection_rate": 0.3333333333333333,
+    "detected_incidents": 1,
+    "total_incidents": 3,
+    "average_lead_time_min": 0.0,
+    "average_time_to_detect_min": 5.0
+  }
+}

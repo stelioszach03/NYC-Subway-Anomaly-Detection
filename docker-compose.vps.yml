@@ -22,7 +22,7 @@ services:
     ports:
       - "18600:8000"
     volumes:
-      - ./gtfs_subway:/data/gtfs:ro
+      - ${GTFS_VOLUME_DIR:-./gtfs_subway}:/data/gtfs:ro
 
   worker:
     build:
@@ -34,7 +34,7 @@ services:
       db:
         condition: service_healthy
     volumes:
-      - ./gtfs_subway:/data/gtfs:rw
+      - ${GTFS_VOLUME_DIR:-./gtfs_subway}:/data/gtfs:rw
 
   trainer:
     build:
@@ -47,7 +47,7 @@ services:
         condition: service_healthy
     command: ["python", "-m", "worker.ml_online", "--tick", "5", "--batch-limit", "2048", "--max-batches", "6"]
     volumes:
-      - ./gtfs_subway:/data/gtfs:rw
+      - ${GTFS_VOLUME_DIR:-./gtfs_subway}:/data/gtfs:rw
 
   dl_shadow:
     build:
@@ -75,7 +75,7 @@ services:
         "1024"
       ]
     volumes:
-      - ./gtfs_subway:/data/gtfs:rw
+      - ${GTFS_VOLUME_DIR:-./gtfs_subway}:/data/gtfs:rw
 
   ui:
     build:

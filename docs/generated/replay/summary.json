@@ -1,0 +1,176 @@
+{
+  "dataset": {
+    "path": "evaluation/data/sample_subway_headways.csv",
+    "rows": 216,
+    "positive_rows": 16,
+    "routes": 3,
+    "stops": 6,
+    "incidents": 3
+  },
+  "metrics": {
+    "online_model": {
+      "threshold": 0.6,
+      "rows": 216,
+      "positives": 16,
+      "false_alarm_rate": 0.03,
+      "mean_reciprocal_rank": 0.1783874367054514,
+      "precision_at_k": {
+        "p@5": 0.8,
+        "p@10": 0.8,
+        "p@20": 0.8
+      },
+      "recall_at_k": {
+        "r@5": 0.25,
+        "r@10": 0.5,
+        "r@20": 1.0
+      },
+      "incident_detection_rate": 1.0,
+      "detected_incidents": 3,
+      "total_incidents": 3,
+      "average_lead_time_min": 6.666666666666667,
+      "average_time_to_detect_min": 0.0
+    },
+    "zscore_baseline": {
+      "threshold": 0.6,
+      "rows": 216,
+      "positives": 16,
+      "false_alarm_rate": 0.01,
+      "mean_reciprocal_rank": 0.12767399834001916,
+      "precision_at_k": {
+        "p@5": 0.8,
+        "p@10": 0.8,
+        "p@20": 0.5
+      },
+      "recall_at_k": {
+        "r@5": 0.25,
+        "r@10": 0.5,
+        "r@20": 0.625
+      },
+      "incident_detection_rate": 1.0,
+      "detected_incidents": 3,
+      "total_incidents": 3,
+      "average_lead_time_min": 5.0,
+      "average_time_to_detect_min": 5.0
+    },
+    "ewma_baseline": {
+      "threshold": 0.6,
+      "rows": 216,
+      "positives": 16,
+      "false_alarm_rate": 0.005,
+      "mean_reciprocal_rank": 0.1805411919648942,
+      "precision_at_k": {
+        "p@5": 0.8,
+        "p@10": 0.7,
+        "p@20": 0.5
+      },
+      "recall_at_k": {
+        "r@5": 0.25,
+        "r@10": 0.4375,
+        "r@20": 0.625
+      },
+      "incident_detection_rate": 1.0,
+      "detected_incidents": 3,
+      "total_incidents": 3,
+      "average_lead_time_min": 2.5,
+      "average_time_to_detect_min": 5.0
+    },
+    "threshold_baseline": {
+      "threshold": 0.6,
+      "rows": 216,
+      "positives": 16,
+      "false_alarm_rate": 0.0,
+      "mean_reciprocal_rank": 0.17363011784246868,
+      "precision_at_k": {
+        "p@5": 1.0,
+        "p@10": 0.8,
+        "p@20": 0.4
+      },
+      "recall_at_k": {
+        "r@5": 0.3125,
+        "r@10": 0.5,
+        "r@20": 0.5
+      },
+      "incident_detection_rate": 0.3333333333333333,
+      "detected_incidents": 1,
+      "total_incidents": 3,
+      "average_lead_time_min": 0.0,
+      "average_time_to_detect_min": 5.0
+    }
+  },
+  "feature_highlights": [
+    {
+      "feature": "hour",
+      "why_it_matters": "UTC hour-of-day for strong service-period effects."
+    },
+    {
+      "feature": "day_of_week",
+      "why_it_matters": "Weekday context so weekday commute patterns do not look anomalous at baseline."
+    },
+    {
+      "feature": "is_weekend",
+      "why_it_matters": "Weekend service patterns differ materially from weekday operations."
+    },
+    {
+      "feature": "is_peak",
+      "why_it_matters": "Rush-hour indicator for the AM/PM commute windows."
+    },
+    {
+      "feature": "lag_headway_1",
+      "why_it_matters": "Previous observed headway at the same route-stop pair."
+    },
+    {
+      "feature": "lag_headway_2",
+      "why_it_matters": "Second-most recent headway for short-memory trend context."
+    },
+    {
+      "feature": "rolling_mean_6",
+      "why_it_matters": "Recent local moving average for the route-stop headway."
+    },
+    {
+      "feature": "rolling_std_6",
+      "why_it_matters": "Recent local volatility so large swings score higher only when unusual."
+    },
+    {
+      "feature": "rolling_q10_12",
+      "why_it_matters": "Lower rolling quantile used to contextualize the current headway band."
+    },
+    {
+      "feature": "rolling_q90_12",
+      "why_it_matters": "Upper rolling quantile used to contextualize the current headway band."
+    },
+    {
+      "feature": "station_baseline_deviation",
+      "why_it_matters": "Deviation from the recent station-local baseline, scaled by robust MAD."
+    },
+    {
+      "feature": "feed_delay_sec",
+      "why_it_matters": "How stale the GTFS event is relative to observation time."
+    },
+    {
+      "feature": "stale_update_flag",
+      "why_it_matters": "Binary indicator for delayed/stale feed updates."
+    },
+    {
+      "feature": "direction_code",
+      "why_it_matters": "Direction inferred from stop_id suffix when available (for example N/S)."
+    },
+    {
+      "feature": "precipitation_mm",
+      "why_it_matters": "Optional weather hook for replay or production enrichment."
+    },
+    {
+      "feature": "service_alert_active",
+      "why_it_matters": "Optional service-alert hook for route-level incident context."
+    }
+  ],
+  "artifacts": {
+    "events_csv": "events.csv",
+    "timeline_json": "timeline.json",
+    "incidents_json": "incidents.json",
+    "overall_plot": "plots/overall-scores.svg"
+  },
+  "notes": [
+    "Replay metrics are based on representative labeled scenarios, not official MTA incident annotations.",
+    "The online River model is replayed sequentially to preserve the same fast scoring path used in live operation."
+  ]
+}

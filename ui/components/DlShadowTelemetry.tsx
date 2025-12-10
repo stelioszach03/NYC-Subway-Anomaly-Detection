@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { Card, CardBody, CardTitle } from './ui/Card';
 import { asNYTime, fromNow } from '../lib/time';
 
@@ -27,6 +27,7 @@ type DlTelemetry = {
 
 export const DlShadowTelemetry: React.FC<{ telemetry?: DlTelemetry }> = ({ telemetry }) => {
   const status = telemetry?.status || 'unavailable';
+  const [hydrated, setHydrated] = useState(false);
   const tone =
     status === 'available'
       ? 'border-violet-200 bg-violet-50 text-violet-700'
@@ -35,6 +36,10 @@ export const DlShadowTelemetry: React.FC<{ telemetry?: DlTelemetry }> = ({ telem
         : 'border-slate-200 bg-slate-50 text-slate-600';
 
   const topEvents = Array.isArray(telemetry?.top_shadow_events) ? telemetry?.top_shadow_events.slice(0, 3) : [];
+
+  useEffect(() => {
+    setHydrated(true);
+  }, []);
 
   return (
     <Card>
@@ -88,7 +93,7 @@ export const DlShadowTelemetry: React.FC<{ telemetry?: DlTelemetry }> = ({ telem
         )}
 
         <div className="mt-2 border-t border-slate-200 pt-2 text-[11px] text-slate-500">
-          Last run: {telemetry?.last_run_utc ? `${asNYTime(telemetry.last_run_utc)} (${fromNow(telemetry.last_run_utc)})` : '—'}
+          Last run: {telemetry?.last_run_utc ? `${asNYTime(telemetry.last_run_utc)} (${hydrated ? fromNow(telemetry.last_run_utc) : 'snapshot'})` : '—'}
         </div>
       </CardBody>
     </Card>

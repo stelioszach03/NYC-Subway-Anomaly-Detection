@@ -1,0 +1,217 @@
+observed_ts,event_ts,route_id,stop_id,stop_name,headway_sec,label,incident_id,incident_title,incident_note,precipitation_mm,weather_severity,service_alert_active,service_alert_severity
+2026-02-05T11:00:00+00:00,2026-02-05T11:01:20+00:00,A,A15N,125 St,224.0,0,,,,0.0,0.0,0.0,0.0
+2026-02-05T11:00:00+00:00,2026-02-05T11:01:08+00:00,A,A27N,59 St - Columbus Circle,194.0,0,,,,0.0,0.0,0.0,0.0
+2026-02-05T11:00:00+00:00,2026-02-05T11:01:44+00:00,F,F20N,Bergen St,284.0,0,,,,0.0,0.0,0.0,0.0
+2026-02-05T11:00:00+00:00,2026-02-05T11:01:28+00:00,F,F09N,Jay St - MetroTech,244.0,0,,,,0.0,0.0,0.0,0.0
+2026-02-05T11:00:00+00:00,2026-02-05T11:01:12+00:00,7,726N,Queensboro Plaza,204.0,0,,,,0.0,0.0,0.0,0.0
+2026-02-05T11:00:00+00:00,2026-02-05T11:01:20+00:00,7,705N,74 St - Broadway,224.0,0,,,,0.0,0.0,0.0,0.0
+2026-02-05T11:05:00+00:00,2026-02-05T11:06:28+00:00,A,A15N,125 St,232.0,0,,,,0.0,0.0,0.0,0.0
+2026-02-05T11:05:00+00:00,2026-02-05T11:06:16+00:00,A,A27N,59 St - Columbus Circle,202.0,0,,,,0.0,0.0,0.0,0.0
+2026-02-05T11:05:00+00:00,2026-02-05T11:06:52+00:00,F,F20N,Bergen St,292.0,0,,,,0.0,0.0,0.0,0.0
+2026-02-05T11:05:00+00:00,2026-02-05T11:06:36+00:00,F,F09N,Jay St - MetroTech,252.0,0,,,,0.0,0.0,0.0,0.0
+2026-02-05T11:05:00+00:00,2026-02-05T11:06:20+00:00,7,726N,Queensboro Plaza,212.0,0,,,,0.0,0.0,0.0,0.0
+2026-02-05T11:05:00+00:00,2026-02-05T11:06:28+00:00,7,705N,74 St - Broadway,232.0,0,,,,0.0,0.0,0.0,0.0
+2026-02-05T11:10:00+00:00,2026-02-05T11:11:36+00:00,A,A15N,125 St,240.0,0,,,,0.0,0.0,0.0,0.0
+2026-02-05T11:10:00+00:00,2026-02-05T11:11:24+00:00,A,A27N,59 St - Columbus Circle,210.0,0,,,,0.0,0.0,0.0,0.0
+2026-02-05T11:10:00+00:00,2026-02-05T11:12:00+00:00,F,F20N,Bergen St,300.0,0,,,,0.0,0.0,0.0,0.0
+2026-02-05T11:10:00+00:00,2026-02-05T11:11:44+00:00,F,F09N,Jay St - MetroTech,260.0,0,,,,0.0,0.0,0.0,0.0
+2026-02-05T11:10:00+00:00,2026-02-05T11:11:28+00:00,7,726N,Queensboro Plaza,220.0,0,,,,0.0,0.0,0.0,0.0
+2026-02-05T11:10:00+00:00,2026-02-05T11:11:36+00:00,7,705N,74 St - Broadway,240.0,0,,,,0.0,0.0,0.0,0.0
+2026-02-05T11:15:00+00:00,2026-02-05T11:16:44+00:00,A,A15N,125 St,248.0,0,,,,0.0,0.0,0.0,0.0
+2026-02-05T11:15:00+00:00,2026-02-05T11:16:32+00:00,A,A27N,59 St - Columbus Circle,218.0,0,,,,0.0,0.0,0.0,0.0
+2026-02-05T11:15:00+00:00,2026-02-05T11:17:08+00:00,F,F20N,Bergen St,308.0,0,,,,0.0,0.0,0.0,0.0
+2026-02-05T11:15:00+00:00,2026-02-05T11:16:52+00:00,F,F09N,Jay St - MetroTech,268.0,0,,,,0.0,0.0,0.0,0.0
+2026-02-05T11:15:00+00:00,2026-02-05T11:16:36+00:00,7,726N,Queensboro Plaza,228.0,0,,,,0.0,0.0,0.0,0.0
+2026-02-05T11:15:00+00:00,2026-02-05T11:16:44+00:00,7,705N,74 St - Broadway,248.0,0,,,,0.0,0.0,0.0,0.0
+2026-02-05T11:20:00+00:00,2026-02-05T11:21:52+00:00,A,A15N,125 St,256.0,0,,,,0.0,0.0,0.0,0.0
+2026-02-05T11:20:00+00:00,2026-02-05T11:21:40+00:00,A,A27N,59 St - Columbus Circle,226.0,0,,,,0.0,0.0,0.0,0.0
+2026-02-05T11:20:00+00:00,2026-02-05T11:22:16+00:00,F,F20N,Bergen St,316.0,0,,,,0.0,0.0,0.0,0.0
+2026-02-05T11:20:00+00:00,2026-02-05T11:22:00+00:00,F,F09N,Jay St - MetroTech,276.0,0,,,,0.0,0.0,0.0,0.0
+2026-02-05T11:20:00+00:00,2026-02-05T11:21:44+00:00,7,726N,Queensboro Plaza,236.0,0,,,,0.0,0.0,0.0,0.0
+2026-02-05T11:20:00+00:00,2026-02-05T11:21:52+00:00,7,705N,74 St - Broadway,256.0,0,,,,0.0,0.0,0.0,0.0
+2026-02-05T11:25:00+00:00,2026-02-05T11:27:00+00:00,A,A15N,125 St,264.0,0,,,,0.0,0.0,0.0,0.0
+2026-02-05T11:25:00+00:00,2026-02-05T11:26:48+00:00,A,A27N,59 St - Columbus Circle,234.0,0,,,,0.0,0.0,0.0,0.0
+2026-02-05T11:25:00+00:00,2026-02-05T11:27:24+00:00,F,F20N,Bergen St,324.0,0,,,,0.0,0.0,0.0,0.0
+2026-02-05T11:25:00+00:00,2026-02-05T11:27:08+00:00,F,F09N,Jay St - MetroTech,284.0,0,,,,0.0,0.0,0.0,0.0
+2026-02-05T11:25:00+00:00,2026-02-05T11:26:52+00:00,7,726N,Queensboro Plaza,244.0,0,,,,0.0,0.0,0.0,0.0
+2026-02-05T11:25:00+00:00,2026-02-05T11:27:00+00:00,7,705N,74 St - Broadway,264.0,0,,,,0.0,0.0,0.0,0.0
+2026-02-05T11:30:00+00:00,2026-02-05T11:31:20+00:00,A,A15N,125 St,224.0,0,,,,0.0,0.0,0.0,0.0
+2026-02-05T11:30:00+00:00,2026-02-05T11:31:08+00:00,A,A27N,59 St - Columbus Circle,194.0,0,,,,0.0,0.0,0.0,0.0
+2026-02-05T11:30:00+00:00,2026-02-05T11:31:44+00:00,F,F20N,Bergen St,284.0,0,,,,0.0,0.0,0.0,0.0
+2026-02-05T11:30:00+00:00,2026-02-05T11:31:28+00:00,F,F09N,Jay St - MetroTech,244.0,0,,,,0.0,0.0,0.0,0.0
+2026-02-05T11:30:00+00:00,2026-02-05T11:31:12+00:00,7,726N,Queensboro Plaza,204.0,0,,,,0.0,0.0,0.0,0.0
+2026-02-05T11:30:00+00:00,2026-02-05T11:31:20+00:00,7,705N,74 St - Broadway,224.0,0,,,,0.0,0.0,0.0,0.0
+2026-02-05T11:35:00+00:00,2026-02-05T11:36:28+00:00,A,A15N,125 St,232.0,0,,,,0.0,0.0,0.0,0.0
+2026-02-05T11:35:00+00:00,2026-02-05T11:36:16+00:00,A,A27N,59 St - Columbus Circle,202.0,0,,,,0.0,0.0,0.0,0.0
+2026-02-05T11:35:00+00:00,2026-02-05T11:36:52+00:00,F,F20N,Bergen St,292.0,0,,,,0.0,0.0,0.0,0.0
+2026-02-05T11:35:00+00:00,2026-02-05T11:36:36+00:00,F,F09N,Jay St - MetroTech,252.0,0,,,,0.0,0.0,0.0,0.0
+2026-02-05T11:35:00+00:00,2026-02-05T11:36:20+00:00,7,726N,Queensboro Plaza,212.0,0,,,,0.0,0.0,0.0,0.0
+2026-02-05T11:35:00+00:00,2026-02-05T11:36:28+00:00,7,705N,74 St - Broadway,232.0,0,,,,0.0,0.0,0.0,0.0
+2026-02-05T11:40:00+00:00,2026-02-05T11:41:36+00:00,A,A15N,125 St,240.0,0,,,,0.0,0.0,0.0,0.0
+2026-02-05T11:40:00+00:00,2026-02-05T11:41:24+00:00,A,A27N,59 St - Columbus Circle,210.0,0,,,,0.0,0.0,0.0,0.0
+2026-02-05T11:40:00+00:00,2026-02-05T11:42:00+00:00,F,F20N,Bergen St,300.0,0,,,,0.0,0.0,0.0,0.0
+2026-02-05T11:40:00+00:00,2026-02-05T11:41:44+00:00,F,F09N,Jay St - MetroTech,260.0,0,,,,0.0,0.0,0.0,0.0
+2026-02-05T11:40:00+00:00,2026-02-05T11:41:28+00:00,7,726N,Queensboro Plaza,220.0,0,,,,0.0,0.0,0.0,0.0
+2026-02-05T11:40:00+00:00,2026-02-05T11:41:36+00:00,7,705N,74 St - Broadway,240.0,0,,,,0.0,0.0,0.0,0.0
+2026-02-05T11:45:00+00:00,2026-02-05T11:50:40+00:00,A,A15N,125 St,320.0,0,signal-delay-midtown,Signal delay cascades into northbound Midtown headway gap,Representative replay scenario where a signal hold creates a prolonged northbound gap and delayed recovery.,0.0,0.0,1.0,1.0
+2026-02-05T11:45:00+00:00,2026-02-05T11:46:32+00:00,A,A27N,59 St - Columbus Circle,218.0,0,,,,0.0,0.0,0.0,0.0
+2026-02-05T11:45:00+00:00,2026-02-05T11:47:08+00:00,F,F20N,Bergen St,308.0,0,,,,0.0,0.0,0.0,0.0
+2026-02-05T11:45:00+00:00,2026-02-05T11:46:52+00:00,F,F09N,Jay St - MetroTech,268.0,0,,,,0.0,0.0,0.0,0.0
+2026-02-05T11:45:00+00:00,2026-02-05T11:46:36+00:00,7,726N,Queensboro Plaza,228.0,0,,,,0.0,0.0,0.0,0.0
+2026-02-05T11:45:00+00:00,2026-02-05T11:46:44+00:00,7,705N,74 St - Broadway,248.0,0,,,,0.0,0.0,0.0,0.0
+2026-02-05T11:50:00+00:00,2026-02-05T11:57:10+00:00,A,A15N,125 St,410.0,0,signal-delay-midtown,Signal delay cascades into northbound Midtown headway gap,Representative replay scenario where a signal hold creates a prolonged northbound gap and delayed recovery.,0.0,0.0,1.0,1.0
+2026-02-05T11:50:00+00:00,2026-02-05T11:51:40+00:00,A,A27N,59 St - Columbus Circle,226.0,0,,,,0.0,0.0,0.0,0.0
+2026-02-05T11:50:00+00:00,2026-02-05T11:52:16+00:00,F,F20N,Bergen St,316.0,0,,,,0.0,0.0,0.0,0.0
+2026-02-05T11:50:00+00:00,2026-02-05T11:52:00+00:00,F,F09N,Jay St - MetroTech,276.0,0,,,,0.0,0.0,0.0,0.0
+2026-02-05T11:50:00+00:00,2026-02-05T11:51:44+00:00,7,726N,Queensboro Plaza,236.0,0,,,,0.0,0.0,0.0,0.0
+2026-02-05T11:50:00+00:00,2026-02-05T11:51:52+00:00,7,705N,74 St - Broadway,256.0,0,,,,0.0,0.0,0.0,0.0
+2026-02-05T11:55:00+00:00,2026-02-05T12:04:00+00:00,A,A15N,125 St,520.0,1,signal-delay-midtown,Signal delay cascades into northbound Midtown headway gap,Representative replay scenario where a signal hold creates a prolonged northbound gap and delayed recovery.,0.0,0.0,1.0,1.0
+2026-02-05T11:55:00+00:00,2026-02-05T11:56:48+00:00,A,A27N,59 St - Columbus Circle,234.0,0,,,,0.0,0.0,0.0,0.0
+2026-02-05T11:55:00+00:00,2026-02-05T11:57:24+00:00,F,F20N,Bergen St,324.0,0,,,,0.0,0.0,0.0,0.0
+2026-02-05T11:55:00+00:00,2026-02-05T11:57:08+00:00,F,F09N,Jay St - MetroTech,284.0,0,,,,0.0,0.0,0.0,0.0
+2026-02-05T11:55:00+00:00,2026-02-05T11:56:52+00:00,7,726N,Queensboro Plaza,244.0,0,,,,0.0,0.0,0.0,0.0
+2026-02-05T11:55:00+00:00,2026-02-05T11:57:00+00:00,7,705N,74 St - Broadway,264.0,0,,,,0.0,0.0,0.0,0.0
+2026-02-05T12:00:00+00:00,2026-02-05T12:13:20+00:00,A,A15N,125 St,780.0,1,signal-delay-midtown,Signal delay cascades into northbound Midtown headway gap,Representative replay scenario where a signal hold creates a prolonged northbound gap and delayed recovery.,0.0,0.0,1.0,1.0
+2026-02-05T12:00:00+00:00,2026-02-05T12:01:45+00:00,A,A27N,59 St - Columbus Circle,231.8,0,,,,0.0,0.0,0.0,0.0
+2026-02-05T12:00:00+00:00,2026-02-05T12:02:38+00:00,F,F20N,Bergen St,338.0,0,,,,0.0,0.0,0.0,0.0
+2026-02-05T12:00:00+00:00,2026-02-05T12:02:14+00:00,F,F09N,Jay St - MetroTech,290.8,0,,,,0.0,0.0,0.0,0.0
+2026-02-05T12:00:00+00:00,2026-02-05T12:01:51+00:00,7,726N,Queensboro Plaza,243.6,0,,,,0.0,0.0,0.0,0.0
+2026-02-05T12:00:00+00:00,2026-02-05T12:02:03+00:00,7,705N,74 St - Broadway,267.2,0,,,,0.0,0.0,0.0,0.0
+2026-02-05T12:05:00+00:00,2026-02-05T12:19:40+00:00,A,A15N,125 St,860.0,1,signal-delay-midtown,Signal delay cascades into northbound Midtown headway gap,Representative replay scenario where a signal hold creates a prolonged northbound gap and delayed recovery.,0.0,0.0,1.0,1.0
+2026-02-05T12:05:00+00:00,2026-02-05T12:06:53+00:00,A,A27N,59 St - Columbus Circle,239.8,0,,,,0.0,0.0,0.0,0.0
+2026-02-05T12:05:00+00:00,2026-02-05T12:07:46+00:00,F,F20N,Bergen St,346.0,0,,,,0.0,0.0,0.0,0.0
+2026-02-05T12:05:00+00:00,2026-02-05T12:07:22+00:00,F,F09N,Jay St - MetroTech,298.8,0,,,,0.0,0.0,0.0,0.0
+2026-02-05T12:05:00+00:00,2026-02-05T12:06:59+00:00,7,726N,Queensboro Plaza,251.6,0,,,,0.0,0.0,0.0,0.0
+2026-02-05T12:05:00+00:00,2026-02-05T12:07:11+00:00,7,705N,74 St - Broadway,275.2,0,,,,0.0,0.0,0.0,0.0
+2026-02-05T12:10:00+00:00,2026-02-05T12:22:35+00:00,A,A15N,125 St,735.0,1,signal-delay-midtown,Signal delay cascades into northbound Midtown headway gap,Representative replay scenario where a signal hold creates a prolonged northbound gap and delayed recovery.,0.0,0.0,1.0,1.0
+2026-02-05T12:10:00+00:00,2026-02-05T12:12:01+00:00,A,A27N,59 St - Columbus Circle,247.8,0,,,,0.0,0.0,0.0,0.0
+2026-02-05T12:10:00+00:00,2026-02-05T12:12:54+00:00,F,F20N,Bergen St,354.0,0,,,,0.0,0.0,0.0,0.0
+2026-02-05T12:10:00+00:00,2026-02-05T12:12:30+00:00,F,F09N,Jay St - MetroTech,306.8,0,,,,0.0,0.0,0.0,0.0
+2026-02-05T12:10:00+00:00,2026-02-05T12:12:07+00:00,7,726N,Queensboro Plaza,259.6,0,,,,0.0,0.0,0.0,0.0
+2026-02-05T12:10:00+00:00,2026-02-05T12:12:19+00:00,7,705N,74 St - Broadway,283.2,0,,,,0.0,0.0,0.0,0.0
+2026-02-05T12:15:00+00:00,2026-02-05T12:23:50+00:00,A,A15N,125 St,510.0,1,signal-delay-midtown,Signal delay cascades into northbound Midtown headway gap,Representative replay scenario where a signal hold creates a prolonged northbound gap and delayed recovery.,0.0,0.0,1.0,1.0
+2026-02-05T12:15:00+00:00,2026-02-05T12:17:09+00:00,A,A27N,59 St - Columbus Circle,255.8,0,,,,0.0,0.0,0.0,0.0
+2026-02-05T12:15:00+00:00,2026-02-05T12:18:02+00:00,F,F20N,Bergen St,362.0,0,,,,0.0,0.0,0.0,0.0
+2026-02-05T12:15:00+00:00,2026-02-05T12:17:38+00:00,F,F09N,Jay St - MetroTech,314.8,0,,,,0.0,0.0,0.0,0.0
+2026-02-05T12:15:00+00:00,2026-02-05T12:17:15+00:00,7,726N,Queensboro Plaza,267.6,0,,,,0.0,0.0,0.0,0.0
+2026-02-05T12:15:00+00:00,2026-02-05T12:17:27+00:00,7,705N,74 St - Broadway,291.2,0,,,,0.0,0.0,0.0,0.0
+2026-02-05T12:20:00+00:00,2026-02-05T12:27:10+00:00,A,A15N,125 St,410.0,0,signal-delay-midtown,Signal delay cascades into northbound Midtown headway gap,Representative replay scenario where a signal hold creates a prolonged northbound gap and delayed recovery.,0.0,0.0,1.0,1.0
+2026-02-05T12:20:00+00:00,2026-02-05T12:22:17+00:00,A,A27N,59 St - Columbus Circle,263.8,0,,,,0.0,0.0,0.0,0.0
+2026-02-05T12:20:00+00:00,2026-02-05T12:23:10+00:00,F,F20N,Bergen St,370.0,0,,,,0.0,0.0,0.0,0.0
+2026-02-05T12:20:00+00:00,2026-02-05T12:22:46+00:00,F,F09N,Jay St - MetroTech,322.8,0,,,,0.0,0.0,0.0,0.0
+2026-02-05T12:20:00+00:00,2026-02-05T12:22:23+00:00,7,726N,Queensboro Plaza,275.6,0,,,,0.0,0.0,0.0,0.0
+2026-02-05T12:20:00+00:00,2026-02-05T12:22:35+00:00,7,705N,74 St - Broadway,299.2,0,,,,0.0,0.0,0.0,0.0
+2026-02-05T12:25:00+00:00,2026-02-05T12:30:50+00:00,A,A15N,125 St,330.0,0,signal-delay-midtown,Signal delay cascades into northbound Midtown headway gap,Representative replay scenario where a signal hold creates a prolonged northbound gap and delayed recovery.,0.0,0.0,1.0,1.0
+2026-02-05T12:25:00+00:00,2026-02-05T12:27:25+00:00,A,A27N,59 St - Columbus Circle,271.8,0,,,,0.0,0.0,0.0,0.0
+2026-02-05T12:25:00+00:00,2026-02-05T12:28:18+00:00,F,F20N,Bergen St,378.0,0,,,,0.0,0.0,0.0,0.0
+2026-02-05T12:25:00+00:00,2026-02-05T12:27:54+00:00,F,F09N,Jay St - MetroTech,330.8,0,,,,0.0,0.0,0.0,0.0
+2026-02-05T12:25:00+00:00,2026-02-05T12:27:31+00:00,7,726N,Queensboro Plaza,283.6,0,,,,0.0,0.0,0.0,0.0
+2026-02-05T12:25:00+00:00,2026-02-05T12:27:43+00:00,7,705N,74 St - Broadway,307.2,0,,,,0.0,0.0,0.0,0.0
+2026-02-05T12:30:00+00:00,2026-02-05T12:35:00+00:00,A,A15N,125 St,280.0,0,signal-delay-midtown,Signal delay cascades into northbound Midtown headway gap,Representative replay scenario where a signal hold creates a prolonged northbound gap and delayed recovery.,0.0,0.0,1.0,1.0
+2026-02-05T12:30:00+00:00,2026-02-05T12:31:45+00:00,A,A27N,59 St - Columbus Circle,231.8,0,,,,0.0,0.0,0.0,0.0
+2026-02-05T12:30:00+00:00,2026-02-05T12:37:15+00:00,F,F20N,Bergen St,340.0,0,brooklyn-merge-bunching,Brooklyn merge conflict triggers bunching at Bergen St,Representative replay scenario where merge pressure causes one long gap followed by bunching and stale updates.,0.0,0.0,1.0,0.8
+2026-02-05T12:30:00+00:00,2026-02-05T12:32:14+00:00,F,F09N,Jay St - MetroTech,290.8,0,,,,0.0,0.0,0.0,0.0
+2026-02-05T12:30:00+00:00,2026-02-05T12:31:51+00:00,7,726N,Queensboro Plaza,243.6,0,,,,0.0,0.0,0.0,0.0
+2026-02-05T12:30:00+00:00,2026-02-05T12:32:03+00:00,7,705N,74 St - Broadway,267.2,0,,,,0.0,0.0,0.0,0.0
+2026-02-05T12:35:00+00:00,2026-02-05T12:37:11+00:00,A,A15N,125 St,275.2,0,,,,0.0,0.0,0.0,0.0
+2026-02-05T12:35:00+00:00,2026-02-05T12:36:53+00:00,A,A27N,59 St - Columbus Circle,239.8,0,,,,0.0,0.0,0.0,0.0
+2026-02-05T12:35:00+00:00,2026-02-05T12:43:05+00:00,F,F20N,Bergen St,390.0,0,brooklyn-merge-bunching,Brooklyn merge conflict triggers bunching at Bergen St,Representative replay scenario where merge pressure causes one long gap followed by bunching and stale updates.,0.0,0.0,1.0,0.8
+2026-02-05T12:35:00+00:00,2026-02-05T12:37:22+00:00,F,F09N,Jay St - MetroTech,298.8,0,,,,0.0,0.0,0.0,0.0
+2026-02-05T12:35:00+00:00,2026-02-05T12:36:59+00:00,7,726N,Queensboro Plaza,251.6,0,,,,0.0,0.0,0.0,0.0
+2026-02-05T12:35:00+00:00,2026-02-05T12:37:11+00:00,7,705N,74 St - Broadway,275.2,0,,,,0.0,0.0,0.0,0.0
+2026-02-05T12:40:00+00:00,2026-02-05T12:42:19+00:00,A,A15N,125 St,283.2,0,,,,0.0,0.0,0.0,0.0
+2026-02-05T12:40:00+00:00,2026-02-05T12:42:01+00:00,A,A27N,59 St - Columbus Circle,247.8,0,,,,0.0,0.0,0.0,0.0
+2026-02-05T12:40:00+00:00,2026-02-05T12:48:45+00:00,F,F20N,Bergen St,430.0,1,brooklyn-merge-bunching,Brooklyn merge conflict triggers bunching at Bergen St,Representative replay scenario where merge pressure causes one long gap followed by bunching and stale updates.,0.0,0.0,1.0,0.8
+2026-02-05T12:40:00+00:00,2026-02-05T12:42:30+00:00,F,F09N,Jay St - MetroTech,306.8,0,,,,0.0,0.0,0.0,0.0
+2026-02-05T12:40:00+00:00,2026-02-05T12:42:07+00:00,7,726N,Queensboro Plaza,259.6,0,,,,0.0,0.0,0.0,0.0
+2026-02-05T12:40:00+00:00,2026-02-05T12:42:19+00:00,7,705N,74 St - Broadway,283.2,0,,,,0.0,0.0,0.0,0.0
+2026-02-05T12:45:00+00:00,2026-02-05T12:47:27+00:00,A,A15N,125 St,291.2,0,,,,0.0,0.0,0.0,0.0
+2026-02-05T12:45:00+00:00,2026-02-05T12:47:09+00:00,A,A27N,59 St - Columbus Circle,255.8,0,,,,0.0,0.0,0.0,0.0
+2026-02-05T12:45:00+00:00,2026-02-05T12:58:05+00:00,F,F20N,Bergen St,690.0,1,brooklyn-merge-bunching,Brooklyn merge conflict triggers bunching at Bergen St,Representative replay scenario where merge pressure causes one long gap followed by bunching and stale updates.,0.0,0.0,1.0,0.8
+2026-02-05T12:45:00+00:00,2026-02-05T12:47:38+00:00,F,F09N,Jay St - MetroTech,314.8,0,,,,0.0,0.0,0.0,0.0
+2026-02-05T12:45:00+00:00,2026-02-05T12:47:15+00:00,7,726N,Queensboro Plaza,267.6,0,,,,0.0,0.0,0.0,0.0
+2026-02-05T12:45:00+00:00,2026-02-05T12:47:27+00:00,7,705N,74 St - Broadway,291.2,0,,,,0.0,0.0,0.0,0.0
+2026-02-05T12:50:00+00:00,2026-02-05T12:52:35+00:00,A,A15N,125 St,299.2,0,,,,0.0,0.0,0.0,0.0
+2026-02-05T12:50:00+00:00,2026-02-05T12:52:17+00:00,A,A27N,59 St - Columbus Circle,263.8,0,,,,0.0,0.0,0.0,0.0
+2026-02-05T12:50:00+00:00,2026-02-05T13:04:15+00:00,F,F20N,Bergen St,760.0,1,brooklyn-merge-bunching,Brooklyn merge conflict triggers bunching at Bergen St,Representative replay scenario where merge pressure causes one long gap followed by bunching and stale updates.,0.0,0.0,1.0,0.8
+2026-02-05T12:50:00+00:00,2026-02-05T12:52:46+00:00,F,F09N,Jay St - MetroTech,322.8,0,,,,0.0,0.0,0.0,0.0
+2026-02-05T12:50:00+00:00,2026-02-05T12:52:23+00:00,7,726N,Queensboro Plaza,275.6,0,,,,0.0,0.0,0.0,0.0
+2026-02-05T12:50:00+00:00,2026-02-05T12:52:35+00:00,7,705N,74 St - Broadway,299.2,0,,,,0.0,0.0,0.0,0.0
+2026-02-05T12:55:00+00:00,2026-02-05T12:57:43+00:00,A,A15N,125 St,307.2,0,,,,0.0,0.0,0.0,0.0
+2026-02-05T12:55:00+00:00,2026-02-05T12:57:25+00:00,A,A27N,59 St - Columbus Circle,271.8,0,,,,0.0,0.0,0.0,0.0
+2026-02-05T12:55:00+00:00,2026-02-05T13:07:15+00:00,F,F20N,Bergen St,640.0,1,brooklyn-merge-bunching,Brooklyn merge conflict triggers bunching at Bergen St,Representative replay scenario where merge pressure causes one long gap followed by bunching and stale updates.,0.0,0.0,1.0,0.8
+2026-02-05T12:55:00+00:00,2026-02-05T12:57:54+00:00,F,F09N,Jay St - MetroTech,330.8,0,,,,0.0,0.0,0.0,0.0
+2026-02-05T12:55:00+00:00,2026-02-05T12:57:31+00:00,7,726N,Queensboro Plaza,283.6,0,,,,0.0,0.0,0.0,0.0
+2026-02-05T12:55:00+00:00,2026-02-05T12:57:43+00:00,7,705N,74 St - Broadway,307.2,0,,,,0.0,0.0,0.0,0.0
+2026-02-05T13:00:00+00:00,2026-02-05T13:02:03+00:00,A,A15N,125 St,267.2,0,,,,0.0,0.0,0.0,0.0
+2026-02-05T13:00:00+00:00,2026-02-05T13:01:45+00:00,A,A27N,59 St - Columbus Circle,231.8,0,,,,0.0,0.0,0.0,0.0
+2026-02-05T13:00:00+00:00,2026-02-05T13:09:25+00:00,F,F20N,Bergen St,470.0,1,brooklyn-merge-bunching,Brooklyn merge conflict triggers bunching at Bergen St,Representative replay scenario where merge pressure causes one long gap followed by bunching and stale updates.,0.0,0.0,1.0,0.8
+2026-02-05T13:00:00+00:00,2026-02-05T13:02:14+00:00,F,F09N,Jay St - MetroTech,290.8,0,,,,0.0,0.0,0.0,0.0
+2026-02-05T13:00:00+00:00,2026-02-05T13:05:40+00:00,7,726N,Queensboro Plaza,300.0,0,queens-rain-cascade,Rain-impacted dwell times cascade on the Queens corridor,Representative replay scenario where wet weather and slower boarding inflate headways on the 7 line.,6.2,1.0,0.0,0.0
+2026-02-05T13:00:00+00:00,2026-02-05T13:02:03+00:00,7,705N,74 St - Broadway,267.2,0,,,,0.0,0.0,0.0,0.0
+2026-02-05T13:05:00+00:00,2026-02-05T13:07:11+00:00,A,A15N,125 St,275.2,0,,,,0.0,0.0,0.0,0.0
+2026-02-05T13:05:00+00:00,2026-02-05T13:06:53+00:00,A,A27N,59 St - Columbus Circle,239.8,0,,,,0.0,0.0,0.0,0.0
+2026-02-05T13:05:00+00:00,2026-02-05T13:12:15+00:00,F,F20N,Bergen St,340.0,0,brooklyn-merge-bunching,Brooklyn merge conflict triggers bunching at Bergen St,Representative replay scenario where merge pressure causes one long gap followed by bunching and stale updates.,0.0,0.0,1.0,0.8
+2026-02-05T13:05:00+00:00,2026-02-05T13:07:22+00:00,F,F09N,Jay St - MetroTech,298.8,0,,,,0.0,0.0,0.0,0.0
+2026-02-05T13:05:00+00:00,2026-02-05T13:11:10+00:00,7,726N,Queensboro Plaza,330.0,0,queens-rain-cascade,Rain-impacted dwell times cascade on the Queens corridor,Representative replay scenario where wet weather and slower boarding inflate headways on the 7 line.,6.2,1.0,0.0,0.0
+2026-02-05T13:05:00+00:00,2026-02-05T13:07:11+00:00,7,705N,74 St - Broadway,275.2,0,,,,0.0,0.0,0.0,0.0
+2026-02-05T13:10:00+00:00,2026-02-05T13:12:19+00:00,A,A15N,125 St,283.2,0,,,,0.0,0.0,0.0,0.0
+2026-02-05T13:10:00+00:00,2026-02-05T13:12:01+00:00,A,A27N,59 St - Columbus Circle,247.8,0,,,,0.0,0.0,0.0,0.0
+2026-02-05T13:10:00+00:00,2026-02-05T13:15:55+00:00,F,F20N,Bergen St,260.0,0,brooklyn-merge-bunching,Brooklyn merge conflict triggers bunching at Bergen St,Representative replay scenario where merge pressure causes one long gap followed by bunching and stale updates.,0.0,0.0,1.0,0.8
+2026-02-05T13:10:00+00:00,2026-02-05T13:12:30+00:00,F,F09N,Jay St - MetroTech,306.8,0,,,,0.0,0.0,0.0,0.0
+2026-02-05T13:10:00+00:00,2026-02-05T13:17:40+00:00,7,726N,Queensboro Plaza,420.0,1,queens-rain-cascade,Rain-impacted dwell times cascade on the Queens corridor,Representative replay scenario where wet weather and slower boarding inflate headways on the 7 line.,6.2,1.0,0.0,0.0
+2026-02-05T13:10:00+00:00,2026-02-05T13:12:19+00:00,7,705N,74 St - Broadway,283.2,0,,,,0.0,0.0,0.0,0.0
+2026-02-05T13:15:00+00:00,2026-02-05T13:17:27+00:00,A,A15N,125 St,291.2,0,,,,0.0,0.0,0.0,0.0
+2026-02-05T13:15:00+00:00,2026-02-05T13:17:09+00:00,A,A27N,59 St - Columbus Circle,255.8,0,,,,0.0,0.0,0.0,0.0
+2026-02-05T13:15:00+00:00,2026-02-05T13:20:25+00:00,F,F20N,Bergen St,230.0,0,brooklyn-merge-bunching,Brooklyn merge conflict triggers bunching at Bergen St,Representative replay scenario where merge pressure causes one long gap followed by bunching and stale updates.,0.0,0.0,1.0,0.8
+2026-02-05T13:15:00+00:00,2026-02-05T13:17:38+00:00,F,F09N,Jay St - MetroTech,314.8,0,,,,0.0,0.0,0.0,0.0
+2026-02-05T13:15:00+00:00,2026-02-05T13:25:00+00:00,7,726N,Queensboro Plaza,560.0,1,queens-rain-cascade,Rain-impacted dwell times cascade on the Queens corridor,Representative replay scenario where wet weather and slower boarding inflate headways on the 7 line.,6.2,1.0,0.0,0.0
+2026-02-05T13:15:00+00:00,2026-02-05T13:17:27+00:00,7,705N,74 St - Broadway,291.2,0,,,,0.0,0.0,0.0,0.0
+2026-02-05T13:20:00+00:00,2026-02-05T13:22:35+00:00,A,A15N,125 St,299.2,0,,,,0.0,0.0,0.0,0.0
+2026-02-05T13:20:00+00:00,2026-02-05T13:22:17+00:00,A,A27N,59 St - Columbus Circle,263.8,0,,,,0.0,0.0,0.0,0.0
+2026-02-05T13:20:00+00:00,2026-02-05T13:23:10+00:00,F,F20N,Bergen St,370.0,0,,,,0.0,0.0,0.0,0.0
+2026-02-05T13:20:00+00:00,2026-02-05T13:22:46+00:00,F,F09N,Jay St - MetroTech,322.8,0,,,,0.0,0.0,0.0,0.0
+2026-02-05T13:20:00+00:00,2026-02-05T13:30:50+00:00,7,726N,Queensboro Plaza,610.0,1,queens-rain-cascade,Rain-impacted dwell times cascade on the Queens corridor,Representative replay scenario where wet weather and slower boarding inflate headways on the 7 line.,6.2,1.0,0.0,0.0
+2026-02-05T13:20:00+00:00,2026-02-05T13:22:35+00:00,7,705N,74 St - Broadway,299.2,0,,,,0.0,0.0,0.0,0.0
+2026-02-05T13:25:00+00:00,2026-02-05T13:27:43+00:00,A,A15N,125 St,307.2,0,,,,0.0,0.0,0.0,0.0
+2026-02-05T13:25:00+00:00,2026-02-05T13:27:25+00:00,A,A27N,59 St - Columbus Circle,271.8,0,,,,0.0,0.0,0.0,0.0
+2026-02-05T13:25:00+00:00,2026-02-05T13:28:18+00:00,F,F20N,Bergen St,378.0,0,,,,0.0,0.0,0.0,0.0
+2026-02-05T13:25:00+00:00,2026-02-05T13:27:54+00:00,F,F09N,Jay St - MetroTech,330.8,0,,,,0.0,0.0,0.0,0.0
+2026-02-05T13:25:00+00:00,2026-02-05T13:36:35+00:00,7,726N,Queensboro Plaza,655.0,1,queens-rain-cascade,Rain-impacted dwell times cascade on the Queens corridor,Representative replay scenario where wet weather and slower boarding inflate headways on the 7 line.,6.2,1.0,0.0,0.0
+2026-02-05T13:25:00+00:00,2026-02-05T13:27:43+00:00,7,705N,74 St - Broadway,307.2,0,,,,0.0,0.0,0.0,0.0
+2026-02-05T13:30:00+00:00,2026-02-05T13:32:03+00:00,A,A15N,125 St,267.2,0,,,,0.0,0.0,0.0,0.0
+2026-02-05T13:30:00+00:00,2026-02-05T13:31:45+00:00,A,A27N,59 St - Columbus Circle,231.8,0,,,,0.0,0.0,0.0,0.0
+2026-02-05T13:30:00+00:00,2026-02-05T13:32:38+00:00,F,F20N,Bergen St,338.0,0,,,,0.0,0.0,0.0,0.0
+2026-02-05T13:30:00+00:00,2026-02-05T13:32:14+00:00,F,F09N,Jay St - MetroTech,290.8,0,,,,0.0,0.0,0.0,0.0
+2026-02-05T13:30:00+00:00,2026-02-05T13:40:30+00:00,7,726N,Queensboro Plaza,590.0,1,queens-rain-cascade,Rain-impacted dwell times cascade on the Queens corridor,Representative replay scenario where wet weather and slower boarding inflate headways on the 7 line.,6.2,1.0,0.0,0.0
+2026-02-05T13:30:00+00:00,2026-02-05T13:32:03+00:00,7,705N,74 St - Broadway,267.2,0,,,,0.0,0.0,0.0,0.0
+2026-02-05T13:35:00+00:00,2026-02-05T13:37:11+00:00,A,A15N,125 St,275.2,0,,,,0.0,0.0,0.0,0.0
+2026-02-05T13:35:00+00:00,2026-02-05T13:36:53+00:00,A,A27N,59 St - Columbus Circle,239.8,0,,,,0.0,0.0,0.0,0.0
+2026-02-05T13:35:00+00:00,2026-02-05T13:37:46+00:00,F,F20N,Bergen St,346.0,0,,,,0.0,0.0,0.0,0.0
+2026-02-05T13:35:00+00:00,2026-02-05T13:37:22+00:00,F,F09N,Jay St - MetroTech,298.8,0,,,,0.0,0.0,0.0,0.0
+2026-02-05T13:35:00+00:00,2026-02-05T13:43:30+00:00,7,726N,Queensboro Plaza,470.0,1,queens-rain-cascade,Rain-impacted dwell times cascade on the Queens corridor,Representative replay scenario where wet weather and slower boarding inflate headways on the 7 line.,6.2,1.0,0.0,0.0
+2026-02-05T13:35:00+00:00,2026-02-05T13:37:11+00:00,7,705N,74 St - Broadway,275.2,0,,,,0.0,0.0,0.0,0.0
+2026-02-05T13:40:00+00:00,2026-02-05T13:42:19+00:00,A,A15N,125 St,283.2,0,,,,0.0,0.0,0.0,0.0
+2026-02-05T13:40:00+00:00,2026-02-05T13:42:01+00:00,A,A27N,59 St - Columbus Circle,247.8,0,,,,0.0,0.0,0.0,0.0
+2026-02-05T13:40:00+00:00,2026-02-05T13:42:54+00:00,F,F20N,Bergen St,354.0,0,,,,0.0,0.0,0.0,0.0
+2026-02-05T13:40:00+00:00,2026-02-05T13:42:30+00:00,F,F09N,Jay St - MetroTech,306.8,0,,,,0.0,0.0,0.0,0.0
+2026-02-05T13:40:00+00:00,2026-02-05T13:46:40+00:00,7,726N,Queensboro Plaza,360.0,0,queens-rain-cascade,Rain-impacted dwell times cascade on the Queens corridor,Representative replay scenario where wet weather and slower boarding inflate headways on the 7 line.,6.2,1.0,0.0,0.0
+2026-02-05T13:40:00+00:00,2026-02-05T13:42:19+00:00,7,705N,74 St - Broadway,283.2,0,,,,0.0,0.0,0.0,0.0
+2026-02-05T13:45:00+00:00,2026-02-05T13:47:27+00:00,A,A15N,125 St,291.2,0,,,,0.0,0.0,0.0,0.0
+2026-02-05T13:45:00+00:00,2026-02-05T13:47:09+00:00,A,A27N,59 St - Columbus Circle,255.8,0,,,,0.0,0.0,0.0,0.0
+2026-02-05T13:45:00+00:00,2026-02-05T13:48:02+00:00,F,F20N,Bergen St,362.0,0,,,,0.0,0.0,0.0,0.0
+2026-02-05T13:45:00+00:00,2026-02-05T13:47:38+00:00,F,F09N,Jay St - MetroTech,314.8,0,,,,0.0,0.0,0.0,0.0
+2026-02-05T13:45:00+00:00,2026-02-05T13:50:40+00:00,7,726N,Queensboro Plaza,300.0,0,queens-rain-cascade,Rain-impacted dwell times cascade on the Queens corridor,Representative replay scenario where wet weather and slower boarding inflate headways on the 7 line.,6.2,1.0,0.0,0.0
+2026-02-05T13:45:00+00:00,2026-02-05T13:47:27+00:00,7,705N,74 St - Broadway,291.2,0,,,,0.0,0.0,0.0,0.0
+2026-02-05T13:50:00+00:00,2026-02-05T13:52:35+00:00,A,A15N,125 St,299.2,0,,,,0.0,0.0,0.0,0.0
+2026-02-05T13:50:00+00:00,2026-02-05T13:52:17+00:00,A,A27N,59 St - Columbus Circle,263.8,0,,,,0.0,0.0,0.0,0.0
+2026-02-05T13:50:00+00:00,2026-02-05T13:53:10+00:00,F,F20N,Bergen St,370.0,0,,,,0.0,0.0,0.0,0.0
+2026-02-05T13:50:00+00:00,2026-02-05T13:52:46+00:00,F,F09N,Jay St - MetroTech,322.8,0,,,,0.0,0.0,0.0,0.0
+2026-02-05T13:50:00+00:00,2026-02-05T13:55:10+00:00,7,726N,Queensboro Plaza,270.0,0,queens-rain-cascade,Rain-impacted dwell times cascade on the Queens corridor,Representative replay scenario where wet weather and slower boarding inflate headways on the 7 line.,6.2,1.0,0.0,0.0
+2026-02-05T13:50:00+00:00,2026-02-05T13:52:35+00:00,7,705N,74 St - Broadway,299.2,0,,,,0.0,0.0,0.0,0.0
+2026-02-05T13:55:00+00:00,2026-02-05T13:57:43+00:00,A,A15N,125 St,307.2,0,,,,0.0,0.0,0.0,0.0
+2026-02-05T13:55:00+00:00,2026-02-05T13:57:25+00:00,A,A27N,59 St - Columbus Circle,271.8,0,,,,0.0,0.0,0.0,0.0
+2026-02-05T13:55:00+00:00,2026-02-05T13:58:18+00:00,F,F20N,Bergen St,378.0,0,,,,0.0,0.0,0.0,0.0
+2026-02-05T13:55:00+00:00,2026-02-05T13:57:54+00:00,F,F09N,Jay St - MetroTech,330.8,0,,,,0.0,0.0,0.0,0.0
+2026-02-05T13:55:00+00:00,2026-02-05T13:57:31+00:00,7,726N,Queensboro Plaza,283.6,0,,,,0.0,0.0,0.0,0.0
+2026-02-05T13:55:00+00:00,2026-02-05T13:57:43+00:00,7,705N,74 St - Broadway,307.2,0,,,,0.0,0.0,0.0,0.0

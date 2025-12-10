@@ -2,7 +2,7 @@ from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 
 from .core.logging import get_logger
-from .routers import health, stops, heatmap, model
+from .routers import health, stops, heatmap, model, replay
 from .routers import routes as routes_router
 from .routers import summary as summary_router
 from .routers import anomalies as anomalies_router
@@ -27,6 +27,7 @@ app.include_router(routes_router.router, prefix="/api")
 app.include_router(summary_router.router, prefix="/api")
 app.include_router(anomalies_router.router, prefix="/api")
 app.include_router(model.router, prefix="/api")
+app.include_router(replay.router, prefix="/api")
 
 # CORS for local UI dev (broader to avoid mismatches)
 app.add_middleware(

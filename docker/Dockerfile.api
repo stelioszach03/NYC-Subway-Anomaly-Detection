@@ -22,6 +22,7 @@ RUN pip install --no-cache-dir \
     python-dotenv
 
 COPY api /app/api
+COPY docs/generated /app/docs/generated
 
 EXPOSE 8000
 

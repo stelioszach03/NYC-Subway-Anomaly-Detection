@@ -4,7 +4,7 @@ VENVDIR := .venv
 
 .PHONY: help
 help:
-	@echo "Targets: init, setup-dev, api, worker, docker-up, docker-down, docker-build, test, itest, healthtest"
+	@echo "Targets: init, setup-dev, api, worker, docker-up, docker-down, docker-build, replay-eval, test, itest, healthtest"
 
 .PHONY: init
 init:
@@ -55,6 +55,10 @@ worker-logs:
 .PHONY: test
 test:
 	./.venv/bin/ruff check . && PYTHONPATH=. ./.venv/bin/pytest -q -m "not integration"
+
+.PHONY: replay-eval
+replay-eval:
+	PYTHONPATH=. ./.venv/bin/python scripts/run_replay_eval.py --input evaluation/data/sample_subway_headways.csv --out-dir docs/generated/replay
 
 .PHONY: itest
 itest:

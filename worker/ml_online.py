@@ -27,7 +27,7 @@ from api.app.core.logging import get_logger
 from api.app.models import Score
 from api.app.storage.session import get_engine
 from .drift import DriftMonitor, save_model
-from .features import latest_batch_for_training
+from .features import feature_vector_from_row, latest_batch_for_training, reason_candidates
 
 
 log = get_logger(__name__)
@@ -156,6 +156,33 @@ def _feature_pack(route_id: str, stop_id: str, hour: int) -> dict[str, float]:
     }
 
 
+def _online_context_features(item: dict[str, object], residual: float) -> dict[str, float]:
+    return {
+        "residual": float(residual),
+        "hour": float(item.get("hour", 0.0) or 0.0),
+        "is_peak": float(item.get("is_peak", 0.0) or 0.0),
+        "rolling_zscore": float(item.get("rolling_zscore", 0.0) or 0.0),
+        "station_baseline_deviation": float(item.get("station_baseline_deviation", 0.0) or 0.0),
+        "feed_delay_sec": float(item.get("feed_delay_sec", 0.0) or 0.0),
+    }
+
+
+def _context_deviation_score(item: dict[str, object]) -> float:
+    rolling = max(float(item.get("rolling_zscore", 0.0) or 0.0), 0.0) / 3.5
+    station = max(float(item.get("station_baseline_deviation", 0.0) or 0.0), 0.0) / 3.0
+    quantile = max(float(item.get("quantile_band_deviation", 0.0) or 0.0), 0.0) / 2.75
+    trend = max(float(item.get("lag_ratio", 1.0) or 1.0) - 1.0, 0.0) / 1.2
+    delay = float(item.get("feed_delay_sec", 0.0) or 0.0) / 120.0
+    weather = float(item.get("weather_severity", 0.0) or 0.0) / 3.0
+    service = float(item.get("service_alert_active", 0.0) or 0.0) * 0.35
+    return _clip01(0.28 * rolling + 0.26 * station + 0.18 * quantile + 0.13 * trend + 0.08 * delay + 0.04 * weather + 0.03 * service)
+
+
+def _summarize_reasons(item: dict[str, object]) -> list[dict[str, float | str]]:
+    reasons = [candidate for candidate in reason_candidates(item) if float(candidate.get("score", 0.0)) >= 0.3]
+    return reasons[:3]
+
+
 def _row_by_id(session, score_id: int) -> Optional[Score]:
     try:
         return session.get(Score, int(score_id))
@@ -201,12 +228,104 @@ def _query_unscored_backlog(session) -> int:
     )
 
 
+def score_feature_row(bundle: ModelBundle, item: dict[str, object], learn: bool = True) -> dict[str, object]:
+    """Score a single enriched observation using the current online learners."""
+    y = float(item.get("headway_sec", 0.0) or 0.0)
+    if y <= 0:
+        raise ValueError("headway_sec must be positive")
+
+    x = feature_vector_from_row(item)
+    baseline_prediction = float(item.get("rolling_mean_6", y) or y)
+    try:
+        reg_prediction = bundle.reg.predict_one(x)
+        if reg_prediction is None:
+            y_hat = baseline_prediction
+        else:
+            y_hat = 0.65 * float(reg_prediction) + 0.35 * baseline_prediction
+    except Exception:
+        y_hat = baseline_prediction
+
+    residual = float(y - y_hat)
+    abs_residual = abs(residual)
+
+    if bundle.telemetry.rows_seen == 0:
+        bundle.telemetry.mae_ema = abs_residual
+    else:
+        bundle.telemetry.mae_ema = 0.92 * bundle.telemetry.mae_ema + 0.08 * abs_residual
+
+    ssl_score, q90, q99 = _self_supervised_residual_score(
+        abs_residual=abs_residual,
+        ema_scale=bundle.telemetry.mae_ema,
+        residual_buffer=bundle.residual_buffer,
+    )
+
+    hst_context = _online_context_features(item, residual=residual)
+    try:
+        hst_score = float(bundle.hst.score_one(hst_context))
+        if learn:
+            bundle.hst.learn_one(hst_context)
+    except Exception:
+        hst_score = 0.0
+
+    relative_error_score = _clip01(abs_residual / max(abs(y_hat), baseline_prediction, 120.0))
+    context_score = _context_deviation_score(item)
+    station_score = _clip01(max(float(item.get("station_baseline_deviation", 0.0) or 0.0), 0.0) / 2.8)
+    trend_score = _clip01(max(float(item.get("lag_ratio", 1.0) or 1.0) - 1.0, 0.0) / 1.0)
+    quantile_score = _clip01(max(float(item.get("quantile_band_deviation", 0.0) or 0.0), 0.0) / 2.2)
+    anomaly_score = _clip01(
+        0.28 * ssl_score
+        + 0.18 * _clip01(hst_score)
+        + 0.16 * relative_error_score
+        + 0.22 * context_score
+        + 0.10 * station_score
+        + 0.06 * trend_score
+    )
+    anomaly_score = max(anomaly_score, _clip01(0.62 * station_score + 0.38 * quantile_score))
+
+    drifted = False
+    if learn:
+        try:
+            drifted = bundle.drift.update(abs_residual)
+        except Exception:
+            drifted = False
+        if drifted:
+            bundle.telemetry.drift_events += 1
+            bundle.reg = preprocessing.StandardScaler() | linear_model.PARegressor()
+            bundle.hst = anomaly.HalfSpaceTrees(seed=42)
+        try:
+            bundle.reg.learn_one(x, y)
+        except Exception:
+            pass
+        bundle.residual_buffer.append(abs_residual)
+        _trim_residual_buffer(bundle.residual_buffer)
+        bundle.telemetry.rows_seen += 1
+
+    reasons = _summarize_reasons(item)
+    return {
+        "predicted_headway_sec": float(y_hat),
+        "residual": float(residual),
+        "anomaly_score": float(anomaly_score),
+        "ssl_score": float(ssl_score),
+        "hst_score": float(_clip01(hst_score)),
+        "relative_error_score": float(relative_error_score),
+        "context_score": float(context_score),
+        "station_score": float(station_score),
+        "trend_score": float(trend_score),
+        "quantile_score": float(quantile_score),
+        "residual_q90": float(q90),
+        "residual_q99": float(q99),
+        "drifted": bool(drifted),
+        "reasons": reasons,
+        "feature_vector": x,
+    }
+
+
 def process_once(
     models_dir: Optional[str] = None,
     batch_limit: int = 1024,
     max_batches: int = 4,
 ) -> int:
-    """Score newest unscored rows and persist updated model state."""
+    """Score the oldest unscored rows and persist updated model state."""
     target_models_dir = models_dir or os.environ.get("MODELS_DIR", DEFAULT_MODELS_DIR)
     bundle = load_latest_bundle(target_models_dir) if target_models_dir else None
     if bundle is None:
@@ -232,82 +351,30 @@ def process_once(
         with SessionLocal() as session:
             for item in batch:
                 score_id = int(item.get("id"))
-                route_id = str(item.get("route_id", ""))
-                stop_id = str(item.get("stop_id", ""))
-                hour = int(item.get("hour", 0))
                 y = float(item.get("headway_sec", 0.0))
                 if y <= 0:
                     continue
 
-                x = _feature_pack(route_id=route_id, stop_id=stop_id, hour=hour)
-                try:
-                    y_hat = float(bundle.reg.predict_one(x) or y)
-                except Exception:
-                    y_hat = y
-                residual = float(y - y_hat)
-                abs_residual = abs(residual)
-
-                # Self-supervised scale tracking (EMA over residual magnitude).
-                if bundle.telemetry.rows_seen == 0:
-                    bundle.telemetry.mae_ema = abs_residual
-                else:
-                    bundle.telemetry.mae_ema = 0.92 * bundle.telemetry.mae_ema + 0.08 * abs_residual
-
-                ssl_score, q90, q99 = _self_supervised_residual_score(
-                    abs_residual=abs_residual,
-                    ema_scale=bundle.telemetry.mae_ema,
-                    residual_buffer=bundle.residual_buffer,
-                )
+                result = score_feature_row(bundle, item, learn=True)
+                q90 = float(result.get("residual_q90", 0.0) or 0.0)
+                q99 = float(result.get("residual_q99", 0.0) or 0.0)
                 if q90 > 0:
                     q90_latest = q90
                 if q99 > 0:
                     q99_latest = q99
 
-                try:
-                    hst_score = float(bundle.hst.score_one({"residual": residual, "hour": float(hour)}))
-                    bundle.hst.learn_one({"residual": residual, "hour": float(hour)})
-                except Exception:
-                    hst_score = 0.0
-
-                relative_error_score = _clip01(abs_residual / max(abs(y_hat), 120.0))
-                anomaly_score = _clip01(
-                    0.50 * ssl_score
-                    + 0.30 * _clip01(hst_score)
-                    + 0.20 * relative_error_score
-                )
-
-                # Drift handling before learner update to avoid carrying stale state.
-                drifted = False
-                try:
-                    drifted = bundle.drift.update(abs_residual)
-                except Exception:
-                    drifted = False
-                if drifted:
-                    bundle.telemetry.drift_events += 1
-                    bundle.reg = preprocessing.StandardScaler() | linear_model.PARegressor()
-                    bundle.hst = anomaly.HalfSpaceTrees(seed=42)
-
-                try:
-                    bundle.reg.learn_one(x, y)
-                except Exception:
-                    pass
-
                 row = _row_by_id(session, score_id)
                 if row is None:
                     continue
                 row.headway_sec = float(y)
-                row.predicted_headway_sec = float(y_hat)
-                row.residual = float(residual)
-                row.anomaly_score = float(anomaly_score)
+                row.predicted_headway_sec = float(result["predicted_headway_sec"])
+                row.residual = float(result["residual"])
+                row.anomaly_score = float(result["anomaly_score"])
                 row.window_sec = row.window_sec or 300
                 updated_batch += 1
-                bundle.telemetry.rows_seen += 1
-
-                bundle.residual_buffer.append(abs_residual)
 
             session.commit()
 
-        _trim_residual_buffer(bundle.residual_buffer)
         total_updated += int(updated_batch)
         bundle.telemetry.last_batch_processed = int(updated_batch)
 

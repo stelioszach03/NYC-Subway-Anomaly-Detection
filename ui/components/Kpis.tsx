@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { Card, CardBody, CardTitle } from './ui/Card';
 import { formatNYFromEpoch, fromNowEpoch } from '../lib/time';
 
@@ -18,6 +18,11 @@ const fmtInt = (v: number | undefined) => (Number(v || 0)).toLocaleString('en-US
 export const Kpis: React.FC<{ summary?: Summary }> = ({ summary }) => {
   const s = summary;
   const updatedEpoch = s?.last_updated_epoch_ms;
+  const [hydrated, setHydrated] = useState(false);
+
+  useEffect(() => {
+    setHydrated(true);
+  }, []);
 
   return (
     <div className="grid grid-cols-2 gap-2">
@@ -63,7 +68,7 @@ export const Kpis: React.FC<{ summary?: Summary }> = ({ summary }) => {
         <CardBody className="p-3">
           <CardTitle>Last Update</CardTitle>
           <div className="mt-1 text-sm font-medium text-slate-900">{formatNYFromEpoch(updatedEpoch)}</div>
-          <div className="text-xs text-slate-500">{fromNowEpoch(updatedEpoch)}</div>
+          <div className="text-xs text-slate-500">{hydrated ? fromNowEpoch(updatedEpoch) : 'Snapshot loaded'}</div>
         </CardBody>
       </Card>
     </div>

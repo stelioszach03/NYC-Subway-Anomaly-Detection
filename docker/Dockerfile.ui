@@ -7,6 +7,7 @@ FROM node:20-alpine AS build
 WORKDIR /app
 COPY --from=deps /app/node_modules ./node_modules
 COPY ui ./
+COPY docs/generated ./docs/generated
 
 # Build-time env for public token and base path
 ARG NEXT_PUBLIC_MAPBOX_TOKEN

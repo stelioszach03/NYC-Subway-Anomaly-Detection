@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { Card, CardBody, CardTitle } from './ui/Card';
 import { asNYTime, fromNow } from '../lib/time';
 
@@ -17,6 +17,7 @@ type Telemetry = {
 
 export const ModelTelemetry: React.FC<{ telemetry?: Telemetry }> = ({ telemetry }) => {
   const status = telemetry?.status || 'unavailable';
+  const [hydrated, setHydrated] = useState(false);
   const tone =
     status === 'available'
       ? 'border-emerald-200 bg-emerald-50 text-emerald-700'
@@ -26,6 +27,10 @@ export const ModelTelemetry: React.FC<{ telemetry?: Telemetry }> = ({ telemetry 
 
   const backlog = telemetry?.unscored_backlog ?? 0;
   const backlogTone = backlog > 5000 ? 'text-amber-700' : 'text-slate-900';
+
+  useEffect(() => {
+    setHydrated(true);
+  }, []);
 
   return (
     <Card>
@@ -62,7 +67,7 @@ export const ModelTelemetry: React.FC<{ telemetry?: Telemetry }> = ({ telemetry 
         </div>
 
         <div className="mt-2 border-t border-slate-200 pt-2 text-[11px] text-slate-500">
-          Last run: {telemetry?.last_run_utc ? `${asNYTime(telemetry.last_run_utc)} (${fromNow(telemetry.last_run_utc)})` : '—'}
+          Last run: {telemetry?.last_run_utc ? `${asNYTime(telemetry.last_run_utc)} (${hydrated ? fromNow(telemetry.last_run_utc) : 'snapshot'})` : '—'}
         </div>
       </CardBody>
     </Card>
