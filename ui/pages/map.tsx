@@ -54,15 +54,14 @@ export default function MapPage() {
   const mapRef = useRef<Map | null>(null);
   const mapContainer = useRef<HTMLDivElement | null>(null);
   const stopsRef = useRef<any[]>([]);
-  const headerRef = useRef<HTMLElement | null>(null);
 
   const [routeId, setRouteId] = useState<string>('All');
   const [autoRefresh, setAutoRefresh] = useState<boolean>(true);
   const [panelOpen, setPanelOpen] = useState<boolean>(true);
   const [drawerOpen, setDrawerOpen] = useState<boolean>(true);
   const [drawerTall, setDrawerTall] = useState<boolean>(false);
+  const [railTab, setRailTab] = useState<'overview' | 'models'>('overview');
   const [compactViewport, setCompactViewport] = useState<boolean>(false);
-  const [headerHeight, setHeaderHeight] = useState<number>(120);
 
   const routes = useRoutes();
   const summary = useSummary('15m', autoRefresh ? 10000 : undefined);
@@ -71,8 +70,8 @@ export default function MapPage() {
   const telemetry = useModelTelemetry(autoRefresh ? 15000 : undefined);
   const dlTelemetry = useDlShadowTelemetry(autoRefresh ? 30000 : undefined);
 
-  const sideRailWidth = panelOpen && !compactViewport ? 372 : 0;
-  const drawerHeight = drawerOpen ? (drawerTall ? (compactViewport ? 400 : 470) : (compactViewport ? 260 : 330)) : 56;
+  const sideRailWidth = panelOpen && !compactViewport ? 356 : 0;
+  const drawerHeight = drawerOpen ? (drawerTall ? (compactViewport ? 420 : 470) : (compactViewport ? 290 : 348)) : 56;
 
   const scoreOverview = useMemo(() => {
     const features = Array.isArray(heatmap?.features) ? heatmap.features : [];
@@ -106,7 +105,6 @@ export default function MapPage() {
     };
   }, [heatmap]);
 
-  const headerRight = compactViewport || !panelOpen ? 12 : sideRailWidth + 24;
   const drawerRight = compactViewport || !panelOpen ? 12 : sideRailWidth + 24;
 
   useEffect(() => {
@@ -126,27 +124,6 @@ export default function MapPage() {
     onResize();
     window.addEventListener('resize', onResize);
     return () => window.removeEventListener('resize', onResize);
-  }, []);
-
-  useEffect(() => {
-    const updateHeaderHeight = () => {
-      if (!headerRef.current) return;
-      setHeaderHeight(Math.ceil(headerRef.current.getBoundingClientRect().height));
-    };
-
-    updateHeaderHeight();
-    window.addEventListener('resize', updateHeaderHeight);
-
-    let ro: ResizeObserver | null = null;
-    if (typeof ResizeObserver !== 'undefined' && headerRef.current) {
-      ro = new ResizeObserver(() => updateHeaderHeight());
-      ro.observe(headerRef.current);
-    }
-
-    return () => {
-      window.removeEventListener('resize', updateHeaderHeight);
-      if (ro) ro.disconnect();
-    };
   }, []);
 
   useEffect(() => {
@@ -345,34 +322,20 @@ export default function MapPage() {
 
       <div className="pointer-events-none absolute inset-0">
         <header
-          ref={headerRef}
-          className="panel-glass pointer-events-auto absolute left-3 top-3 rounded-2xl px-4 py-3"
-          style={{ right: `${headerRight}px` }}
+          className="panel-glass pointer-events-auto absolute left-3 top-3 w-[min(92vw,560px)] rounded-2xl px-4 py-3 shadow-[0_20px_45px_rgba(15,23,42,0.12)]"
         >
-          <div className="flex flex-wrap items-center gap-3 text-slate-800">
-            <div className="min-w-[220px]">
+          <div className="flex items-start justify-between gap-3 text-slate-800">
+            <div className="min-w-0 flex-1">
               <div className="flex items-center gap-2">
                 <div className="text-sm font-semibold tracking-wide sm:text-base">NYC Subway Anomaly Command Center</div>
                 {autoRefresh && <span className="live-dot inline-block h-2 w-2 rounded-full bg-emerald-500" />}
               </div>
-              <div className="mt-1 text-xs text-slate-500">
-                Live transit anomaly triage across routes, stations, and model residuals.
+              <div className="mt-1 text-xs leading-5 text-slate-500">
+                Live operational triage for route headway anomalies, station-level hotspots, and model residual shifts.
               </div>
             </div>
 
-            <div className="flex flex-wrap items-center gap-2">
-              <span className="text-xs text-slate-600">Route</span>
-              <Select
-                value={routeId}
-                onChange={(v) => setRouteId(v)}
-                options={[{ label: 'All', value: 'All' }].concat(routes.map((r) => ({ label: r, value: r })))}
-              />
-
-              <span className="ml-1 text-xs text-slate-600">Auto</span>
-              <Switch checked={autoRefresh} onChange={setAutoRefresh} />
-            </div>
-
-            <div className="ml-auto flex flex-wrap items-center gap-2">
+            <div className="flex shrink-0 items-center gap-2">
               {!MAPBOX_TOKEN && (
                 <div className="rounded-md border border-amber-300 bg-amber-50 px-2 py-0.5 text-[11px] text-amber-700">
                   Fallback basemap
@@ -387,25 +350,48 @@ export default function MapPage() {
             </div>
           </div>
 
+          <div className="mt-3 flex flex-wrap items-center gap-2">
+            <div className="rounded-xl border border-slate-200 bg-slate-50 px-3 py-2 text-xs text-slate-600">
+              <div className="mb-1 text-[10px] uppercase tracking-[0.14em] text-slate-500">Controls</div>
+              <div className="flex flex-wrap items-center gap-2">
+                <span className="text-xs text-slate-600">Route</span>
+                <Select
+                  value={routeId}
+                  onChange={(v) => setRouteId(v)}
+                  options={[{ label: 'All', value: 'All' }].concat(routes.map((r) => ({ label: r, value: r })))}
+                />
+                <span className="ml-1 text-xs text-slate-600">Auto</span>
+                <Switch checked={autoRefresh} onChange={setAutoRefresh} />
+              </div>
+            </div>
+
+            <div className="grid min-w-[250px] flex-1 grid-cols-2 gap-2 sm:grid-cols-4">
+              <div className="rounded-xl border border-slate-200 bg-white px-3 py-2 text-xs text-slate-600">
+                <div className="text-[10px] uppercase tracking-[0.14em] text-slate-500">Stations</div>
+                <div className="mt-1 text-base font-semibold text-slate-900">{summary?.stations_total ?? 0}</div>
+              </div>
+              <div className="rounded-xl border border-slate-200 bg-white px-3 py-2 text-xs text-slate-600">
+                <div className="text-[10px] uppercase tracking-[0.14em] text-slate-500">Active trains</div>
+                <div className="mt-1 text-base font-semibold text-slate-900">{summary?.trains_active ?? 0}</div>
+              </div>
+              <div className="rounded-xl border border-amber-200 bg-amber-50 px-3 py-2 text-xs text-amber-700">
+                <div className="text-[10px] uppercase tracking-[0.14em] text-amber-600">Critical</div>
+                <div className="mt-1 text-base font-semibold">{scoreOverview.counts.critical}</div>
+              </div>
+              <div className="rounded-xl border border-rose-200 bg-rose-50 px-3 py-2 text-xs text-rose-700">
+                <div className="text-[10px] uppercase tracking-[0.14em] text-rose-600">Ceiling @ 1.000</div>
+                <div className="mt-1 text-base font-semibold">{scoreOverview.exactOne}</div>
+              </div>
+            </div>
+          </div>
+
           <div className="mt-3 flex flex-wrap gap-2 text-[11px]">
-            <span className="rounded-full border border-slate-200 bg-white px-2.5 py-1 text-slate-600">
-              Stations <span className="font-semibold text-slate-900">{summary?.stations_total ?? 0}</span>
-            </span>
-            <span className="rounded-full border border-slate-200 bg-white px-2.5 py-1 text-slate-600">
-              Active <span className="font-semibold text-slate-900">{summary?.trains_active ?? 0}</span>
-            </span>
-            <span className="rounded-full border border-amber-200 bg-amber-50 px-2.5 py-1 text-amber-700">
-              Critical window <span className="font-semibold">{scoreOverview.counts.critical}</span>
-            </span>
-            <span className="rounded-full border border-rose-200 bg-rose-50 px-2.5 py-1 text-rose-700">
-              Exact 1.000 <span className="font-semibold">{scoreOverview.exactOne}</span>
-            </span>
             <span className="rounded-full border border-slate-200 bg-white px-2.5 py-1 text-slate-600">
               P90 <span className="font-semibold text-slate-900">{scoreOverview.p90.toFixed(3)}</span>
             </span>
-            <a className="rounded-full border border-slate-200 bg-white px-2.5 py-1 text-slate-600 no-underline transition hover:border-slate-300 hover:text-slate-900" href="/nyc-subway-anomaly/api/summary?window=15m" target="_blank" rel="noopener noreferrer">summary</a>
-            <a className="rounded-full border border-slate-200 bg-white px-2.5 py-1 text-slate-600 no-underline transition hover:border-slate-300 hover:text-slate-900" href="/nyc-subway-anomaly/api/model/telemetry" target="_blank" rel="noopener noreferrer">model</a>
-            <a className="rounded-full border border-slate-200 bg-white px-2.5 py-1 text-slate-600 no-underline transition hover:border-slate-300 hover:text-slate-900" href="/nyc-subway-anomaly/api/heatmap?ts=now&window=15m&route_id=All" target="_blank" rel="noopener noreferrer">heatmap</a>
+            <a className="rounded-full border border-slate-200 bg-white px-2.5 py-1 text-slate-600 no-underline transition hover:border-slate-300 hover:text-slate-900" href="/nyc-subway-anomaly/api/summary?window=15m" target="_blank" rel="noopener noreferrer">summary api</a>
+            <a className="rounded-full border border-slate-200 bg-white px-2.5 py-1 text-slate-600 no-underline transition hover:border-slate-300 hover:text-slate-900" href="/nyc-subway-anomaly/api/model/telemetry" target="_blank" rel="noopener noreferrer">model telemetry</a>
+            <a className="rounded-full border border-slate-200 bg-white px-2.5 py-1 text-slate-600 no-underline transition hover:border-slate-300 hover:text-slate-900" href="/nyc-subway-anomaly/api/heatmap?ts=now&window=15m&route_id=All" target="_blank" rel="noopener noreferrer">heatmap feed</a>
           </div>
         </header>
 
@@ -414,68 +400,121 @@ export default function MapPage() {
             'panel-glass pointer-events-auto absolute right-3 z-20 w-[min(92vw,360px)] overflow-hidden rounded-2xl transition duration-200',
             panelOpen ? 'translate-x-0 opacity-100' : 'translate-x-[110%] opacity-0',
           )}
-          style={{ top: Math.max(86, headerHeight + 18), bottom: 12 }}
+          style={{ top: 12, bottom: 12 }}
         >
           <div className="h-full overflow-auto p-3">
             <div className="space-y-3">
-              <div className="rounded-xl border border-slate-200 bg-white p-3 text-xs text-slate-600 shadow-sm">
-                <div className="mb-2 flex items-center justify-between">
-                  <div className="text-[11px] uppercase tracking-[0.14em] text-slate-500">Live window</div>
-                  <span className="rounded-full bg-slate-100 px-2 py-0.5 text-[11px] text-slate-500">15m</span>
-                </div>
-                <div className="grid grid-cols-2 gap-2">
-                  <div className="rounded-lg border border-slate-200 bg-slate-50 px-3 py-2">
-                    <div className="text-[11px] text-slate-500">Visible points</div>
-                    <div className="mt-1 text-lg font-semibold text-slate-900">{scoreOverview.total}</div>
-                  </div>
-                  <div className="rounded-lg border border-slate-200 bg-slate-50 px-3 py-2">
-                    <div className="text-[11px] text-slate-500">Median score</div>
-                    <div className="mt-1 text-lg font-semibold text-slate-900">{scoreOverview.p50.toFixed(3)}</div>
-                  </div>
-                </div>
-                <div className="mt-3 space-y-2">
-                  {SCORE_BANDS.map((band) => {
-                    const count = scoreOverview.counts[band.id];
-                    const share = scoreOverview.total > 0 ? (count / scoreOverview.total) * 100.0 : 0.0;
-                    return (
-                      <div key={band.id}>
-                        <div className="mb-1 flex items-center justify-between">
-                          <div className="flex items-center gap-2">
-                            <span className="h-2.5 w-2.5 rounded-full" style={{ backgroundColor: band.color }} />
-                            <span className="font-medium text-slate-700">{band.tone}</span>
-                          </div>
-                          <span className="text-slate-500">{count} · {share.toFixed(1)}%</span>
-                        </div>
-                        <div className="h-2 overflow-hidden rounded-full bg-slate-100">
-                          <div className="h-full rounded-full" style={{ width: `${Math.max(0, Math.min(100, share))}%`, backgroundColor: band.color }} />
-                        </div>
-                      </div>
-                    );
-                  })}
-                </div>
+              <div className="flex items-center gap-2 rounded-xl border border-slate-200 bg-white p-1 shadow-sm">
+                <button
+                  type="button"
+                  onClick={() => setRailTab('overview')}
+                  className={clsx(
+                    'flex-1 rounded-lg px-3 py-2 text-xs font-medium transition',
+                    railTab === 'overview' ? 'bg-slate-900 text-white' : 'text-slate-600 hover:bg-slate-50',
+                  )}
+                >
+                  Overview
+                </button>
+                <button
+                  type="button"
+                  onClick={() => setRailTab('models')}
+                  className={clsx(
+                    'flex-1 rounded-lg px-3 py-2 text-xs font-medium transition',
+                    railTab === 'models' ? 'bg-slate-900 text-white' : 'text-slate-600 hover:bg-slate-50',
+                  )}
+                >
+                  Models
+                </button>
               </div>
 
-              <div className="rounded-xl border border-slate-200 bg-white p-3 text-xs text-slate-600 shadow-sm">
-                <div className="text-[11px] uppercase tracking-[0.14em] text-slate-500">Routes under pressure</div>
-                <div className="mt-2 flex flex-wrap gap-2">
-                  {scoreOverview.topRoutes.map(([route, count]) => (
-                    <div key={route} className="rounded-lg border border-slate-200 bg-slate-50 px-2 py-1.5">
-                      <div className="text-[11px] text-slate-500">Route</div>
-                      <div className="flex items-center gap-2">
-                        <span className="inline-flex min-w-7 items-center justify-center rounded-md bg-slate-900 px-1.5 py-0.5 text-[11px] font-semibold text-white">
-                          {route}
-                        </span>
-                        <span className="font-semibold text-slate-900">{count}</span>
+              {railTab === 'overview' ? (
+                <>
+                  <div className="rounded-xl border border-slate-200 bg-white p-3 text-xs text-slate-600 shadow-sm">
+                    <div className="mb-2 flex items-center justify-between">
+                      <div className="text-[11px] uppercase tracking-[0.14em] text-slate-500">Live window</div>
+                      <span className="rounded-full bg-slate-100 px-2 py-0.5 text-[11px] text-slate-500">15m</span>
+                    </div>
+                    <div className="grid grid-cols-2 gap-2">
+                      <div className="rounded-lg border border-slate-200 bg-slate-50 px-3 py-2">
+                        <div className="text-[11px] text-slate-500">Visible points</div>
+                        <div className="mt-1 text-lg font-semibold text-slate-900">{scoreOverview.total}</div>
+                      </div>
+                      <div className="rounded-lg border border-slate-200 bg-slate-50 px-3 py-2">
+                        <div className="text-[11px] text-slate-500">Median score</div>
+                        <div className="mt-1 text-lg font-semibold text-slate-900">{scoreOverview.p50.toFixed(3)}</div>
+                      </div>
+                      <div className="rounded-lg border border-slate-200 bg-slate-50 px-3 py-2">
+                        <div className="text-[11px] text-slate-500">Critical</div>
+                        <div className="mt-1 text-lg font-semibold text-amber-700">{scoreOverview.counts.critical}</div>
+                      </div>
+                      <div className="rounded-lg border border-slate-200 bg-slate-50 px-3 py-2">
+                        <div className="text-[11px] text-slate-500">Exact 1.000</div>
+                        <div className="mt-1 text-lg font-semibold text-rose-700">{scoreOverview.exactOne}</div>
                       </div>
                     </div>
-                  ))}
-                  {scoreOverview.topRoutes.length === 0 ? <div className="text-slate-500">No active route clusters.</div> : null}
-                </div>
-              </div>
+                    <div className="mt-3 space-y-2">
+                      {SCORE_BANDS.map((band) => {
+                        const count = scoreOverview.counts[band.id];
+                        const share = scoreOverview.total > 0 ? (count / scoreOverview.total) * 100.0 : 0.0;
+                        return (
+                          <div key={band.id}>
+                            <div className="mb-1 flex items-center justify-between">
+                              <div className="flex items-center gap-2">
+                                <span className="h-2.5 w-2.5 rounded-full" style={{ backgroundColor: band.color }} />
+                                <span className="font-medium text-slate-700">{band.tone}</span>
+                              </div>
+                              <span className="text-slate-500">{count} · {share.toFixed(1)}%</span>
+                            </div>
+                            <div className="h-2 overflow-hidden rounded-full bg-slate-100">
+                              <div className="h-full rounded-full" style={{ width: `${Math.max(0, Math.min(100, share))}%`, backgroundColor: band.color }} />
+                            </div>
+                          </div>
+                        );
+                      })}
+                    </div>
+                  </div>
 
-              <ModelTelemetry telemetry={telemetry} />
-              <DlShadowTelemetry telemetry={dlTelemetry} />
-              <Legend />
+                  <div className="rounded-xl border border-slate-200 bg-white p-3 text-xs text-slate-600 shadow-sm">
+                    <div className="text-[11px] uppercase tracking-[0.14em] text-slate-500">Routes under pressure</div>
+                    <div className="mt-2 space-y-2">
+                      {scoreOverview.topRoutes.map(([route, count]) => {
+                        const share = scoreOverview.total > 0 ? (count / scoreOverview.total) * 100.0 : 0.0;
+                        return (
+                          <div key={route} className="rounded-lg border border-slate-200 bg-slate-50 px-3 py-2">
+                            <div className="mb-1 flex items-center justify-between">
+                              <div className="flex items-center gap-2">
+                                <span className="inline-flex min-w-7 items-center justify-center rounded-md bg-slate-900 px-1.5 py-0.5 text-[11px] font-semibold text-white">
+                                  {route}
+                                </span>
+                                <span className="font-medium text-slate-700">pressure cluster</span>
+                              </div>
+                              <span className="text-slate-500">{count}</span>
+                            </div>
+                            <div className="h-2 overflow-hidden rounded-full bg-white">
+                              <div className="h-full rounded-full bg-slate-900" style={{ width: `${Math.max(8, Math.min(100, share))}%` }} />
+                            </div>
+                          </div>
+                        );
+                      })}
+                      {scoreOverview.topRoutes.length === 0 ? <div className="text-slate-500">No active route clusters.</div> : null}
+                    </div>
+                  </div>
+
+                  <div className="rounded-xl border border-slate-200 bg-white p-3 text-xs text-slate-600 shadow-sm">
+                    <div className="text-[11px] uppercase tracking-[0.14em] text-slate-500">Operator note</div>
+                    <div className="mt-2 leading-5 text-slate-600">
+                      Use the incident console for tied critical rows. Compare <span className="font-semibold text-slate-800">gap vs model</span> and <span className="font-semibold text-slate-800">residual</span> before escalating.
+                    </div>
+                  </div>
+
+                  <Legend />
+                </>
+              ) : (
+                <>
+                  <ModelTelemetry telemetry={telemetry} />
+                  <DlShadowTelemetry telemetry={dlTelemetry} />
+                </>
+              )}
             </div>
           </div>
         </aside>
@@ -484,26 +523,47 @@ export default function MapPage() {
           className="panel-glass pointer-events-auto absolute bottom-3 left-3 z-30 overflow-hidden rounded-2xl transition-[height] duration-200"
           style={{ height: drawerHeight, right: `${drawerRight}px` }}
         >
-          <div className="flex flex-wrap items-center gap-2 border-b border-slate-200 px-3 py-2 text-slate-700">
+          <div className="flex items-center gap-2 border-b border-slate-200 px-3 py-2 text-slate-700">
             <div>
               <div className="text-[11px] uppercase tracking-[0.14em] text-slate-500">Incident console</div>
               <div className="mt-0.5 text-xs text-slate-500">Ranked by model score, then observed time.</div>
             </div>
-            <div className="ml-auto flex flex-wrap items-center gap-2 text-[11px]">
+            {compactViewport ? (
+              <div className="ml-auto flex items-center gap-1.5 text-[11px]">
+                {drawerOpen ? (
+                  <Button onClick={() => setDrawerTall((x) => !x)} variant="ghost" className="text-xs">
+                    {drawerTall ? 'Less' : 'More'}
+                  </Button>
+                ) : null}
+                <Button onClick={() => setDrawerOpen((x) => !x)} variant="ghost" className="text-xs">
+                  {drawerOpen ? 'Close' : 'Open'}
+                </Button>
+              </div>
+            ) : (
+              <div className="ml-auto flex flex-wrap items-center gap-2 text-[11px]">
+                <span className="rounded-full bg-slate-100 px-2 py-0.5 text-slate-600">{scoreOverview.total} visible</span>
+                <span className="rounded-full bg-rose-50 px-2 py-0.5 text-rose-700">{scoreOverview.exactOne} exact 1.000</span>
+                <span className="rounded-full bg-amber-50 px-2 py-0.5 text-amber-700">p90 {scoreOverview.p90.toFixed(3)}</span>
+                <Button onClick={() => setDrawerTall((x) => !x)} variant="ghost" className="text-xs">
+                  {drawerTall ? 'Compact' : 'Expanded'}
+                </Button>
+                <Button onClick={() => setDrawerOpen((x) => !x)} variant="ghost" className="text-xs">
+                  {drawerOpen ? 'Collapse' : 'Open'}
+                </Button>
+              </div>
+            )}
+          </div>
+
+          {compactViewport && drawerOpen ? (
+            <div className="flex flex-wrap gap-2 border-b border-slate-200 px-3 py-2 text-[11px]">
               <span className="rounded-full bg-slate-100 px-2 py-0.5 text-slate-600">{scoreOverview.total} visible</span>
               <span className="rounded-full bg-rose-50 px-2 py-0.5 text-rose-700">{scoreOverview.exactOne} exact 1.000</span>
               <span className="rounded-full bg-amber-50 px-2 py-0.5 text-amber-700">p90 {scoreOverview.p90.toFixed(3)}</span>
-              <Button onClick={() => setDrawerTall((x) => !x)} variant="ghost" className="text-xs">
-                {drawerTall ? 'Compact' : 'Expanded'}
-              </Button>
-              <Button onClick={() => setDrawerOpen((x) => !x)} variant="ghost" className="text-xs">
-                {drawerOpen ? 'Collapse' : 'Open'}
-              </Button>
             </div>
-          </div>
+          ) : null}
 
           {drawerOpen ? (
-            <div className="flex h-[calc(100%-45px)] min-h-0 flex-col p-2">
+            <div className={clsx('flex min-h-0 flex-col p-2', compactViewport ? 'h-[calc(100%-83px)]' : 'h-[calc(100%-45px)]')}>
               {noAnomalyFeatures && (
                 <div className="mb-2 rounded-lg border border-slate-200 bg-slate-50 p-2 text-xs text-slate-600">
                   No anomalies in the current window. Stream is live and this table updates when high-residual events appear.

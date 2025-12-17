@@ -141,10 +141,10 @@ export const AnomalyTable: React.FC<Props> = ({ route, tickMs }) => {
   return (
     <div className="flex h-full min-h-0 flex-col rounded-xl border border-slate-200 bg-white p-2 shadow-sm">
       <div className="mb-2 flex flex-wrap items-center justify-between gap-2 px-1">
-        <div>
+        <div className="min-w-0">
           <div className="text-[11px] uppercase tracking-[0.14em] text-slate-500">Ranked incidents</div>
           <div className="mt-1 text-xs text-slate-500">
-            Sorted by model score. When multiple critical rows hit the same ceiling, use residual and gap context to compare them.
+            Sorted by model score with residual context for tied critical rows.
           </div>
         </div>
         <div className="flex flex-wrap items-center gap-2 text-[11px]">
@@ -156,7 +156,7 @@ export const AnomalyTable: React.FC<Props> = ({ route, tickMs }) => {
       </div>
 
       <div className="min-h-0 flex-1 overflow-auto rounded-lg border border-slate-200">
-        <table className="min-w-full text-sm text-slate-800">
+        <table className="min-w-full text-[13px] text-slate-800">
           <thead className="sticky top-0 bg-slate-50 text-xs text-slate-600">
             <tr>
               <th className="px-2 py-2 text-left font-medium">#</th>
@@ -195,7 +195,7 @@ export const AnomalyTable: React.FC<Props> = ({ route, tickMs }) => {
                     </div>
                     <div className="mt-0.5 text-xs text-slate-500">{r.stop_id}</div>
                   </td>
-                  <td className="px-2 py-1.5 align-top">
+                  <td className="px-2 py-1.5 align-top whitespace-nowrap">
                     <div>{r.observed_ts_epoch_ms ? formatNYFromEpoch(r.observed_ts_epoch_ms) : '—'}</div>
                     <div className="text-xs text-slate-500">
                       {r.observed_ts_epoch_ms ? (hydrated ? fromNowEpoch(r.observed_ts_epoch_ms) : 'Snapshot row') : ''}
@@ -204,7 +204,7 @@ export const AnomalyTable: React.FC<Props> = ({ route, tickMs }) => {
                       <div className="text-xs text-slate-400">ETA: {formatNYFromEpoch(r.event_ts_epoch_ms)}</div>
                     ) : null}
                   </td>
-                  <td className="px-2 py-1.5 align-top">
+                  <td className="px-2 py-1.5 align-top whitespace-nowrap">
                     <div className="font-medium text-slate-900">{typeof r.headway_sec === 'number' ? `${r.headway_sec.toFixed(0)}s` : '—'}</div>
                     {typeof r.predicted_headway_sec === 'number' ? <div className="text-xs text-slate-500">pred {r.predicted_headway_sec.toFixed(0)}s</div> : null}
                     {typeof r.predicted_headway_sec === 'number' ? (
@@ -215,7 +215,7 @@ export const AnomalyTable: React.FC<Props> = ({ route, tickMs }) => {
                       </div>
                     ) : null}
                   </td>
-                  <td className="px-2 py-1.5 align-top">
+                  <td className="px-2 py-1.5 align-top whitespace-nowrap">
                     <div className="flex items-center gap-2">
                       <Badge style={{ backgroundColor: bg, color: fg }}>
                         {score.toFixed(3)}
@@ -227,7 +227,7 @@ export const AnomalyTable: React.FC<Props> = ({ route, tickMs }) => {
                       <div className="h-full rounded-full" style={{ width: `${Math.max(6, score * 100)}%`, backgroundColor: bg }} />
                     </div>
                   </td>
-                  <td className="px-2 py-1.5 align-top">
+                  <td className="px-2 py-1.5 align-top whitespace-nowrap">
                     <div className={Number(r.residual ?? 0) >= 0 ? 'font-medium text-rose-700' : 'font-medium text-emerald-700'}>
                       {Number(r.residual ?? 0) >= 0 ? '+' : ''}
                       {(r.residual ?? 0).toFixed(0)}s
