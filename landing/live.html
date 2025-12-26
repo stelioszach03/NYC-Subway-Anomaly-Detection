@@ -1,0 +1,1404 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>MTA-Scan · Live Command Center</title>
+<meta name="description" content="Real-time anomaly map for the NYC Subway. Streaming GTFS-RT, online ML scoring, live operator triage." />
+<meta name="theme-color" content="#070a12" />
+
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,300;0,6..72,400;0,6..72,500;0,6..72,600;1,6..72,400&family=IBM+Plex+Mono:wght@400;500;600;700&family=IBM+Plex+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
+
+<link href="https://unpkg.com/maplibre-gl@4.7.1/dist/maplibre-gl.css" rel="stylesheet" />
+<script src="https://unpkg.com/maplibre-gl@4.7.1/dist/maplibre-gl.js"></script>
+
+<style>
+:root {
+  --tunnel: #050810;
+  --midnight: #0a0e1a;
+  --platform: #0f1420;
+  --glass: rgba(10, 14, 26, 0.72);
+  --glass-2: rgba(15, 20, 32, 0.82);
+  --edge: rgba(255, 255, 255, 0.08);
+  --edge-strong: rgba(255, 255, 255, 0.16);
+
+  --ivory: #f4f1ea;
+  --chalk: #dcd7c9;
+  --ash: #8c8579;
+  --smoke: #55524a;
+
+  --signal-green: #00d672;
+  --signal-glow: rgba(0, 214, 114, 0.45);
+  --mta-red: #ee352e;
+  --mta-orange: #ff6319;
+  --mta-yellow: #fccc0a;
+  --mta-blue: #0039a6;
+  --mta-green: #00933c;
+  --mta-violet: #b933ad;
+
+  --display: "Newsreader", "Times New Roman", serif;
+  --sans: "IBM Plex Sans", -apple-system, "Helvetica Neue", sans-serif;
+  --mono: "IBM Plex Mono", "SF Mono", ui-monospace, monospace;
+}
+
+* { box-sizing: border-box; }
+html, body { margin: 0; padding: 0; height: 100%; overflow: hidden; }
+
+body {
+  font-family: var(--sans);
+  font-size: 14px;
+  color: var(--ivory);
+  background: var(--tunnel);
+  -webkit-font-smoothing: antialiased;
+}
+
+.stage {
+  position: fixed;
+  inset: 0;
+}
+
+#map {
+  position: absolute;
+  inset: 0;
+  background: var(--tunnel);
+}
+
+/* Mapbox attribution styling to match theme */
+.mapboxgl-ctrl-attrib {
+  background: rgba(10, 14, 26, 0.75) !important;
+  color: var(--ash) !important;
+  font-family: var(--mono) !important;
+  font-size: 9px !important;
+}
+.mapboxgl-ctrl-attrib a { color: var(--chalk) !important; }
+.mapboxgl-ctrl-bottom-right { margin: 4px !important; }
+.mapboxgl-ctrl-bottom-left { display: none !important; }
+
+/* ───────── TOP BAR ───────── */
+.topbar {
+  position: absolute;
+  top: 18px;
+  left: 18px;
+  right: 18px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  pointer-events: none;
+  z-index: 10;
+}
+
+.topbar > * { pointer-events: auto; }
+
+.brand {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 14px 20px;
+  background: var(--glass);
+  backdrop-filter: blur(18px) saturate(140%);
+  -webkit-backdrop-filter: blur(18px) saturate(140%);
+  border: 1px solid var(--edge);
+  border-radius: 4px;
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.4);
+}
+
+.brand-bullet {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background: var(--mta-orange);
+  display: grid;
+  place-items: center;
+  font-family: var(--sans);
+  font-weight: 800;
+  font-size: 1.25rem;
+  color: #000;
+  letter-spacing: -0.02em;
+  box-shadow: 0 0 0 3px rgba(255, 99, 25, 0.2), 0 0 24px rgba(255, 99, 25, 0.25);
+  position: relative;
+}
+
+.brand-bullet::after {
+  content: "";
+  position: absolute;
+  inset: -7px;
+  border: 1px solid rgba(255, 99, 25, 0.4);
+  border-radius: 50%;
+  animation: ringpulse 3s ease-in-out infinite;
+}
+
+@keyframes ringpulse {
+  0%, 100% { opacity: 0.4; transform: scale(1); }
+  50% { opacity: 0; transform: scale(1.25); }
+}
+
+.brand-text { display: flex; flex-direction: column; gap: 2px; }
+
+.brand-title {
+  font-family: var(--display);
+  font-size: 1.15rem;
+  font-weight: 500;
+  letter-spacing: -0.01em;
+  color: var(--ivory);
+  white-space: nowrap;
+}
+
+.brand-title em {
+  font-style: italic;
+  color: var(--mta-orange);
+  font-weight: 400;
+}
+
+.brand-sub {
+  font-family: var(--mono);
+  font-size: 0.6rem;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--ash);
+}
+
+.topbar-right {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+}
+
+.top-chip {
+  padding: 10px 16px;
+  border: 1px solid var(--edge);
+  background: var(--glass);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border-radius: 4px;
+  font-family: var(--mono);
+  font-size: 0.64rem;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--chalk);
+  text-decoration: none;
+  cursor: pointer;
+  transition: all 160ms ease;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.top-chip:hover {
+  color: var(--mta-orange);
+  border-color: var(--edge-strong);
+}
+
+.top-chip.live {
+  color: var(--signal-green);
+  border-color: rgba(0, 214, 114, 0.3);
+}
+
+.top-chip .tick {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--signal-green);
+  box-shadow: 0 0 8px var(--signal-green);
+  animation: blink 1.6s infinite;
+}
+
+@keyframes blink {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.3; }
+}
+
+/* ───────── LEFT PANEL ───────── */
+.left-panel {
+  position: absolute;
+  top: 108px;
+  left: 18px;
+  width: 340px;
+  max-height: calc(100vh - 128px);
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  pointer-events: none;
+  z-index: 9;
+  overflow: visible;
+}
+
+.left-panel > * { pointer-events: auto; }
+
+/* KPI stack */
+.kpi-stack {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+}
+
+.kpi {
+  padding: 16px 18px;
+  background: var(--glass);
+  backdrop-filter: blur(18px) saturate(140%);
+  -webkit-backdrop-filter: blur(18px) saturate(140%);
+  border: 1px solid var(--edge);
+  border-radius: 4px;
+  position: relative;
+  overflow: hidden;
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+}
+
+.kpi::before {
+  content: "";
+  position: absolute;
+  top: 0; left: 0;
+  width: 3px;
+  height: 100%;
+  background: var(--mta-orange);
+  opacity: 0.6;
+}
+
+.kpi.blue::before { background: var(--mta-blue); }
+.kpi.red::before { background: var(--mta-red); }
+.kpi.yellow::before { background: var(--mta-yellow); }
+.kpi.green::before { background: var(--signal-green); }
+
+.kpi-k {
+  font-family: var(--mono);
+  font-size: 0.56rem;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--ash);
+  margin-bottom: 6px;
+}
+
+.kpi-v {
+  font-family: var(--display);
+  font-size: 1.7rem;
+  font-weight: 400;
+  line-height: 1;
+  color: var(--ivory);
+  font-variant-numeric: tabular-nums;
+  letter-spacing: -0.02em;
+}
+
+.kpi-u {
+  font-family: var(--mono);
+  font-size: 0.56rem;
+  color: var(--ash);
+  margin-top: 4px;
+}
+
+/* Route filter */
+.panel {
+  background: var(--glass);
+  backdrop-filter: blur(18px) saturate(140%);
+  -webkit-backdrop-filter: blur(18px) saturate(140%);
+  border: 1px solid var(--edge);
+  border-radius: 4px;
+  overflow: hidden;
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+}
+
+.panel-head {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 12px 16px;
+  border-bottom: 1px solid var(--edge);
+  font-family: var(--mono);
+  font-size: 0.58rem;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--ash);
+}
+
+.panel-head strong {
+  color: var(--ivory);
+  font-weight: 700;
+}
+
+.panel-body {
+  padding: 14px 16px;
+}
+
+.route-grid {
+  display: grid;
+  grid-template-columns: repeat(6, 1fr);
+  gap: 6px;
+}
+
+.route-bullet {
+  aspect-ratio: 1;
+  border-radius: 50%;
+  display: grid;
+  place-items: center;
+  font-family: var(--sans);
+  font-weight: 800;
+  font-size: 0.78rem;
+  color: #000;
+  cursor: pointer;
+  transition: all 160ms ease;
+  border: 2px solid transparent;
+  position: relative;
+}
+
+.route-bullet.all {
+  grid-column: span 2;
+  aspect-ratio: auto;
+  padding: 6px 8px;
+  border-radius: 20px;
+  background: var(--edge-strong);
+  color: var(--ivory);
+  font-family: var(--mono);
+  font-size: 0.62rem;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+}
+
+.route-bullet:hover {
+  transform: scale(1.08);
+}
+
+.route-bullet.active {
+  border-color: var(--ivory);
+  box-shadow: 0 0 0 2px var(--tunnel), 0 0 0 4px var(--ivory);
+}
+
+/* Severity histogram */
+.severity-bars {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.sev-row {
+  display: grid;
+  grid-template-columns: 60px 1fr auto;
+  gap: 10px;
+  align-items: center;
+  font-family: var(--mono);
+  font-size: 0.68rem;
+  color: var(--chalk);
+}
+
+.sev-label { display: flex; align-items: center; gap: 6px; }
+
+.sev-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+}
+
+.sev-bar {
+  height: 6px;
+  background: rgba(255, 255, 255, 0.05);
+  border-radius: 3px;
+  overflow: hidden;
+  position: relative;
+}
+
+.sev-bar .fill {
+  position: absolute;
+  inset: 0 auto 0 0;
+  border-radius: 3px;
+  transition: width 500ms cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.sev-count {
+  color: var(--ivory);
+  font-weight: 600;
+  font-variant-numeric: tabular-nums;
+  min-width: 32px;
+  text-align: right;
+}
+
+/* ───────── RIGHT PANEL (incidents) ───────── */
+.right-panel {
+  position: absolute;
+  top: 108px;
+  right: 18px;
+  width: 420px;
+  max-height: calc(100vh - 148px);
+  pointer-events: none;
+  z-index: 9;
+  display: flex;
+  flex-direction: column;
+}
+
+.right-panel > * { pointer-events: auto; }
+
+.incidents {
+  background: var(--glass);
+  backdrop-filter: blur(18px) saturate(140%);
+  -webkit-backdrop-filter: blur(18px) saturate(140%);
+  border: 1px solid var(--edge);
+  border-radius: 4px;
+  overflow: hidden;
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.35);
+  display: flex;
+  flex-direction: column;
+  min-height: 0;
+  max-height: inherit;
+}
+
+.incidents-head {
+  padding: 16px 18px;
+  border-bottom: 1px solid var(--edge);
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  flex-shrink: 0;
+}
+
+.incidents-head-left h2 {
+  font-family: var(--display);
+  font-size: 1.25rem;
+  font-weight: 500;
+  margin: 0 0 3px;
+  letter-spacing: -0.01em;
+  color: var(--ivory);
+}
+
+.incidents-head-left h2 em {
+  font-style: italic;
+  color: var(--mta-orange);
+  font-weight: 400;
+}
+
+.incidents-head-left p {
+  margin: 0;
+  font-family: var(--mono);
+  font-size: 0.6rem;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--ash);
+}
+
+.incidents-count {
+  font-family: var(--mono);
+  font-size: 0.66rem;
+  color: var(--mta-orange);
+  font-weight: 700;
+  padding: 6px 10px;
+  border: 1px solid rgba(255, 99, 25, 0.3);
+  background: rgba(255, 99, 25, 0.06);
+  border-radius: 2px;
+  white-space: nowrap;
+}
+
+.incidents-list {
+  overflow-y: auto;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  flex: 1;
+  min-height: 0;
+}
+
+.incidents-list::-webkit-scrollbar { width: 6px; }
+.incidents-list::-webkit-scrollbar-track { background: transparent; }
+.incidents-list::-webkit-scrollbar-thumb { background: var(--edge-strong); border-radius: 3px; }
+
+.incident {
+  padding: 14px 18px;
+  border-top: 1px solid var(--edge);
+  display: grid;
+  grid-template-columns: auto 1fr auto;
+  gap: 12px;
+  align-items: center;
+  cursor: pointer;
+  transition: background 140ms ease, transform 140ms ease;
+}
+
+.incident:first-child { border-top: none; }
+.incident:hover {
+  background: rgba(255, 99, 25, 0.05);
+  transform: translateX(2px);
+}
+
+.incident.active {
+  background: rgba(255, 99, 25, 0.1);
+  border-left: 3px solid var(--mta-orange);
+  padding-left: 15px;
+}
+
+.incident-bullet {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  display: grid;
+  place-items: center;
+  font-family: var(--sans);
+  font-weight: 800;
+  font-size: 0.86rem;
+  color: #000;
+  flex-shrink: 0;
+}
+
+.incident-body {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+  min-width: 0;
+}
+
+.incident-station {
+  font-size: 0.88rem;
+  font-weight: 600;
+  color: var(--ivory);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.incident-meta {
+  font-family: var(--mono);
+  font-size: 0.64rem;
+  color: var(--ash);
+  letter-spacing: 0.02em;
+}
+
+.incident-meta .delta {
+  color: var(--mta-orange);
+  font-weight: 600;
+}
+
+.incident-score {
+  text-align: right;
+  font-family: var(--mono);
+  flex-shrink: 0;
+}
+
+.incident-score .val {
+  font-size: 0.96rem;
+  font-weight: 700;
+  font-variant-numeric: tabular-nums;
+  line-height: 1;
+}
+
+.incident-score .bnd {
+  font-size: 0.54rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  margin-top: 3px;
+}
+
+.incident-score.critical .val,
+.incident-score.critical .bnd { color: var(--mta-red); }
+.incident-score.high .val,
+.incident-score.high .bnd { color: var(--mta-orange); }
+.incident-score.watch .val,
+.incident-score.watch .bnd { color: var(--mta-yellow); }
+.incident-score.low .val,
+.incident-score.low .bnd { color: var(--signal-green); }
+
+.incidents-empty {
+  padding: 60px 18px;
+  text-align: center;
+  font-family: var(--mono);
+  font-size: 0.72rem;
+  color: var(--smoke);
+  letter-spacing: 0.08em;
+}
+
+/* ───────── LEGEND (bottom) ───────── */
+.legend {
+  position: absolute;
+  bottom: 18px;
+  left: 18px;
+  padding: 12px 16px;
+  background: var(--glass);
+  backdrop-filter: blur(18px) saturate(140%);
+  -webkit-backdrop-filter: blur(18px) saturate(140%);
+  border: 1px solid var(--edge);
+  border-radius: 4px;
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  font-family: var(--mono);
+  font-size: 0.58rem;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--ash);
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+  z-index: 8;
+}
+
+.legend-title {
+  font-weight: 700;
+  color: var(--ivory);
+  border-right: 1px solid var(--edge);
+  padding-right: 14px;
+}
+
+.legend-item {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.legend-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+}
+
+/* ───────── TIMESTAMP (bottom right) ───────── */
+.timestamp {
+  position: absolute;
+  bottom: 18px;
+  right: 18px;
+  padding: 10px 14px;
+  background: var(--glass);
+  backdrop-filter: blur(18px);
+  -webkit-backdrop-filter: blur(18px);
+  border: 1px solid var(--edge);
+  border-radius: 4px;
+  font-family: var(--mono);
+  font-size: 0.62rem;
+  letter-spacing: 0.12em;
+  color: var(--chalk);
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+  z-index: 8;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.timestamp .lbl {
+  color: var(--smoke);
+  text-transform: uppercase;
+  font-size: 0.54rem;
+  letter-spacing: 0.18em;
+}
+
+.timestamp .val {
+  color: var(--ivory);
+  font-weight: 700;
+}
+
+/* ───────── MAPBOX POPUP ───────── */
+.mapboxgl-popup-content {
+  background: var(--glass-2) !important;
+  backdrop-filter: blur(20px) saturate(140%);
+  -webkit-backdrop-filter: blur(20px) saturate(140%);
+  border: 1px solid var(--edge-strong) !important;
+  border-radius: 4px !important;
+  color: var(--ivory) !important;
+  padding: 14px 16px !important;
+  font-family: var(--sans) !important;
+  box-shadow: 0 20px 50px rgba(0, 0, 0, 0.5) !important;
+}
+
+.mapboxgl-popup-tip { display: none !important; }
+.mapboxgl-popup-close-button { display: none !important; }
+
+.popup {
+  min-width: 220px;
+}
+
+.popup-head {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding-bottom: 10px;
+  border-bottom: 1px solid var(--edge);
+  margin-bottom: 10px;
+}
+
+.popup-bullet {
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  display: grid;
+  place-items: center;
+  font-family: var(--sans);
+  font-weight: 800;
+  font-size: 0.8rem;
+  color: #000;
+}
+
+.popup-station {
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: var(--ivory);
+  margin: 0;
+}
+
+.popup-stop {
+  font-family: var(--mono);
+  font-size: 0.62rem;
+  color: var(--ash);
+  margin-top: 2px;
+}
+
+.popup-metrics {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 8px;
+  font-family: var(--mono);
+  font-size: 0.7rem;
+}
+
+.popup-metric {
+  padding: 8px 10px;
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid var(--edge);
+  border-radius: 2px;
+}
+
+.popup-metric .k {
+  color: var(--smoke);
+  font-size: 0.54rem;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  margin-bottom: 3px;
+}
+
+.popup-metric .v {
+  color: var(--ivory);
+  font-weight: 600;
+  font-variant-numeric: tabular-nums;
+}
+
+.popup-score {
+  font-family: var(--display);
+  font-size: 2rem;
+  font-weight: 400;
+  line-height: 1;
+  color: var(--mta-orange);
+  font-variant-numeric: tabular-nums;
+  margin-top: 10px;
+  text-align: center;
+}
+
+.popup-score.critical { color: var(--mta-red); }
+.popup-score.high { color: var(--mta-orange); }
+.popup-score.watch { color: var(--mta-yellow); }
+.popup-score.low { color: var(--signal-green); }
+
+.popup-band {
+  font-family: var(--mono);
+  font-size: 0.58rem;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  text-align: center;
+  color: var(--chalk);
+  margin-top: 2px;
+}
+
+/* ───────── LOADING ───────── */
+.loading {
+  position: absolute;
+  inset: 0;
+  background: var(--tunnel);
+  display: grid;
+  place-items: center;
+  z-index: 100;
+  transition: opacity 500ms ease, visibility 500ms ease;
+}
+
+.loading.done {
+  opacity: 0;
+  visibility: hidden;
+}
+
+.loading-content {
+  text-align: center;
+}
+
+.loading-bullet {
+  width: 60px;
+  height: 60px;
+  border-radius: 50%;
+  background: var(--mta-orange);
+  display: grid;
+  place-items: center;
+  font-family: var(--sans);
+  font-weight: 800;
+  font-size: 2rem;
+  color: #000;
+  margin: 0 auto 20px;
+  position: relative;
+  box-shadow: 0 0 0 6px rgba(255, 99, 25, 0.15), 0 0 40px rgba(255, 99, 25, 0.3);
+}
+
+.loading-bullet::after {
+  content: "";
+  position: absolute;
+  inset: -12px;
+  border: 2px solid var(--mta-orange);
+  border-top-color: transparent;
+  border-radius: 50%;
+  animation: spin 1.2s linear infinite;
+}
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+
+.loading-text {
+  font-family: var(--mono);
+  font-size: 0.72rem;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--ash);
+}
+
+/* ───────── RESPONSIVE ───────── */
+@media (max-width: 1100px) {
+  .left-panel, .right-panel {
+    position: static;
+    width: auto;
+    max-height: none;
+  }
+  .topbar {
+    flex-direction: column;
+    gap: 10px;
+    align-items: stretch;
+  }
+  .legend { display: none; }
+  .timestamp { bottom: 6px; right: 6px; }
+}
+
+@media (max-width: 720px) {
+  .brand-sub { display: none; }
+  .brand-title { font-size: 0.95rem; }
+  .topbar { left: 10px; right: 10px; top: 10px; }
+}
+
+/* reveal */
+@keyframes rise {
+  from { opacity: 0; transform: translateY(12px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+.reveal { animation: rise 700ms cubic-bezier(0.22, 1, 0.36, 1) both; }
+.rd1 { animation-delay: 80ms; }
+.rd2 { animation-delay: 160ms; }
+.rd3 { animation-delay: 240ms; }
+.rd4 { animation-delay: 320ms; }
+.rd5 { animation-delay: 400ms; }
+</style>
+</head>
+<body>
+<div class="stage">
+  <div id="map"></div>
+
+  <!-- Loading -->
+  <div class="loading" id="loading">
+    <div class="loading-content">
+      <div class="loading-bullet">M</div>
+      <div class="loading-text">Loading MTA live feed…</div>
+    </div>
+  </div>
+
+  <!-- ─── TOP BAR ─── -->
+  <header class="topbar reveal rd1">
+    <div class="brand">
+      <div class="brand-bullet">M</div>
+      <div class="brand-text">
+        <span class="brand-title">MTA-Scan <em>/ live command center</em></span>
+        <span class="brand-sub">Real-Time NYC Subway Anomaly Operations</span>
+      </div>
+    </div>
+    <div class="topbar-right">
+      <a class="top-chip" href="/nyc-subway-anomaly/">
+        <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M15 18l-6-6 6-6"/></svg>
+        Overview
+      </a>
+      <a class="top-chip" href="/nyc-subway-anomaly/api/health/deep" target="_blank" rel="noopener">Deep Health</a>
+      <a class="top-chip" href="https://github.com/stelioszach03/NYC-Subway-Anomaly-Detection" target="_blank" rel="noopener">GitHub</a>
+      <span class="top-chip live"><span class="tick"></span>Live · 15m</span>
+    </div>
+  </header>
+
+  <!-- ─── LEFT PANEL (KPIs + Routes + Severity) ─── -->
+  <aside class="left-panel">
+    <div class="kpi-stack reveal rd2">
+      <div class="kpi">
+        <div class="kpi-k">Stations</div>
+        <div class="kpi-v" id="kpi-stations">—</div>
+        <div class="kpi-u">last 15m</div>
+      </div>
+      <div class="kpi blue">
+        <div class="kpi-k">Trains</div>
+        <div class="kpi-v" id="kpi-trains">—</div>
+        <div class="kpi-u">route × stop</div>
+      </div>
+      <div class="kpi yellow">
+        <div class="kpi-k">Scored</div>
+        <div class="kpi-v" id="kpi-scored">—</div>
+        <div class="kpi-u">rows</div>
+      </div>
+      <div class="kpi red">
+        <div class="kpi-k">Critical</div>
+        <div class="kpi-v" id="kpi-critical">—</div>
+        <div class="kpi-u">≥ 0.85</div>
+      </div>
+    </div>
+
+    <div class="panel reveal rd3">
+      <div class="panel-head">
+        <span><strong>Route Filter</strong></span>
+        <span id="route-count">—</span>
+      </div>
+      <div class="panel-body">
+        <div class="route-grid" id="route-grid"></div>
+      </div>
+    </div>
+
+    <div class="panel reveal rd4">
+      <div class="panel-head">
+        <span><strong>Severity</strong> · visible</span>
+        <span id="sev-total">0</span>
+      </div>
+      <div class="panel-body">
+        <div class="severity-bars">
+          <div class="sev-row">
+            <span class="sev-label"><span class="sev-dot" style="background: var(--signal-green);"></span>Low</span>
+            <div class="sev-bar"><span class="fill" id="sev-fill-low" style="background: var(--signal-green); width: 0%"></span></div>
+            <span class="sev-count" id="sev-low">0</span>
+          </div>
+          <div class="sev-row">
+            <span class="sev-label"><span class="sev-dot" style="background: var(--mta-yellow);"></span>Watch</span>
+            <div class="sev-bar"><span class="fill" id="sev-fill-watch" style="background: var(--mta-yellow); width: 0%"></span></div>
+            <span class="sev-count" id="sev-watch">0</span>
+          </div>
+          <div class="sev-row">
+            <span class="sev-label"><span class="sev-dot" style="background: var(--mta-orange);"></span>High</span>
+            <div class="sev-bar"><span class="fill" id="sev-fill-high" style="background: var(--mta-orange); width: 0%"></span></div>
+            <span class="sev-count" id="sev-high">0</span>
+          </div>
+          <div class="sev-row">
+            <span class="sev-label"><span class="sev-dot" style="background: var(--mta-red);"></span>Critical</span>
+            <div class="sev-bar"><span class="fill" id="sev-fill-critical" style="background: var(--mta-red); width: 0%"></span></div>
+            <span class="sev-count" id="sev-critical">0</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </aside>
+
+  <!-- ─── RIGHT PANEL (incidents) ─── -->
+  <aside class="right-panel reveal rd5">
+    <div class="incidents">
+      <div class="incidents-head">
+        <div class="incidents-head-left">
+          <h2>Ranked <em>incidents</em></h2>
+          <p>By model score · click to fly</p>
+        </div>
+        <span class="incidents-count" id="incidents-count">0</span>
+      </div>
+      <ul class="incidents-list" id="incidents-list">
+        <li class="incidents-empty">Loading live feed…</li>
+      </ul>
+    </div>
+  </aside>
+
+  <!-- ─── LEGEND ─── -->
+  <div class="legend">
+    <span class="legend-title">Anomaly Scale</span>
+    <span class="legend-item"><span class="legend-dot" style="background: var(--signal-green);"></span>0.00–0.34</span>
+    <span class="legend-item"><span class="legend-dot" style="background: var(--mta-yellow);"></span>0.35–0.59</span>
+    <span class="legend-item"><span class="legend-dot" style="background: var(--mta-orange);"></span>0.60–0.84</span>
+    <span class="legend-item"><span class="legend-dot" style="background: var(--mta-red);"></span>0.85–1.00</span>
+  </div>
+
+  <!-- ─── TIMESTAMP ─── -->
+  <div class="timestamp">
+    <span class="lbl">UPDATED NY</span>
+    <span class="val" id="ts-val">—</span>
+  </div>
+</div>
+
+<script>
+(function(){
+  "use strict";
+
+  const BASE = "/nyc-subway-anomaly/api";
+  const $ = (id) => document.getElementById(id);
+
+  const state = {
+    route: "All",
+    features: [],
+    incidents: [],
+    activeIncident: null,
+  };
+
+  // ─── helpers ───
+  function fmt(n) {
+    if (n == null || Number.isNaN(n)) return "—";
+    const v = Number(n);
+    if (v >= 1_000_000) return (v / 1_000_000).toFixed(1) + "M";
+    if (v >= 1_000) return (v / 1_000).toFixed(1) + "k";
+    return String(Math.round(v));
+  }
+
+  function escapeHtml(s) {
+    return String(s || "").replace(/[&<>"']/g, c => ({
+      "&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"
+    }[c]));
+  }
+
+  function routeColor(route) {
+    const r = String(route || "");
+    if (["1","2","3"].includes(r)) return "#ee352e";
+    if (["4","5","6","6X"].includes(r)) return "#00933c";
+    if (r === "7") return "#b933ad";
+    if (["A","C","E"].includes(r)) return "#0039a6";
+    if (["B","D","F","M"].includes(r)) return "#ff6319";
+    if (["N","Q","R","W"].includes(r)) return "#fccc0a";
+    if (r === "L") return "#a7a9ac";
+    if (["J","Z"].includes(r)) return "#996633";
+    if (r === "G") return "#6cbe45";
+    return "#a7a9ac";
+  }
+
+  function routeTextColor(route) {
+    const bg = routeColor(route);
+    return (bg === "#fccc0a" || bg === "#a7a9ac") ? "#000" : "#fff";
+  }
+
+  function scoreBand(s) {
+    const v = Number(s || 0);
+    if (v >= 0.85) return "critical";
+    if (v >= 0.6) return "high";
+    if (v >= 0.35) return "watch";
+    return "low";
+  }
+
+  function scoreColor(s) {
+    const b = scoreBand(s);
+    if (b === "critical") return "#ee352e";
+    if (b === "high") return "#ff6319";
+    if (b === "watch") return "#fccc0a";
+    return "#00d672";
+  }
+
+  async function api(path) {
+    try {
+      const res = await fetch(BASE + path, { cache: "no-store" });
+      if (!res.ok) throw new Error("HTTP " + res.status);
+      return await res.json();
+    } catch (e) { return null; }
+  }
+
+  // ─── Mapbox init (dark Carto raster — no token required) ───
+  const DARK_STYLE = {
+    version: 8,
+    glyphs: "https://fonts.openmaptiles.org/{fontstack}/{range}.pbf",
+    sources: {
+      carto_dark: {
+        type: "raster",
+        tiles: [
+          "https://a.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}@2x.png",
+          "https://b.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}@2x.png",
+          "https://c.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}@2x.png",
+        ],
+        tileSize: 256,
+        attribution: '© OpenStreetMap contributors · © CARTO',
+      },
+    },
+    layers: [
+      { id: "bg", type: "background", paint: { "background-color": "#050810" } },
+      { id: "carto_dark", type: "raster", source: "carto_dark", minzoom: 0, maxzoom: 20 },
+    ],
+  };
+
+  const map = new maplibregl.Map({
+    container: "map",
+    style: DARK_STYLE,
+    center: [-73.97, 40.735],
+    zoom: 11.2,
+    minZoom: 9,
+    maxZoom: 18,
+    attributionControl: true,
+  });
+
+  map.on("load", async () => {
+    // Empty GeoJSON source for anomalies
+    map.addSource("anoms", {
+      type: "geojson",
+      data: { type: "FeatureCollection", features: [] },
+    });
+
+    // Heatmap layer (soft glow behind circles)
+    map.addLayer({
+      id: "anoms-heat",
+      type: "heatmap",
+      source: "anoms",
+      maxzoom: 14,
+      paint: {
+        "heatmap-weight": ["interpolate", ["linear"], ["get", "anomaly_score"], 0, 0, 1, 1],
+        "heatmap-intensity": ["interpolate", ["linear"], ["zoom"], 9, 0.5, 14, 1.8],
+        "heatmap-color": [
+          "interpolate", ["linear"], ["heatmap-density"],
+          0, "rgba(0,0,0,0)",
+          0.2, "rgba(0, 214, 114, 0.25)",
+          0.4, "rgba(252, 204, 10, 0.35)",
+          0.6, "rgba(255, 99, 25, 0.5)",
+          0.9, "rgba(238, 53, 46, 0.75)",
+        ],
+        "heatmap-radius": ["interpolate", ["linear"], ["zoom"], 9, 10, 14, 28],
+        "heatmap-opacity": ["interpolate", ["linear"], ["zoom"], 9, 0.9, 15, 0],
+      },
+    });
+
+    // Outer pulsing glow for critical
+    map.addLayer({
+      id: "anoms-glow",
+      type: "circle",
+      source: "anoms",
+      filter: [">=", ["get", "anomaly_score"], 0.85],
+      paint: {
+        "circle-radius": ["interpolate", ["linear"], ["zoom"], 9, 12, 14, 28],
+        "circle-color": "#ee352e",
+        "circle-opacity": 0.18,
+        "circle-blur": 0.9,
+      },
+    });
+
+    // Main points — colored by score band
+    map.addLayer({
+      id: "anoms-dots",
+      type: "circle",
+      source: "anoms",
+      paint: {
+        "circle-radius": [
+          "interpolate", ["linear"], ["get", "anomaly_score"],
+          0, 3,
+          0.35, 4,
+          0.6, 6,
+          0.85, 8,
+          1, 10,
+        ],
+        "circle-color": [
+          "case",
+          [">=", ["get", "anomaly_score"], 0.85], "#ee352e",
+          [">=", ["get", "anomaly_score"], 0.6], "#ff6319",
+          [">=", ["get", "anomaly_score"], 0.35], "#fccc0a",
+          "#00d672",
+        ],
+        "circle-stroke-width": 1.5,
+        "circle-stroke-color": "rgba(244, 241, 234, 0.5)",
+        "circle-stroke-opacity": 0.8,
+      },
+    });
+
+    // Click handler → popup
+    map.on("click", "anoms-dots", (e) => {
+      if (!e.features || !e.features.length) return;
+      const f = e.features[0];
+      const p = f.properties;
+      const score = Number(p.anomaly_score || 0);
+      const band = scoreBand(score);
+      const bg = routeColor(p.route_id);
+      const fg = routeTextColor(p.route_id);
+      const hw = Math.round(Number(p.headway_sec || 0));
+      const pred = Math.round(Number(p.predicted_headway_sec || 0));
+      const res = Math.round(Number(p.residual || 0));
+
+      const html = `
+        <div class="popup">
+          <div class="popup-head">
+            <span class="popup-bullet" style="background: ${bg}; color: ${fg};">${escapeHtml(p.route_id)}</span>
+            <div>
+              <div class="popup-station">${escapeHtml(p.stop_name || p.stop_id)}</div>
+              <div class="popup-stop">${escapeHtml(p.stop_id)}</div>
+            </div>
+          </div>
+          <div class="popup-metrics">
+            <div class="popup-metric"><div class="k">Observed</div><div class="v">${hw}s</div></div>
+            <div class="popup-metric"><div class="k">Predicted</div><div class="v">${pred}s</div></div>
+            <div class="popup-metric"><div class="k">Residual</div><div class="v">+${res}s</div></div>
+            <div class="popup-metric"><div class="k">Delta</div><div class="v">${hw - pred >= 0 ? "+" : ""}${hw - pred}s</div></div>
+          </div>
+          <div class="popup-score ${band}">${score.toFixed(3)}</div>
+          <div class="popup-band">${band}</div>
+        </div>`;
+
+      new maplibregl.Popup({ offset: 14, closeOnClick: true, anchor: "top" })
+        .setLngLat(f.geometry.coordinates)
+        .setHTML(html)
+        .addTo(map);
+    });
+
+    map.on("mouseenter", "anoms-dots", () => { map.getCanvas().style.cursor = "pointer"; });
+    map.on("mouseleave", "anoms-dots", () => { map.getCanvas().style.cursor = ""; });
+
+    // Initial data load
+    await Promise.all([loadRoutes(), refresh()]);
+    $("loading").classList.add("done");
+
+    // Auto-refresh every 12s
+    setInterval(refresh, 12_000);
+  });
+
+  // ─── Data loaders ───
+  async function loadRoutes() {
+    const data = await api("/routes");
+    if (!data || !Array.isArray(data.routes)) return;
+    $("route-count").textContent = data.routes.length + " lines";
+    const grid = $("route-grid");
+    const pills = [`<div class="route-bullet all active" data-route="All">All</div>`];
+    for (const r of data.routes) {
+      const bg = routeColor(r);
+      const fg = routeTextColor(r);
+      pills.push(`<div class="route-bullet" data-route="${escapeHtml(r)}" style="background: ${bg}; color: ${fg};">${escapeHtml(r)}</div>`);
+    }
+    grid.innerHTML = pills.join("");
+    grid.addEventListener("click", (e) => {
+      const el = e.target.closest("[data-route]");
+      if (!el) return;
+      state.route = el.dataset.route;
+      grid.querySelectorAll(".route-bullet").forEach(n => n.classList.toggle("active", n.dataset.route === state.route));
+      refresh();
+    });
+  }
+
+  async function refresh() {
+    const [summary, heatmap, anomalies] = await Promise.all([
+      api("/summary?window=15m"),
+      api(`/heatmap?ts=now&window=60m&route_id=${encodeURIComponent(state.route)}`),
+      api(`/anomalies?window=15m&route_id=${encodeURIComponent(state.route)}&limit=40`),
+    ]);
+
+    if (summary) renderSummary(summary);
+    if (heatmap) renderHeatmap(heatmap);
+    if (anomalies) renderIncidents(anomalies);
+  }
+
+  function renderSummary(s) {
+    $("kpi-stations").textContent = fmt(s.stations_total);
+    $("kpi-trains").textContent = fmt(s.trains_active);
+    $("kpi-scored").textContent = fmt(s.scored_rows);
+    $("kpi-critical").textContent = fmt(s.anomalies_high);
+
+    if (s.last_updated_ny) {
+      const t = s.last_updated_ny.split("T")[1]?.slice(0, 8) || "—";
+      $("ts-val").textContent = t + " NY";
+    }
+  }
+
+  function renderHeatmap(h) {
+    if (!h || !Array.isArray(h.features)) return;
+    state.features = h.features;
+
+    map.getSource("anoms").setData({ type: "FeatureCollection", features: h.features });
+
+    // Severity histogram
+    let low = 0, watch = 0, high = 0, critical = 0;
+    for (const f of h.features) {
+      const v = Number(f.properties?.anomaly_score || 0);
+      if (v >= 0.85) critical++;
+      else if (v >= 0.6) high++;
+      else if (v >= 0.35) watch++;
+      else low++;
+    }
+    const total = h.features.length || 1;
+    $("sev-low").textContent = low;
+    $("sev-watch").textContent = watch;
+    $("sev-high").textContent = high;
+    $("sev-critical").textContent = critical;
+    $("sev-total").textContent = h.features.length + " pts";
+    $("sev-fill-low").style.width = (low / total * 100) + "%";
+    $("sev-fill-watch").style.width = (watch / total * 100) + "%";
+    $("sev-fill-high").style.width = (high / total * 100) + "%";
+    $("sev-fill-critical").style.width = (critical / total * 100) + "%";
+  }
+
+  function renderIncidents(rows) {
+    state.incidents = rows || [];
+    const list = $("incidents-list");
+    $("incidents-count").textContent = rows.length;
+
+    if (!rows.length) {
+      list.innerHTML = '<li class="incidents-empty">no anomalies in window · worker still warming up</li>';
+      return;
+    }
+
+    list.innerHTML = rows.slice(0, 40).map((r, idx) => {
+      const band = scoreBand(r.anomaly_score);
+      const bg = routeColor(r.route_id);
+      const fg = routeTextColor(r.route_id);
+      const hw = Math.round(Number(r.headway_sec || 0));
+      const pred = Math.round(Number(r.predicted_headway_sec || 0));
+      const delta = hw - pred;
+      return `
+        <li class="incident" data-idx="${idx}" data-stop="${escapeHtml(r.stop_id)}">
+          <span class="incident-bullet" style="background: ${bg}; color: ${fg};">${escapeHtml(r.route_id)}</span>
+          <div class="incident-body">
+            <div class="incident-station">${escapeHtml(r.stop_name || r.stop_id)}</div>
+            <div class="incident-meta">
+              ${hw}s observed · <span class="delta">${delta >= 0 ? "+" : ""}${delta}s vs model</span>
+            </div>
+          </div>
+          <div class="incident-score ${band}">
+            <div class="val">${(Number(r.anomaly_score) || 0).toFixed(3)}</div>
+            <div class="bnd">${band}</div>
+          </div>
+        </li>`;
+    }).join("");
+
+    list.onclick = (e) => {
+      const el = e.target.closest(".incident");
+      if (!el) return;
+      const idx = parseInt(el.dataset.idx, 10);
+      const row = state.incidents[idx];
+      if (!row) return;
+
+      // Find feature by stop_id in the current GeoJSON source
+      const src = map.getSource("anoms");
+      if (!src) return;
+      const data = src._data;
+      const feature = (data?.features || []).find(f => f.properties?.stop_id === row.stop_id);
+      if (!feature) return;
+
+      list.querySelectorAll(".incident").forEach(n => n.classList.remove("active"));
+      el.classList.add("active");
+
+      map.flyTo({
+        center: feature.geometry.coordinates,
+        zoom: 14.5,
+        speed: 1.4,
+        curve: 1.4,
+      });
+
+      setTimeout(() => {
+        const p = feature.properties;
+        const score = Number(p.anomaly_score || 0);
+        const band = scoreBand(score);
+        const bg = routeColor(p.route_id);
+        const fg = routeTextColor(p.route_id);
+        const hw = Math.round(Number(p.headway_sec || 0));
+        const pred = Math.round(Number(p.predicted_headway_sec || 0));
+        const res = Math.round(Number(p.residual || 0));
+
+        const html = `
+          <div class="popup">
+            <div class="popup-head">
+              <span class="popup-bullet" style="background: ${bg}; color: ${fg};">${escapeHtml(p.route_id)}</span>
+              <div>
+                <div class="popup-station">${escapeHtml(p.stop_name || p.stop_id)}</div>
+                <div class="popup-stop">${escapeHtml(p.stop_id)}</div>
+              </div>
+            </div>
+            <div class="popup-metrics">
+              <div class="popup-metric"><div class="k">Observed</div><div class="v">${hw}s</div></div>
+              <div class="popup-metric"><div class="k">Predicted</div><div class="v">${pred}s</div></div>
+              <div class="popup-metric"><div class="k">Residual</div><div class="v">+${res}s</div></div>
+              <div class="popup-metric"><div class="k">Delta</div><div class="v">${hw - pred >= 0 ? "+" : ""}${hw - pred}s</div></div>
+            </div>
+            <div class="popup-score ${band}">${score.toFixed(3)}</div>
+            <div class="popup-band">${band}</div>
+          </div>`;
+
+        new maplibregl.Popup({ offset: 14, closeOnClick: true, anchor: "top" })
+          .setLngLat(feature.geometry.coordinates)
+          .setHTML(html)
+          .addTo(map);
+      }, 800);
+    };
+  }
+})();
+</script>
+</body>
+</html>
