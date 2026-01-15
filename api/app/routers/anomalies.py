@@ -5,7 +5,7 @@ from typing import Dict, List
 
 from fastapi import APIRouter, Query
 from pydantic import BaseModel
-from sqlalchemy import desc, select
+from sqlalchemy import desc, func, select
 from sqlalchemy.orm import sessionmaker
 
 from ..models import Score
@@ -50,11 +50,22 @@ async def list_anomalies(
     limit: int = Query(default=300, ge=20, le=1000),
 ) -> List[Dict]:
     seconds = _parse_window(window)
-    since = datetime.now(timezone.utc) - timedelta(seconds=seconds)
     engine = get_engine()
     SessionLocal = sessionmaker(bind=engine, autoflush=False, autocommit=False, future=True)
 
     with SessionLocal() as session:
+        # Anchor the window on the latest predicted row rather than wall-clock
+        # NOW(). The trainer lags the collector by a few minutes, so anchoring
+        # on NOW() causes the endpoint to return an empty list even when the
+        # DB has fresh predictions to show.
+        max_pred_ts = session.execute(
+            select(func.max(Score.observed_ts)).where(
+                Score.predicted_headway_sec.is_not(None)
+            )
+        ).scalar()
+        anchor = max_pred_ts or datetime.now(timezone.utc)
+        since = anchor - timedelta(seconds=seconds)
+
         stmt = (
             select(
                 Score.observed_ts,

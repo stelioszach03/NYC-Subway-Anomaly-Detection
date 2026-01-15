@@ -41,12 +41,28 @@ def _parse_window(window: str) -> int:
 async def get_summary(window: str = Query(default="15m")) -> dict:
     now = datetime.now(timezone.utc)
     seconds = _parse_window(window)
-    since = now - timedelta(seconds=seconds)
 
     engine = get_engine()
     SessionLocal = sessionmaker(bind=engine, autoflush=False, autocommit=False, future=True)
 
     with SessionLocal() as session:
+        # Anchor the window on the most recent row that has a prediction,
+        # not wall-clock NOW. The trainer typically lags the collector by
+        # a few minutes, so anchoring on NOW() makes the summary show
+        # zeros even though data is flowing — aligning with the prediction
+        # front mirrors what the live UI actually has available.
+        max_pred_ts = session.execute(
+            select(func.max(Score.observed_ts)).where(
+                Score.predicted_headway_sec.is_not(None)
+            )
+        ).scalar()
+
+        # Also keep an "overall" latest for the last_updated timestamp.
+        max_obs = session.execute(select(func.max(Score.observed_ts))).scalar()
+
+        anchor = max_pred_ts or max_obs or now
+        since = anchor - timedelta(seconds=seconds)
+
         scored_rows = int(
             session.execute(
                 select(func.count(Score.id))
@@ -96,9 +112,9 @@ async def get_summary(window: str = Query(default="15m")) -> dict:
             or 0
         )
 
-        max_obs = session.execute(select(func.max(Score.observed_ts))).scalar()
-
     anomaly_rate = float(anomalies_count) / float(scored_rows) * 100.0 if scored_rows else 0.0
+    # last_updated reflects whichever is newer; observed front is more useful
+    # for live-ness indicator than the prediction front.
     p = ts_pack(max_obs or now)
 
     return {
