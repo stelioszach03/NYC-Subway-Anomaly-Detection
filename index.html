@@ -1,0 +1,1542 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>MTA-Scan · NYC Subway Anomaly Detection</title>
+<meta name="description" content="Real-time anomaly detection for the NYC Subway. Streaming GTFS-RT ingestion, online ML with River, live Mapbox command center. Built by Stelios Zacharioudakis." />
+<meta name="theme-color" content="#0a0e1a" />
+<meta property="og:title" content="MTA-Scan · NYC Subway Anomaly Detection" />
+<meta property="og:description" content="Streaming GTFS-RT → TimescaleDB → online ML → Mapbox command center. Live system." />
+<meta property="og:type" content="website" />
+
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,300;0,6..72,400;0,6..72,500;0,6..72,600;0,6..72,700;1,6..72,400&family=IBM+Plex+Mono:wght@400;500;600;700&family=IBM+Plex+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
+
+<style>
+:root {
+  --tunnel: #070a12;
+  --midnight: #0a0e1a;
+  --platform: #0f1420;
+  --concrete: #141a28;
+  --concrete-2: #1a2133;
+  --edge: rgba(255, 255, 255, 0.06);
+  --edge-strong: rgba(255, 255, 255, 0.12);
+
+  --ivory: #f4f1ea;
+  --chalk: #dcd7c9;
+  --ash: #8c8579;
+  --smoke: #4d4a42;
+
+  --signal-green: #00d672;
+  --signal-glow: rgba(0, 214, 114, 0.35);
+  --mta-red: #ee352e;
+  --mta-orange: #ff6319;
+  --mta-yellow: #fccc0a;
+  --mta-blue: #0039a6;
+  --mta-green: #00933c;
+  --mta-violet: #b933ad;
+
+  --display: "Newsreader", "Times New Roman", serif;
+  --sans: "IBM Plex Sans", -apple-system, "Helvetica Neue", sans-serif;
+  --mono: "IBM Plex Mono", "SF Mono", ui-monospace, monospace;
+}
+
+* { box-sizing: border-box; }
+html, body { margin: 0; padding: 0; }
+
+body {
+  min-height: 100vh;
+  color: var(--ivory);
+  font-family: var(--sans);
+  font-size: 15px;
+  line-height: 1.55;
+  font-feature-settings: "ss01", "ss02", "cv11";
+  background: var(--midnight);
+  -webkit-font-smoothing: antialiased;
+  overflow-x: hidden;
+}
+
+/* Subway tile backdrop — thin cream grout lines */
+body::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  background-image:
+    linear-gradient(to right, rgba(244, 241, 234, 0.018) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(244, 241, 234, 0.018) 1px, transparent 1px);
+  background-size: 80px 80px;
+  pointer-events: none;
+  z-index: 1;
+}
+
+/* Warm platform glow from upper-left */
+body::after {
+  content: "";
+  position: fixed;
+  inset: 0;
+  background:
+    radial-gradient(1200px 700px at 10% -10%, rgba(255, 99, 25, 0.08), transparent 60%),
+    radial-gradient(900px 600px at 100% 110%, rgba(0, 57, 166, 0.1), transparent 65%);
+  pointer-events: none;
+  z-index: 1;
+}
+
+.shell {
+  position: relative;
+  z-index: 2;
+  width: min(1320px, 94vw);
+  margin: 0 auto;
+  padding: 24px 0 64px;
+}
+
+/* ──────── LINE TAPE (top) ──────── */
+.line-tape {
+  display: flex;
+  height: 3px;
+  margin-bottom: 20px;
+  border-radius: 2px;
+  overflow: hidden;
+}
+.line-tape span { flex: 1; }
+.line-tape .r1 { background: var(--mta-red); }
+.line-tape .r2 { background: var(--mta-orange); }
+.line-tape .r3 { background: var(--mta-yellow); }
+.line-tape .r4 { background: var(--mta-green); }
+.line-tape .r5 { background: var(--mta-blue); }
+.line-tape .r6 { background: var(--mta-violet); }
+.line-tape .r7 { background: var(--smoke); }
+
+/* ──────── TOP BAR ──────── */
+.topbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 16px 22px;
+  border: 1px solid var(--edge);
+  background: rgba(10, 14, 26, 0.75);
+  backdrop-filter: blur(14px) saturate(140%);
+  -webkit-backdrop-filter: blur(14px) saturate(140%);
+  border-radius: 4px;
+  margin-bottom: 24px;
+}
+
+.brand {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+}
+
+.brand-bullet {
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  background: var(--mta-orange);
+  display: grid;
+  place-items: center;
+  font-family: var(--sans);
+  font-weight: 800;
+  font-size: 1.4rem;
+  color: #000;
+  letter-spacing: -0.02em;
+  box-shadow: 0 0 0 3px rgba(255, 99, 25, 0.15), 0 0 28px rgba(255, 99, 25, 0.2);
+  position: relative;
+}
+
+.brand-bullet::after {
+  content: "";
+  position: absolute;
+  inset: -6px;
+  border: 1px solid rgba(255, 99, 25, 0.4);
+  border-radius: 50%;
+  animation: ringpulse 3s ease-in-out infinite;
+}
+
+@keyframes ringpulse {
+  0%, 100% { opacity: 0.35; transform: scale(1); }
+  50% { opacity: 0; transform: scale(1.2); }
+}
+
+.brand-text { display: flex; flex-direction: column; gap: 2px; }
+
+.brand-title {
+  font-family: var(--display);
+  font-size: 1.25rem;
+  font-weight: 500;
+  letter-spacing: -0.01em;
+  color: var(--ivory);
+}
+
+.brand-title em {
+  font-style: italic;
+  color: var(--mta-orange);
+  font-weight: 400;
+}
+
+.brand-sub {
+  font-family: var(--mono);
+  font-size: 0.64rem;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--ash);
+}
+
+.topbar-links { display: flex; gap: 4px; align-items: center; }
+
+.top-link {
+  font-family: var(--mono);
+  font-size: 0.68rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--chalk);
+  text-decoration: none;
+  padding: 10px 14px;
+  border: 1px solid transparent;
+  transition: all 150ms ease;
+}
+
+.top-link:hover {
+  color: var(--mta-orange);
+  border-color: var(--edge-strong);
+  background: rgba(255, 99, 25, 0.05);
+}
+
+.top-link.primary {
+  color: #000;
+  background: var(--mta-orange);
+  border-color: var(--mta-orange);
+  font-weight: 700;
+}
+
+.top-link.primary:hover {
+  background: #ff7a3e;
+  border-color: #ff7a3e;
+}
+
+/* ──────── HERO ──────── */
+.hero {
+  position: relative;
+  display: grid;
+  grid-template-columns: 1.5fr 1fr;
+  gap: 36px;
+  padding: 60px 44px 56px;
+  border: 1px solid var(--edge);
+  background:
+    linear-gradient(160deg, rgba(20, 26, 40, 0.88) 0%, rgba(10, 14, 26, 0.88) 100%);
+  border-radius: 4px;
+  overflow: hidden;
+  margin-bottom: 28px;
+}
+
+.hero::before {
+  content: "";
+  position: absolute;
+  top: 0; left: 0;
+  width: 6px;
+  height: 100%;
+  background: linear-gradient(180deg, var(--mta-orange), var(--mta-red) 50%, var(--mta-blue));
+}
+
+.hero::after {
+  content: "L · N · A · 7 · F · Q · R · 1 · 2 · 3 · 4 · 5 · 6";
+  position: absolute;
+  top: 24px;
+  right: -10px;
+  font-family: var(--mono);
+  font-size: 0.62rem;
+  letter-spacing: 0.4em;
+  color: var(--smoke);
+  writing-mode: vertical-lr;
+  transform: rotate(180deg);
+  opacity: 0.5;
+}
+
+.hero-eyebrow {
+  display: inline-flex;
+  align-items: center;
+  gap: 12px;
+  padding: 9px 16px;
+  border: 1px solid var(--edge-strong);
+  border-radius: 100px;
+  font-family: var(--mono);
+  font-size: 0.64rem;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--signal-green);
+  background: rgba(0, 214, 114, 0.06);
+  margin-bottom: 28px;
+}
+
+.hero-eyebrow .dot {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: var(--signal-green);
+  box-shadow: 0 0 0 0 var(--signal-glow);
+  animation: livepulse 2s infinite;
+}
+
+@keyframes livepulse {
+  0%, 100% { box-shadow: 0 0 0 0 rgba(0, 214, 114, 0.45); }
+  50% { box-shadow: 0 0 0 8px rgba(0, 214, 114, 0); }
+}
+
+.hero h1 {
+  font-family: var(--display);
+  font-weight: 300;
+  font-size: clamp(2.6rem, 5vw, 4.4rem);
+  line-height: 0.98;
+  letter-spacing: -0.028em;
+  margin: 0 0 24px;
+  color: var(--ivory);
+  font-feature-settings: "ss01";
+}
+
+.hero h1 em {
+  font-style: italic;
+  font-weight: 400;
+  color: var(--mta-orange);
+}
+
+.hero h1 .underline {
+  position: relative;
+  display: inline-block;
+}
+
+.hero h1 .underline::after {
+  content: "";
+  position: absolute;
+  bottom: 0.04em;
+  left: 0;
+  right: 0;
+  height: 0.14em;
+  background: var(--mta-red);
+  z-index: -1;
+  transform: skewX(-8deg);
+}
+
+.hero-lead {
+  font-size: 1.08rem;
+  line-height: 1.7;
+  color: var(--chalk);
+  max-width: 56ch;
+  margin: 0 0 32px;
+}
+
+.hero-lead strong {
+  color: var(--ivory);
+  font-weight: 600;
+}
+
+.hero-cta {
+  display: flex;
+  gap: 12px;
+  flex-wrap: wrap;
+  align-items: center;
+}
+
+.btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 12px;
+  padding: 14px 22px;
+  border: 1px solid var(--edge-strong);
+  background: transparent;
+  color: var(--ivory);
+  font-family: var(--mono);
+  font-size: 0.74rem;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  cursor: pointer;
+  text-decoration: none;
+  transition: all 180ms ease;
+  border-radius: 2px;
+}
+
+.btn:hover {
+  border-color: var(--mta-orange);
+  color: var(--mta-orange);
+  background: rgba(255, 99, 25, 0.04);
+}
+
+.btn.primary {
+  background: var(--mta-orange);
+  color: #000;
+  border-color: var(--mta-orange);
+  font-weight: 800;
+  padding: 14px 28px;
+}
+
+.btn.primary:hover {
+  background: #ff7a3e;
+  color: #000;
+  border-color: #ff7a3e;
+  box-shadow: 0 0 0 4px rgba(255, 99, 25, 0.2);
+}
+
+.btn svg { width: 16px; height: 16px; }
+
+.hero-note {
+  margin-left: 6px;
+  font-family: var(--mono);
+  font-size: 0.68rem;
+  color: var(--ash);
+  letter-spacing: 0.06em;
+}
+
+.hero-note .pulse {
+  display: inline-block;
+  width: 6px;
+  height: 6px;
+  background: var(--signal-green);
+  border-radius: 50%;
+  margin-right: 6px;
+  animation: livepulse 2s infinite;
+  vertical-align: middle;
+}
+
+/* Hero right: live departures board */
+.board {
+  position: relative;
+  padding: 22px;
+  border: 1px solid var(--edge);
+  border-radius: 4px;
+  background: linear-gradient(180deg, rgba(7, 10, 18, 0.9) 0%, rgba(10, 14, 26, 0.9) 100%);
+  font-family: var(--mono);
+}
+
+.board-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding-bottom: 14px;
+  border-bottom: 1px solid var(--edge);
+  margin-bottom: 16px;
+}
+
+.board-title {
+  font-size: 0.66rem;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--ivory);
+  font-weight: 600;
+}
+
+.board-live {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 0.6rem;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--signal-green);
+}
+
+.board-live .tick {
+  width: 5px;
+  height: 5px;
+  background: var(--signal-green);
+  border-radius: 50%;
+  animation: livepulse 1.6s infinite;
+}
+
+.board-row {
+  display: grid;
+  grid-template-columns: auto 1fr auto auto;
+  gap: 12px;
+  align-items: center;
+  padding: 11px 0;
+  border-bottom: 1px dashed var(--edge);
+  font-size: 0.82rem;
+}
+
+.board-row:last-child { border-bottom: none; }
+
+.route-bullet {
+  width: 26px;
+  height: 26px;
+  border-radius: 50%;
+  display: grid;
+  place-items: center;
+  font-weight: 800;
+  font-size: 0.82rem;
+  color: #000;
+  font-family: var(--sans);
+}
+
+.route-L { background: #a7a9ac; color: #000; }
+.route-N { background: var(--mta-yellow); }
+.route-A { background: var(--mta-blue); color: #fff; }
+.route-F { background: var(--mta-orange); }
+.route-7 { background: var(--mta-violet); color: #fff; }
+.route-Q { background: var(--mta-yellow); }
+.route-6 { background: var(--mta-green); color: #fff; }
+
+.board-station {
+  color: var(--ivory);
+  font-family: var(--sans);
+  font-weight: 500;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.board-gap {
+  color: var(--chalk);
+  font-weight: 500;
+  font-variant-numeric: tabular-nums;
+  font-size: 0.76rem;
+}
+
+.board-score {
+  font-weight: 700;
+  font-variant-numeric: tabular-nums;
+  padding: 3px 8px;
+  border-radius: 2px;
+  font-size: 0.72rem;
+}
+
+.board-score.critical { background: rgba(238, 53, 46, 0.18); color: var(--mta-red); border: 1px solid rgba(238, 53, 46, 0.3); }
+.board-score.high { background: rgba(255, 99, 25, 0.18); color: var(--mta-orange); border: 1px solid rgba(255, 99, 25, 0.3); }
+.board-score.watch { background: rgba(252, 204, 10, 0.18); color: var(--mta-yellow); border: 1px solid rgba(252, 204, 10, 0.3); }
+
+.board-foot {
+  margin-top: 14px;
+  padding-top: 12px;
+  border-top: 1px solid var(--edge);
+  display: flex;
+  justify-content: space-between;
+  font-size: 0.58rem;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--smoke);
+}
+
+/* ──────── KPI STRIP ──────── */
+.kpi-strip {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap: 12px;
+  margin-bottom: 28px;
+}
+
+.kpi {
+  padding: 22px 24px;
+  border: 1px solid var(--edge);
+  background: linear-gradient(180deg, rgba(20, 26, 40, 0.6), rgba(15, 20, 32, 0.6));
+  position: relative;
+  border-radius: 2px;
+  overflow: hidden;
+}
+
+.kpi::before {
+  content: "";
+  position: absolute;
+  top: 0; left: 0;
+  width: 3px;
+  height: 100%;
+  background: var(--mta-orange);
+  opacity: 0.5;
+}
+
+.kpi.blue::before { background: var(--mta-blue); }
+.kpi.red::before { background: var(--mta-red); }
+.kpi.yellow::before { background: var(--mta-yellow); }
+.kpi.green::before { background: var(--mta-green); }
+
+.kpi-k {
+  font-family: var(--mono);
+  font-size: 0.6rem;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--ash);
+  margin-bottom: 10px;
+}
+
+.kpi-v {
+  font-family: var(--display);
+  font-size: 2.4rem;
+  font-weight: 400;
+  line-height: 1;
+  color: var(--ivory);
+  font-variant-numeric: tabular-nums;
+  letter-spacing: -0.02em;
+}
+
+.kpi-unit {
+  font-family: var(--mono);
+  font-size: 0.62rem;
+  color: var(--ash);
+  margin-top: 6px;
+  letter-spacing: 0.04em;
+}
+
+/* ──────── SECTION HEAD ──────── */
+.section-head {
+  display: flex;
+  align-items: baseline;
+  gap: 20px;
+  padding: 32px 0 20px;
+  margin-top: 16px;
+  border-top: 1px solid var(--edge);
+}
+
+.section-num {
+  font-family: var(--mono);
+  font-size: 0.68rem;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--mta-orange);
+}
+
+.section-title {
+  font-family: var(--display);
+  font-size: 1.8rem;
+  font-weight: 400;
+  letter-spacing: -0.015em;
+  color: var(--ivory);
+  margin: 0;
+}
+
+.section-title em {
+  font-style: italic;
+  font-weight: 300;
+  color: var(--chalk);
+}
+
+.section-sub {
+  margin-left: auto;
+  font-family: var(--mono);
+  font-size: 0.66rem;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--ash);
+}
+
+/* ──────── PIPELINE (step row) ──────── */
+.pipeline {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 14px;
+  margin-bottom: 12px;
+}
+
+.pipe-step {
+  position: relative;
+  padding: 24px 22px 26px;
+  border: 1px solid var(--edge);
+  background: linear-gradient(180deg, rgba(20, 26, 40, 0.55), rgba(15, 20, 32, 0.55));
+  border-radius: 2px;
+}
+
+.pipe-step::after {
+  content: "→";
+  position: absolute;
+  top: 50%;
+  right: -18px;
+  transform: translateY(-50%);
+  color: var(--smoke);
+  font-family: var(--mono);
+  font-size: 1.1rem;
+  font-weight: 500;
+  z-index: 5;
+}
+
+.pipe-step:last-child::after { display: none; }
+
+.pipe-num {
+  font-family: var(--mono);
+  font-size: 0.66rem;
+  letter-spacing: 0.2em;
+  color: var(--mta-orange);
+  margin-bottom: 10px;
+}
+
+.pipe-title {
+  font-family: var(--display);
+  font-size: 1.15rem;
+  font-weight: 500;
+  color: var(--ivory);
+  margin: 0 0 10px;
+  letter-spacing: -0.01em;
+}
+
+.pipe-desc {
+  font-size: 0.86rem;
+  color: var(--chalk);
+  line-height: 1.58;
+  margin-bottom: 14px;
+}
+
+.pipe-tech {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+
+.pipe-tech span {
+  font-family: var(--mono);
+  font-size: 0.58rem;
+  padding: 4px 8px;
+  border: 1px solid var(--edge-strong);
+  color: var(--chalk);
+  letter-spacing: 0.04em;
+  border-radius: 2px;
+}
+
+/* ──────── LIVE FEED TICKER ──────── */
+.ticker-panel {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 20px;
+  margin-bottom: 16px;
+}
+
+.panel {
+  border: 1px solid var(--edge);
+  background: linear-gradient(180deg, rgba(20, 26, 40, 0.55), rgba(15, 20, 32, 0.55));
+  border-radius: 2px;
+  overflow: hidden;
+}
+
+.panel-head {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 16px 22px;
+  border-bottom: 1px solid var(--edge);
+  font-family: var(--mono);
+  font-size: 0.62rem;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--ash);
+}
+
+.panel-head strong {
+  color: var(--ivory);
+  font-weight: 700;
+}
+
+.feed-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  max-height: 380px;
+  overflow-y: auto;
+}
+
+.feed-list::-webkit-scrollbar { width: 6px; }
+.feed-list::-webkit-scrollbar-track { background: transparent; }
+.feed-list::-webkit-scrollbar-thumb { background: var(--edge-strong); }
+
+.feed-item {
+  padding: 14px 22px;
+  border-top: 1px solid var(--edge);
+  display: grid;
+  grid-template-columns: auto 1fr auto;
+  gap: 14px;
+  align-items: center;
+  font-family: var(--sans);
+  transition: background 140ms ease;
+}
+
+.feed-item:first-child { border-top: none; }
+
+.feed-item:hover { background: rgba(255, 99, 25, 0.03); }
+
+.feed-route {
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  display: grid;
+  place-items: center;
+  font-family: var(--sans);
+  font-weight: 800;
+  font-size: 0.82rem;
+  color: #000;
+}
+
+.feed-body {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+  min-width: 0;
+}
+
+.feed-station {
+  color: var(--ivory);
+  font-size: 0.88rem;
+  font-weight: 500;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.feed-meta {
+  font-family: var(--mono);
+  font-size: 0.66rem;
+  color: var(--ash);
+  letter-spacing: 0.04em;
+}
+
+.feed-score-col {
+  text-align: right;
+  font-family: var(--mono);
+}
+
+.feed-score-col .score {
+  font-size: 0.82rem;
+  font-weight: 700;
+  font-variant-numeric: tabular-nums;
+}
+
+.feed-score-col .band {
+  font-size: 0.58rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  margin-top: 2px;
+}
+
+.feed-score-col.critical .score,
+.feed-score-col.critical .band { color: var(--mta-red); }
+
+.feed-score-col.high .score,
+.feed-score-col.high .band { color: var(--mta-orange); }
+
+.feed-score-col.watch .score,
+.feed-score-col.watch .band { color: var(--mta-yellow); }
+
+.feed-score-col.low .score,
+.feed-score-col.low .band { color: var(--signal-green); }
+
+.feed-empty {
+  padding: 60px 22px;
+  text-align: center;
+  font-family: var(--mono);
+  font-size: 0.72rem;
+  color: var(--smoke);
+  letter-spacing: 0.08em;
+}
+
+/* ──────── ROUTES STRIP ──────── */
+.routes-strip {
+  padding: 22px;
+}
+
+.routes-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(62px, 1fr));
+  gap: 10px;
+}
+
+.route-pill {
+  padding: 10px 6px;
+  border: 1px solid var(--edge);
+  border-radius: 2px;
+  text-align: center;
+  font-family: var(--mono);
+  font-size: 0.78rem;
+  color: var(--chalk);
+  background: rgba(10, 14, 26, 0.5);
+  position: relative;
+  transition: all 180ms ease;
+  font-weight: 600;
+  cursor: default;
+}
+
+.route-pill::before {
+  content: "";
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 2px;
+  background: var(--mta-orange);
+}
+
+.route-pill[data-line="1"]::before,
+.route-pill[data-line="2"]::before,
+.route-pill[data-line="3"]::before { background: var(--mta-red); }
+
+.route-pill[data-line="4"]::before,
+.route-pill[data-line="5"]::before,
+.route-pill[data-line="6"]::before,
+.route-pill[data-line="6X"]::before { background: var(--mta-green); }
+
+.route-pill[data-line="7"]::before { background: var(--mta-violet); }
+
+.route-pill[data-line="A"]::before,
+.route-pill[data-line="C"]::before,
+.route-pill[data-line="E"]::before { background: var(--mta-blue); }
+
+.route-pill[data-line="B"]::before,
+.route-pill[data-line="D"]::before,
+.route-pill[data-line="F"]::before,
+.route-pill[data-line="M"]::before { background: var(--mta-orange); }
+
+.route-pill[data-line="N"]::before,
+.route-pill[data-line="Q"]::before,
+.route-pill[data-line="R"]::before,
+.route-pill[data-line="W"]::before { background: var(--mta-yellow); }
+
+.route-pill[data-line="L"]::before { background: #a7a9ac; }
+
+.route-pill[data-line="J"]::before,
+.route-pill[data-line="Z"]::before { background: #996633; }
+
+.route-pill[data-line="G"]::before { background: #6cbe45; }
+
+.route-pill:hover {
+  border-color: var(--edge-strong);
+  background: rgba(20, 26, 40, 0.8);
+  color: var(--ivory);
+}
+.route-pill.active {
+  outline: 2px solid var(--ivory);
+  outline-offset: 2px;
+  transform: scale(1.15);
+  box-shadow: 0 0 0 3px rgba(255,255,255,0.15);
+  z-index: 2;
+  position: relative;
+}
+
+/* ──────── STACK ──────── */
+.stack-wrap {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 20px;
+  margin-bottom: 16px;
+}
+
+.stack-card {
+  padding: 24px 22px;
+  border: 1px solid var(--edge);
+  background: linear-gradient(180deg, rgba(20, 26, 40, 0.5), rgba(15, 20, 32, 0.5));
+  border-radius: 2px;
+}
+
+.stack-label {
+  font-family: var(--mono);
+  font-size: 0.62rem;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--mta-orange);
+  margin-bottom: 14px;
+}
+
+.stack-list {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  font-family: var(--mono);
+  font-size: 0.86rem;
+}
+
+.stack-list li {
+  list-style: none;
+  display: flex;
+  justify-content: space-between;
+  color: var(--chalk);
+  padding: 6px 0;
+  border-bottom: 1px dashed var(--edge);
+}
+
+.stack-list li:last-child { border-bottom: none; }
+
+.stack-list li span:last-child {
+  color: var(--ash);
+  font-size: 0.74rem;
+}
+
+/* ──────── CTA STRIP ──────── */
+.cta-strip {
+  position: relative;
+  padding: 44px 44px;
+  border: 1px solid var(--edge);
+  background:
+    linear-gradient(135deg, rgba(255, 99, 25, 0.08) 0%, rgba(0, 57, 166, 0.08) 100%),
+    linear-gradient(180deg, rgba(20, 26, 40, 0.8), rgba(10, 14, 26, 0.8));
+  border-radius: 2px;
+  margin: 20px 0;
+  display: grid;
+  grid-template-columns: 1fr auto;
+  gap: 36px;
+  align-items: center;
+  overflow: hidden;
+}
+
+.cta-strip::before {
+  content: "";
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 3px;
+  background: linear-gradient(90deg,
+    var(--mta-red) 0%, var(--mta-red) 14%,
+    var(--mta-green) 14%, var(--mta-green) 28%,
+    var(--mta-blue) 28%, var(--mta-blue) 42%,
+    var(--mta-orange) 42%, var(--mta-orange) 56%,
+    var(--mta-yellow) 56%, var(--mta-yellow) 70%,
+    var(--mta-violet) 70%, var(--mta-violet) 84%,
+    #a7a9ac 84%, #a7a9ac 100%);
+}
+
+.cta-strip h2 {
+  font-family: var(--display);
+  font-weight: 300;
+  font-size: clamp(1.6rem, 3vw, 2.4rem);
+  line-height: 1.1;
+  letter-spacing: -0.02em;
+  margin: 0 0 10px;
+  color: var(--ivory);
+}
+
+.cta-strip h2 em {
+  font-style: italic;
+  color: var(--mta-orange);
+  font-weight: 400;
+}
+
+.cta-strip p {
+  margin: 0;
+  color: var(--chalk);
+  font-size: 0.98rem;
+  line-height: 1.58;
+  max-width: 54ch;
+}
+
+/* ──────── FOOTER ──────── */
+.footer {
+  margin-top: 28px;
+  padding: 26px 32px;
+  border: 1px solid var(--edge);
+  border-radius: 2px;
+  background: linear-gradient(180deg, rgba(20, 26, 40, 0.4), rgba(10, 14, 26, 0.4));
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 16px;
+}
+
+.footer-sig {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.footer-sig .name {
+  font-family: var(--display);
+  font-style: italic;
+  font-size: 1.05rem;
+  color: var(--ivory);
+}
+
+.footer-sig .role {
+  font-family: var(--mono);
+  font-size: 0.62rem;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--ash);
+}
+
+.footer-links {
+  display: flex;
+  gap: 18px;
+  font-family: var(--mono);
+  font-size: 0.7rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.footer-links a {
+  color: var(--chalk);
+  text-decoration: none;
+  transition: color 160ms ease;
+}
+
+.footer-links a:hover { color: var(--mta-orange); }
+
+/* ──────── RESPONSIVE ──────── */
+@media (max-width: 1180px) {
+  .hero { grid-template-columns: 1fr; padding: 44px 32px; }
+  .kpi-strip { grid-template-columns: repeat(3, 1fr); }
+  .pipeline { grid-template-columns: repeat(2, 1fr); }
+  .pipe-step::after { display: none; }
+  .ticker-panel { grid-template-columns: 1fr; }
+  .stack-wrap { grid-template-columns: 1fr; }
+  .cta-strip { grid-template-columns: 1fr; padding: 32px; }
+}
+
+@media (max-width: 720px) {
+  .topbar { flex-direction: column; gap: 14px; }
+  .topbar-links { flex-wrap: wrap; justify-content: center; }
+  .hero { padding: 32px 22px; }
+  .hero h1 { font-size: 2.2rem; }
+  .hero::after { display: none; }
+  .kpi-strip { grid-template-columns: repeat(2, 1fr); }
+  .kpi-v { font-size: 1.8rem; }
+  .pipeline { grid-template-columns: 1fr; }
+  .section-head { flex-wrap: wrap; gap: 8px; }
+  .section-sub { margin-left: 0; }
+  .footer { flex-direction: column; align-items: flex-start; }
+}
+
+/* ──────── REVEAL ──────── */
+@keyframes rise {
+  from { opacity: 0; transform: translateY(16px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.reveal { animation: rise 700ms cubic-bezier(0.22, 1, 0.36, 1) both; }
+.reveal-d1 { animation-delay: 60ms; }
+.reveal-d2 { animation-delay: 120ms; }
+.reveal-d3 { animation-delay: 180ms; }
+.reveal-d4 { animation-delay: 240ms; }
+.reveal-d5 { animation-delay: 300ms; }
+.reveal-d6 { animation-delay: 360ms; }
+.reveal-d7 { animation-delay: 420ms; }
+
+@media (prefers-reduced-motion: reduce) {
+  .reveal, .live-dot, .tick, .brand-bullet::after, .hero-eyebrow .dot, .board-live .tick, .hero-note .pulse {
+    animation: none !important;
+  }
+}
+</style>
+</head>
+<body>
+<main class="shell">
+
+  <div class="line-tape reveal">
+    <span class="r1"></span><span class="r2"></span><span class="r3"></span>
+    <span class="r4"></span><span class="r5"></span><span class="r6"></span><span class="r7"></span>
+  </div>
+
+  <!-- ──────── TOP BAR ──────── -->
+  <nav class="topbar reveal reveal-d1">
+    <div class="brand">
+      <div class="brand-bullet">M</div>
+      <div class="brand-text">
+        <span class="brand-title">MTA-Scan <em>/ anomaly detection</em></span>
+        <span class="brand-sub">Real-Time Transit Observability</span>
+      </div>
+    </div>
+    <div class="topbar-links">
+      <a class="top-link" href="/nyc-subway-anomaly/api/health" target="_blank" rel="noopener">Health</a>
+      <a class="top-link" href="https://github.com/stelioszach03/NYC-Subway-Anomaly-Detection" target="_blank" rel="noopener">GitHub</a>
+      <a class="top-link primary" href="/nyc-subway-anomaly/live">Live Map →</a>
+    </div>
+  </nav>
+
+  <!-- ──────── HERO ──────── -->
+  <section class="hero reveal reveal-d2">
+    <div>
+      <div class="hero-eyebrow">
+        <span class="dot"></span>
+        <span>LIVE · Streaming MTA GTFS-RT</span>
+      </div>
+      <h1>
+        Anomaly detection<br>
+        for the <em>NYC Subway</em>,<br>
+        <span class="underline">every 30 seconds.</span>
+      </h1>
+      <p class="hero-lead">
+        A streaming system that ingests <strong>live GTFS-Realtime feeds</strong> from the MTA, computes
+        per-stop headway features, and scores anomalies with an <strong>online ML pipeline</strong>
+        that retrains continuously. Operators triage incidents on a live Mapbox command center — ranked,
+        contextualized, and color-coded by severity.
+      </p>
+      <div class="hero-cta">
+        <a class="btn primary" href="/nyc-subway-anomaly/live">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M3 11l18-8-8 18-2-8-8-2z"/></svg>
+          Launch Command Center
+        </a>
+        <a class="btn" href="/nyc-subway-anomaly/api/summary?window=15m" target="_blank" rel="noopener">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 3v18h18M7 14l4-4 4 4 5-5"/></svg>
+          Live Summary
+        </a>
+        <span class="hero-note"><span class="pulse"></span>API online · 1 488 stops · 26 routes</span>
+      </div>
+    </div>
+
+    <!-- Departures board style -->
+    <div class="board">
+      <div class="board-head">
+        <span class="board-title">Incident Board · Top 5</span>
+        <span class="board-live"><span class="tick"></span>LIVE · 15m</span>
+      </div>
+      <div id="board-rows">
+        <div class="board-row">
+          <span class="route-bullet route-L">L</span>
+          <span class="board-station">14 St – Union Sq</span>
+          <span class="board-gap" title="observed vs predicted headway">512s / 302s</span>
+          <span class="board-score critical">0.91</span>
+        </div>
+        <div class="board-row">
+          <span class="route-bullet route-N">N</span>
+          <span class="board-station">57 St – 7 Av</span>
+          <span class="board-gap">476s / 319s</span>
+          <span class="board-score critical">0.87</span>
+        </div>
+        <div class="board-row">
+          <span class="route-bullet route-A">A</span>
+          <span class="board-station">Fulton St</span>
+          <span class="board-gap">428s / 343s</span>
+          <span class="board-score high">0.74</span>
+        </div>
+        <div class="board-row">
+          <span class="route-bullet route-F">F</span>
+          <span class="board-station">Jay St – MetroTech</span>
+          <span class="board-gap">382s / 296s</span>
+          <span class="board-score high">0.69</span>
+        </div>
+        <div class="board-row">
+          <span class="route-bullet route-Q">Q</span>
+          <span class="board-station">Kings Highway</span>
+          <span class="board-gap">334s / 288s</span>
+          <span class="board-score watch">0.58</span>
+        </div>
+      </div>
+      <div class="board-foot">
+        <span id="board-updated">updated —</span>
+        <span>/api/anomalies</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- ──────── KPI STRIP ──────── -->
+  <section class="kpi-strip reveal reveal-d3">
+    <div class="kpi">
+      <div class="kpi-k">Stations</div>
+      <div class="kpi-v" id="kpi-stations">—</div>
+      <div class="kpi-unit">in last 15m</div>
+    </div>
+    <div class="kpi blue">
+      <div class="kpi-k">Active Trains</div>
+      <div class="kpi-v" id="kpi-trains">—</div>
+      <div class="kpi-unit">route × stop</div>
+    </div>
+    <div class="kpi yellow">
+      <div class="kpi-k">Scored Rows</div>
+      <div class="kpi-v" id="kpi-scored">—</div>
+      <div class="kpi-unit">features × model</div>
+    </div>
+    <div class="kpi red">
+      <div class="kpi-k">Anomalies</div>
+      <div class="kpi-v" id="kpi-anoms">—</div>
+      <div class="kpi-unit">score ≥ 0.60</div>
+    </div>
+    <div class="kpi green">
+      <div class="kpi-k">Critical</div>
+      <div class="kpi-v" id="kpi-critical">—</div>
+      <div class="kpi-unit">score ≥ 0.85</div>
+    </div>
+  </section>
+
+  <!-- ──────── PIPELINE ──────── -->
+  <div class="section-head reveal reveal-d4">
+    <span class="section-num">01 / Pipeline</span>
+    <h2 class="section-title">From GTFS feed to <em>live incident</em></h2>
+    <span class="section-sub">Streaming · Stateful · 30s cadence</span>
+  </div>
+  <div class="pipeline reveal reveal-d4">
+    <div class="pipe-step">
+      <div class="pipe-num">STEP 01</div>
+      <h3 class="pipe-title">Collect</h3>
+      <p class="pipe-desc">
+        Worker polls seven MTA GTFS-Realtime protobuf feeds every ~30 seconds, deduplicates
+        trip updates, and emits normalized stop events.
+      </p>
+      <div class="pipe-tech"><span>Python</span><span>protobuf</span><span>asyncio</span></div>
+    </div>
+    <div class="pipe-step">
+      <div class="pipe-num">STEP 02</div>
+      <h3 class="pipe-title">Persist</h3>
+      <p class="pipe-desc">
+        TimescaleDB stores stop-event time-series with hypertables for route/stop indexing,
+        enabling fast range queries over observed vs predicted headway.
+      </p>
+      <div class="pipe-tech"><span>TimescaleDB</span><span>SQLAlchemy</span><span>Alembic</span></div>
+    </div>
+    <div class="pipe-step">
+      <div class="pipe-num">STEP 03</div>
+      <h3 class="pipe-title">Score</h3>
+      <p class="pipe-desc">
+        Online ML with River retrains continuously on sliding windows. A shadow deep model
+        runs in parallel for A/B quality telemetry and drift tracking.
+      </p>
+      <div class="pipe-tech"><span>River</span><span>PyTorch</span><span>scikit-learn</span></div>
+    </div>
+    <div class="pipe-step">
+      <div class="pipe-num">STEP 04</div>
+      <h3 class="pipe-title">Visualize</h3>
+      <p class="pipe-desc">
+        Next.js command center with Mapbox renders live heatmaps, ranked incident table,
+        and model telemetry. Auto-refresh every 10s with optimistic KPIs.
+      </p>
+      <div class="pipe-tech"><span>Next.js</span><span>Mapbox GL</span><span>Tailwind</span></div>
+    </div>
+  </div>
+
+  <!-- ──────── LIVE FEED + ROUTES ──────── -->
+  <div class="section-head reveal reveal-d5">
+    <span class="section-num">02 / Live</span>
+    <h2 class="section-title">Real-time <em>anomaly stream</em></h2>
+    <span class="section-sub">Auto-refresh · 15m window</span>
+  </div>
+  <div class="ticker-panel reveal reveal-d5">
+    <div class="panel">
+      <div class="panel-head">
+        <span><strong>Anomaly feed</strong> · top scores</span>
+        <span class="board-live"><span class="tick"></span>LIVE</span>
+      </div>
+      <ul class="feed-list" id="feed-list">
+        <li class="feed-empty">awaiting next worker cycle · feed refreshes every 10s</li>
+      </ul>
+    </div>
+
+    <div class="panel">
+      <div class="panel-head">
+        <span><strong>Routes</strong> · NYC Subway system</span>
+        <span id="routes-count">—</span>
+      </div>
+      <div class="routes-strip">
+        <div class="routes-grid" id="routes-grid">
+          <!-- routes populated by JS -->
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ──────── TECH STACK ──────── -->
+  <div class="section-head reveal reveal-d6">
+    <span class="section-num">03 / Architecture</span>
+    <h2 class="section-title">Six services, <em>one dashboard</em></h2>
+    <span class="section-sub">Docker compose · VPS deployment</span>
+  </div>
+  <div class="stack-wrap reveal reveal-d6">
+    <div class="stack-card">
+      <div class="stack-label">Ingestion</div>
+      <ul class="stack-list">
+        <li><span>worker</span><span>MTA poll + dedupe</span></li>
+        <li><span>db</span><span>TimescaleDB</span></li>
+        <li><span>trainer</span><span>River online</span></li>
+      </ul>
+    </div>
+    <div class="stack-card">
+      <div class="stack-label">Inference</div>
+      <ul class="stack-list">
+        <li><span>dl_shadow</span><span>PyTorch A/B</span></li>
+        <li><span>api</span><span>FastAPI</span></li>
+        <li><span>telemetry</span><span>drift metrics</span></li>
+      </ul>
+    </div>
+    <div class="stack-card">
+      <div class="stack-label">Surface</div>
+      <ul class="stack-list">
+        <li><span>ui</span><span>Next.js 14</span></li>
+        <li><span>map</span><span>Mapbox GL</span></li>
+        <li><span>nginx</span><span>SSL + subpath</span></li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- ──────── CTA STRIP ──────── -->
+  <section class="cta-strip reveal reveal-d7">
+    <div>
+      <h2>Open the <em>live command center.</em></h2>
+      <p>
+        Real map of New York City. Real MTA feeds. Real anomalies as they happen —
+        ranked, scored, and visualized for operator triage.
+      </p>
+    </div>
+    <a class="btn primary" href="/nyc-subway-anomaly/live" style="font-size: 0.85rem; padding: 18px 32px;">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+        <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z"/><circle cx="12" cy="10" r="3"/>
+      </svg>
+      Launch Map →
+    </a>
+  </section>
+
+  <!-- ──────── FOOTER ──────── -->
+  <footer class="footer reveal reveal-d7">
+    <div class="footer-sig">
+      <span class="name">Stelios Zacharioudakis</span>
+      <span class="role">ML Engineer & Researcher · Athens → Toronto</span>
+    </div>
+    <div class="footer-links">
+      <a href="https://stelioszach.com" target="_blank" rel="noopener">Portfolio</a>
+      <a href="https://github.com/stelioszach03" target="_blank" rel="noopener">GitHub</a>
+      <a href="https://www.linkedin.com/in/stylianos-georgios-zacharioudakis-47024428a" target="_blank" rel="noopener">LinkedIn</a>
+      <a href="/nyc-subway-anomaly/live">Live Map</a>
+    </div>
+  </footer>
+</main>
+
+<script>
+(function(){
+  "use strict";
+
+  const BASE = "/nyc-subway-anomaly/api";
+  const $ = (id) => document.getElementById(id);
+
+  function fmt(n) {
+    if (n == null || Number.isNaN(n)) return "—";
+    const v = Number(n);
+    if (v >= 1_000_000) return (v / 1_000_000).toFixed(1) + "M";
+    if (v >= 1_000) return (v / 1_000).toFixed(1) + "k";
+    return String(Math.round(v));
+  }
+
+  function escapeHtml(s) {
+    return String(s || "").replace(/[&<>"']/g, c => ({
+      "&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"
+    }[c]));
+  }
+
+  function routeColor(route) {
+    const r = String(route || "");
+    if (["1","2","3"].includes(r)) return "var(--mta-red)";
+    if (["4","5","6","6X"].includes(r)) return "var(--mta-green)";
+    if (r === "7") return "var(--mta-violet)";
+    if (["A","C","E"].includes(r)) return "var(--mta-blue)";
+    if (["B","D","F","M"].includes(r)) return "var(--mta-orange)";
+    if (["N","Q","R","W"].includes(r)) return "var(--mta-yellow)";
+    if (r === "L") return "#a7a9ac";
+    if (["J","Z"].includes(r)) return "#996633";
+    if (r === "G") return "#6cbe45";
+    return "#a7a9ac";
+  }
+
+  function routeTextColor(route) {
+    const bg = routeColor(route);
+    // Yellow/gray => black text; rest => white
+    if (bg === "var(--mta-yellow)" || bg === "#a7a9ac") return "#000";
+    return "#fff";
+  }
+
+  function scoreBand(s) {
+    const v = Number(s || 0);
+    if (v >= 0.85) return "critical";
+    if (v >= 0.6) return "high";
+    if (v >= 0.35) return "watch";
+    return "low";
+  }
+
+  async function api(path) {
+    try {
+      const res = await fetch(BASE + path, { cache: "no-store" });
+      if (!res.ok) throw new Error("HTTP " + res.status);
+      return await res.json();
+    } catch (e) { return null; }
+  }
+
+  /* ─── State: selected route for filtering ─── */
+  let selectedRoute = "All";
+
+  /* ─── Routes strip ─── */
+  async function loadRoutes() {
+    const data = await api("/routes");
+    if (!data || !Array.isArray(data.routes)) return;
+    $("routes-count").textContent = data.routes.length + " lines";
+    const grid = $("routes-grid");
+    // "All" pill first
+    const allPill = `<div class="route-pill ${selectedRoute === "All" ? "active" : ""}" data-line="All" style="color:#fff;background:#555;font-size:0.62rem;letter-spacing:.12em;">ALL</div>`;
+    grid.innerHTML = allPill + data.routes.map(r => {
+      const bg = routeColor(r);
+      const fg = routeTextColor(r);
+      const active = selectedRoute === r ? " active" : "";
+      return `<div class="route-pill${active}" data-line="${escapeHtml(r)}" style="color: ${fg}; background: ${bg};">${escapeHtml(r)}</div>`;
+    }).join("");
+
+    // Click handler on each pill
+    grid.querySelectorAll(".route-pill").forEach(pill => {
+      pill.style.cursor = "pointer";
+      pill.addEventListener("click", () => {
+        selectedRoute = pill.dataset.line;
+        // Update active state
+        grid.querySelectorAll(".route-pill").forEach(p => p.classList.remove("active"));
+        pill.classList.add("active");
+        loadFeed();   // re-fetch filtered
+        loadSummary(); // also update summary window
+      });
+    });
+  }
+
+  /* ─── Summary KPIs ─── */
+  async function loadSummary() {
+    const s = await api("/summary?window=15m");
+    if (!s) return;
+    $("kpi-stations").textContent = fmt(s.stations_total);
+    $("kpi-trains").textContent = fmt(s.trains_active);
+    $("kpi-scored").textContent = fmt(s.scored_rows);
+    $("kpi-anoms").textContent = fmt(s.anomalies_count);
+    $("kpi-critical").textContent = fmt(s.anomalies_high);
+
+    if (s.last_updated_ny) {
+      const t = s.last_updated_ny.split("T")[1]?.slice(0, 5) || "—";
+      $("board-updated").textContent = "updated " + t + " NY";
+    }
+  }
+
+  /* ─── Anomaly feed ─── */
+  async function loadFeed() {
+    const rows = await api("/anomalies?window=15m&route_id=" + encodeURIComponent(selectedRoute) + "&limit=20");
+    if (!rows) return;
+    const list = $("feed-list");
+    if (!Array.isArray(rows) || !rows.length) {
+      list.innerHTML = '<li class="feed-empty">no anomalies in the last 15m · worker still warming up</li>';
+      return;
+    }
+    list.innerHTML = rows.slice(0, 12).map(r => {
+      const band = scoreBand(r.anomaly_score);
+      const bg = routeColor(r.route_id);
+      const fg = routeTextColor(r.route_id);
+      const hwDelta = (r.headway_sec != null && r.predicted_headway_sec != null)
+        ? `+${Math.round(r.headway_sec - r.predicted_headway_sec)}s vs model`
+        : "—";
+      const t = r.observed_ts_ny?.split("T")[1]?.slice(0, 8) || "—";
+      return `
+        <li class="feed-item">
+          <span class="feed-route" style="background: ${bg}; color: ${fg};">${escapeHtml(r.route_id)}</span>
+          <div class="feed-body">
+            <div class="feed-station">${escapeHtml(r.stop_name || r.stop_id)}</div>
+            <div class="feed-meta">${escapeHtml(hwDelta)} · ${escapeHtml(t)}</div>
+          </div>
+          <div class="feed-score-col ${band}">
+            <div class="score">${(Number(r.anomaly_score) || 0).toFixed(3)}</div>
+            <div class="band">${band}</div>
+          </div>
+        </li>`;
+    }).join("");
+
+    // Also refresh the hero incident board with top 5
+    const top5 = rows.slice(0, 5);
+    if (top5.length) {
+      const boardRows = top5.map(r => {
+        const band = scoreBand(r.anomaly_score);
+        const bg = routeColor(r.route_id);
+        const fg = routeTextColor(r.route_id);
+        const hw = Math.round(r.headway_sec || 0);
+        const pred = Math.round(r.predicted_headway_sec || 0);
+        return `
+          <div class="board-row">
+            <span class="route-bullet" style="background: ${bg}; color: ${fg};">${escapeHtml(r.route_id)}</span>
+            <span class="board-station">${escapeHtml(r.stop_name || r.stop_id)}</span>
+            <span class="board-gap">${hw}s / ${pred}s</span>
+            <span class="board-score ${band}">${(Number(r.anomaly_score) || 0).toFixed(2)}</span>
+          </div>`;
+      }).join("");
+      $("board-rows").innerHTML = boardRows;
+    }
+  }
+
+  /* ─── boot ─── */
+  (async function boot() {
+    await Promise.all([loadRoutes(), loadSummary(), loadFeed()]);
+    setInterval(loadSummary, 10_000);
+    setInterval(loadFeed, 12_000);
+  })();
+})();
+</script>
+</body>
+</html>
