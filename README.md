@@ -1,5 +1,7 @@
 <div align="center">
 
+[![CI](https://github.com/stelioszach03/NYC-Subway-Anomaly-Detection/actions/workflows/ci.yml/badge.svg)](https://github.com/stelioszach03/NYC-Subway-Anomaly-Detection/actions)
+
 # MTA-Scan · NYC Subway Anomaly Detection
 
 **Real-time anomaly detection for the NYC Subway, powered by live GTFS-RT, online ML, and a production-grade command center.**
