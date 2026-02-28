@@ -46,8 +46,10 @@ def test_ml_online_updates_scores_once(tmp_path):
                 event_ts=None,
                 route_id=route_id,
                 stop_id=stop_id,
+                headway_sec=float(random.randint(60, 600)),
+                predicted_headway_sec=None,
                 anomaly_score=0.0,
-                residual=float(random.randint(60, 600)),
+                residual=None,
                 window_sec=300,
             )
         )
@@ -68,6 +70,8 @@ def test_ml_online_updates_scores_once(tmp_path):
             .first()
         )
         assert latest is not None
+        assert isinstance(latest.headway_sec, float)
+        assert isinstance(latest.predicted_headway_sec, float)
         assert isinstance(latest.residual, float)
         assert isinstance(latest.anomaly_score, float)
         assert 0.0 <= latest.anomaly_score <= 1.0

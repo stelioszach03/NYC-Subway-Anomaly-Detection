@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useRef, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import mapboxgl, { Map, LngLatLike, Popup } from 'mapbox-gl';
 import { Button } from '../components/ui/Button';
 import { Select } from '../components/ui/Select';
@@ -6,7 +6,8 @@ import { Switch } from '../components/ui/Switch';
 import { Kpis } from '../components/Kpis';
 import { Legend } from '../components/Legend';
 import { AnomalyTable } from '../components/AnomalyTable';
-import { useRoutes, useSummary, useStops, useHeatmap } from '../lib/hooks';
+import { ModelTelemetry } from '../components/ModelTelemetry';
+import { useRoutes, useSummary, useStops, useHeatmap, useModelTelemetry } from '../lib/hooks';
 import { scoreToColor } from '../lib/utils';
 import { formatNYFromEpoch, fromNowEpoch } from '../lib/time';
 
@@ -20,9 +21,10 @@ export default function MapPage() {
   const [autoRefresh, setAutoRefresh] = useState<boolean>(true);
 
   const routes = useRoutes();
-  const summary = useSummary('15m');
+  const summary = useSummary('15m', autoRefresh ? 15000 : undefined);
   const stops = useStops();
   const heatmap = useHeatmap(routeId, '60m', autoRefresh ? 15000 : undefined);
+  const telemetry = useModelTelemetry(autoRefresh ? 30000 : undefined);
 
   useEffect(() => {
     if (!MAPBOX_TOKEN) return;
@@ -173,6 +175,7 @@ export default function MapPage() {
           <Button onClick={() => location.reload()} className="ml-auto" variant="ghost">Refresh now</Button>
         </div>
         <Kpis summary={summary} />
+        <ModelTelemetry telemetry={telemetry} />
         <Legend />
         <AnomalyTable route={routeId} />
         {Array.isArray(heatmap?.features) && heatmap.features.length === 0 && (

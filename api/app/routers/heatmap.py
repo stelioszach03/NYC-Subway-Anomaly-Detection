@@ -64,6 +64,8 @@ async def get_heatmap(
                 Score.stop_id,
                 func.avg(Score.anomaly_score).label("avg_score"),
                 func.avg(Score.residual).label("avg_res"),
+                func.avg(Score.headway_sec).label("avg_headway"),
+                func.avg(Score.predicted_headway_sec).label("avg_pred_headway"),
                 func.max(Score.observed_ts).label("max_observed_ts"),
                 func.max(Score.event_ts).label("max_event_ts"),
                 func.max(Score.route_id).label("route_id"),
@@ -77,7 +79,7 @@ async def get_heatmap(
         rows = session.execute(base).all()
 
     features: List[dict] = []
-    for sid, avg_s, avg_r, obs_ts_row, evt_ts_row, r_id in rows:
+    for sid, avg_s, avg_r, avg_h, avg_pred_h, obs_ts_row, evt_ts_row, r_id in rows:
         st = stop_map.get(sid)
         if not st:
             continue
@@ -88,6 +90,8 @@ async def get_heatmap(
             "route_id": r_id,
             "anomaly_score": float(avg_s) if avg_s is not None else 0.0,
             "residual": float(avg_r) if avg_r is not None else 0.0,
+            "headway_sec": float(avg_h) if avg_h is not None else None,
+            "predicted_headway_sec": float(avg_pred_h) if avg_pred_h is not None else None,
         }
         # Add observed timestamp pack (primary)
         ts_observed = obs_ts_row or target_ts

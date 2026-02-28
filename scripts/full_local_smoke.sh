@@ -36,6 +36,8 @@ curl -sf http://localhost:8000/api/health | jq . >/dev/null || {
   echo "[smoke] ERROR: API health check failed" >&2
   exit 1
 }
+echo "[smoke] running API healthtest suite"
+make healthtest
 
 # 5) Unit tests
 echo "[smoke] running unit tests"
@@ -68,4 +70,3 @@ npm test
 popd >/dev/null
 
 echo "\n✅ Full local smoke passed"
-

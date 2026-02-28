@@ -59,13 +59,13 @@ async def get_summary(window: str = Query(default="15m")) -> dict:
             ).scalar()
             or 0
         )
-        # trains_active approximation: distinct (route_id, stop_id) with residual != 0
+        # trains_active approximation: distinct (route_id, stop_id) with observed headway signal
         trains_active = (
             session.execute(
                 select(func.count(func.distinct(func.concat(Score.route_id, ":", Score.stop_id))))
                 .where(Score.observed_ts >= since)
-                .where(Score.residual.isnot(None))
-                .where(Score.residual != 0)
+                .where(Score.headway_sec.is_not(None))
+                .where(Score.headway_sec > 0)
             ).scalar()
             or 0
         )

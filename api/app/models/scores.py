@@ -18,6 +18,10 @@ class Score(Base):
     event_ts: Mapped[datetime] = mapped_column(DateTime(timezone=True), nullable=True)
     route_id: Mapped[str] = mapped_column(String, nullable=False)
     stop_id: Mapped[str] = mapped_column(String, nullable=False)
+    # Raw observed/derived headway in seconds from collector stage
+    headway_sec: Mapped[float] = mapped_column(Float, nullable=True)
+    # Model prediction for headway in seconds
+    predicted_headway_sec: Mapped[float] = mapped_column(Float, nullable=True)
     anomaly_score: Mapped[float] = mapped_column(Float, nullable=False)
     residual: Mapped[float] = mapped_column(Float, nullable=True)
     window_sec: Mapped[int] = mapped_column(Integer, nullable=True)
