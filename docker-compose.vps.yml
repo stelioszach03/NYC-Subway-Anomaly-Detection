@@ -1,0 +1,100 @@
+services:
+  db:
+    image: timescale/timescaledb:latest-pg16
+    environment:
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_DB: mta
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres -d mta"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  api:
+    build:
+      context: .
+      dockerfile: docker/Dockerfile.api
+    env_file:
+      - infra/.env
+    depends_on:
+      db:
+        condition: service_healthy
+    ports:
+      - "18600:8000"
+    volumes:
+      - ./gtfs_subway:/data/gtfs:ro
+
+  worker:
+    build:
+      context: .
+      dockerfile: docker/Dockerfile.worker
+    env_file:
+      - infra/.env
+    depends_on:
+      db:
+        condition: service_healthy
+    volumes:
+      - ./gtfs_subway:/data/gtfs:rw
+
+  trainer:
+    build:
+      context: .
+      dockerfile: docker/Dockerfile.worker
+    env_file:
+      - infra/.env
+    depends_on:
+      db:
+        condition: service_healthy
+    command: ["python", "-m", "worker.ml_online", "--tick", "5", "--batch-limit", "2048", "--max-batches", "6"]
+    volumes:
+      - ./gtfs_subway:/data/gtfs:rw
+
+  dl_shadow:
+    build:
+      context: .
+      dockerfile: docker/Dockerfile.worker
+    env_file:
+      - infra/.env
+    depends_on:
+      db:
+        condition: service_healthy
+    command:
+      [
+        "python",
+        "-m",
+        "worker.ssl_shadow",
+        "--tick",
+        "120",
+        "--window-minutes",
+        "240",
+        "--limit",
+        "18000",
+        "--epochs",
+        "4",
+        "--batch-size",
+        "1024"
+      ]
+    volumes:
+      - ./gtfs_subway:/data/gtfs:rw
+
+  ui:
+    build:
+      context: .
+      dockerfile: docker/Dockerfile.ui
+      args:
+        NEXT_PUBLIC_MAPBOX_TOKEN: ${MAPBOX_TOKEN:-}
+        UI_BACKEND_URL: http://api:8000
+        NEXT_PUBLIC_BASE_PATH: /nyc-subway-anomaly
+    environment:
+      - UI_BACKEND_URL=http://api:8000
+      - NEXT_PUBLIC_BASE_PATH=/nyc-subway-anomaly
+    depends_on:
+      api:
+        condition: service_started
+    ports:
+      - "18700:3000"
+    healthcheck:
+      test: ["CMD-SHELL", "wget -qO- http://localhost:3000/nyc-subway-anomaly >/dev/null 2>&1 || exit 1"]
+      interval: 15s
+      timeout: 5s
+      retries: 10

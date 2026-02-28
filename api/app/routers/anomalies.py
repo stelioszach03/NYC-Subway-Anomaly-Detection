@@ -1,11 +1,11 @@
 from __future__ import annotations
 
 from datetime import datetime, timedelta, timezone
-from typing import List, Dict
+from typing import Dict, List
 
 from fastapi import APIRouter, Query
 from pydantic import BaseModel
-from sqlalchemy import select
+from sqlalchemy import desc, select
 from sqlalchemy.orm import sessionmaker
 
 from ..models import Score
@@ -43,7 +43,12 @@ def _parse_window(window: str) -> int:
 
 
 @router.get("", response_model=List[AnomalyItem])
-async def list_anomalies(window: str = Query(default="15m"), route_id: str = Query(default="All")) -> List[Dict]:
+async def list_anomalies(
+    window: str = Query(default="15m"),
+    route_id: str = Query(default="All"),
+    min_score: float = Query(default=0.0, ge=0.0, le=1.0),
+    limit: int = Query(default=300, ge=20, le=1000),
+) -> List[Dict]:
     seconds = _parse_window(window)
     since = datetime.now(timezone.utc) - timedelta(seconds=seconds)
     engine = get_engine()
@@ -62,10 +67,13 @@ async def list_anomalies(window: str = Query(default="15m"), route_id: str = Que
                 Score.residual,
             )
             .where(Score.observed_ts >= since)
+            .where(Score.predicted_headway_sec.is_not(None))
         )
         if route_id and route_id.lower() != "all":
             stmt = stmt.where(Score.route_id == route_id)
-        stmt = stmt.order_by(Score.observed_ts.desc()).limit(200)
+        if min_score > 0:
+            stmt = stmt.where(Score.anomaly_score >= min_score)
+        stmt = stmt.order_by(desc(Score.anomaly_score), desc(Score.observed_ts)).limit(limit)
         rows = session.execute(stmt).all()
 
     stops = {s["stop_id"]: s for s in _load_stops()}
@@ -81,7 +89,6 @@ async def list_anomalies(window: str = Query(default="15m"), route_id: str = Que
             "anomaly_score": float(score) if score is not None else None,
             "residual": float(res) if res is not None else None,
         }
-        # Canonical observed/event packs
         item.update(pack_with_prefix("observed", observed_ts))
         item.update(pack_with_prefix("event", event_ts))
         out.append(item)

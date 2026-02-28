@@ -27,7 +27,41 @@ def _read_model_telemetry(path: str) -> dict:
         if not isinstance(data, dict):
             return {"status": "unavailable"}
         out = {"status": "available"}
-        for key in ("rows_seen", "rows_updated", "drift_events", "mae_ema", "last_run_utc"):
+        for key in (
+            "rows_seen",
+            "rows_updated",
+            "drift_events",
+            "mae_ema",
+            "residual_q90",
+            "residual_q99",
+            "last_batch_processed",
+            "unscored_backlog",
+            "last_run_utc",
+        ):
+            if key in data:
+                out[key] = data[key]
+        return out
+    except Exception as e:
+        return {"status": "error", "error": repr(e)}
+
+
+def _read_dl_shadow_telemetry(path: str) -> dict:
+    if not path or not os.path.exists(path):
+        return {"status": "unavailable"}
+    try:
+        with open(path, "r", encoding="utf-8") as f:
+            data = json.load(f)
+        if not isinstance(data, dict):
+            return {"status": "unavailable"}
+        out = {"status": "available"}
+        for key in (
+            "model",
+            "samples_used",
+            "recon_error_p99",
+            "shadow_alerts_high",
+            "corr_with_online_score",
+            "last_run_utc",
+        ):
             if key in data:
                 out[key] = data[key]
         return out
@@ -93,6 +127,10 @@ async def deep_health() -> dict:
 
     checks["model"] = _read_model_telemetry(s.MODEL_TELEMETRY_PATH)
     if checks["model"].get("status") == "error":
+        overall_status = "degraded"
+
+    checks["model_dl_shadow"] = _read_dl_shadow_telemetry(s.MODEL_DL_TELEMETRY_PATH)
+    if checks["model_dl_shadow"].get("status") == "error":
         overall_status = "degraded"
 
     return {
