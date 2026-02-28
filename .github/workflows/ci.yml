@@ -41,3 +41,6 @@ jobs:
 
       - name: Build Worker image
         run: docker build -f docker/Dockerfile.worker .
+
+      - name: Build UI image
+        run: docker build -f docker/Dockerfile.ui .
