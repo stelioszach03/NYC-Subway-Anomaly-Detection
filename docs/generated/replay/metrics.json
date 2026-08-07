@@ -4,14 +4,14 @@
     "rows": 216,
     "positives": 16,
     "false_alarm_rate": 0.03,
-    "mean_reciprocal_rank": 0.1783874367054514,
+    "mean_reciprocal_rank": 0.19922077003878474,
     "precision_at_k": {
-      "p@5": 0.8,
+      "p@5": 1.0,
       "p@10": 0.8,
       "p@20": 0.8
     },
     "recall_at_k": {
-      "r@5": 0.25,
+      "r@5": 0.3125,
       "r@10": 0.5,
       "r@20": 1.0
     },
@@ -26,7 +26,7 @@
     "rows": 216,
     "positives": 16,
     "false_alarm_rate": 0.01,
-    "mean_reciprocal_rank": 0.12767399834001916,
+    "mean_reciprocal_rank": 0.12778433691492758,
     "precision_at_k": {
       "p@5": 0.8,
       "p@10": 0.8,
@@ -70,16 +70,16 @@
     "rows": 216,
     "positives": 16,
     "false_alarm_rate": 0.0,
-    "mean_reciprocal_rank": 0.17363011784246868,
+    "mean_reciprocal_rank": 0.18355941590102856,
     "precision_at_k": {
       "p@5": 1.0,
       "p@10": 0.8,
-      "p@20": 0.4
+      "p@20": 0.5
     },
     "recall_at_k": {
       "r@5": 0.3125,
       "r@10": 0.5,
-      "r@20": 0.5
+      "r@20": 0.625
     },
     "incident_detection_rate": 0.3333333333333333,
     "detected_incidents": 1,

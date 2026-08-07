@@ -14,6 +14,7 @@ but now provides richer operational context:
 """
 from __future__ import annotations
 
+import hashlib
 import json
 import os
 from datetime import datetime, timedelta, timezone
@@ -88,9 +89,19 @@ FEATURE_DESCRIPTIONS: dict[str, str] = {
 
 
 def _safe_hash(value: str, mod: int) -> float:
+    """Stable hash of a categorical value into [0, 1).
+
+    Uses blake2b rather than the builtin ``hash``: CPython randomizes string
+    hashing per process (PYTHONHASHSEED), so ``hash`` gave a station a
+    different feature value after every restart. That made the online model's
+    persisted checkpoints inconsistent with freshly computed features and made
+    the replay evaluation non-reproducible run to run.
+    """
+
     if not value:
         return 0.0
-    return float(abs(hash(value)) % mod) / float(mod)
+    digest = hashlib.blake2b(value.encode("utf-8"), digest_size=8).digest()
+    return float(int.from_bytes(digest, "big") % mod) / float(mod)
 
 
 def _direction_from_stop_id(stop_id: str) -> str:

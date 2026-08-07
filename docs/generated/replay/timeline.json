@@ -3,7 +3,7 @@
     {
       "index": 0,
       "observed_ts": "2026-02-05T11:00:00+00:00",
-      "model_peak_score": 0.2210591265945273,
+      "model_peak_score": 0.21412478513402472,
       "baseline_zscore_peak": 0.0,
       "baseline_ewma_peak": 0.0,
       "baseline_threshold_peak": 0.0,
@@ -13,11 +13,11 @@
       "top_routes": [
         {
           "route_id": "F",
-          "peak_score": 0.2210591265945273
+          "peak_score": 0.21412478513402472
         },
         {
           "route_id": "A",
-          "peak_score": 0.19195672288974064
+          "peak_score": 0.1910403208021743
         },
         {
           "route_id": "7",
@@ -30,8 +30,8 @@
           "stop_id": "F09N",
           "stop_name": "Jay St - MetroTech",
           "headway_sec": 244.0,
-          "predicted_headway_sec": 60.21769741508694,
-          "online_model_score": 0.2210591265945273,
+          "predicted_headway_sec": 66.29801870659537,
+          "online_model_score": 0.21412478513402472,
           "baseline_zscore": 0.0,
           "baseline_ewma": 0.0,
           "baseline_threshold": 0.0,
@@ -42,8 +42,8 @@
           "stop_id": "F20N",
           "stop_name": "Bergen St",
           "headway_sec": 284.0,
-          "predicted_headway_sec": 99.15033852928303,
-          "online_model_score": 0.2031780717638264,
+          "predicted_headway_sec": 102.41009517809309,
+          "online_model_score": 0.2001083318332273,
           "baseline_zscore": 0.0,
           "baseline_ewma": 0.0,
           "baseline_threshold": 0.0,
@@ -54,8 +54,8 @@
           "stop_id": "A15N",
           "stop_name": "125 St",
           "headway_sec": 224.0,
-          "predicted_headway_sec": 72.3174748398902,
-          "online_model_score": 0.19195672288974064,
+          "predicted_headway_sec": 73.06884816753926,
+          "online_model_score": 0.1910403208021743,
           "baseline_zscore": 0.0,
           "baseline_ewma": 0.0,
           "baseline_threshold": 0.0,
@@ -90,7 +90,7 @@
     {
       "index": 1,
       "observed_ts": "2026-02-05T11:05:00+00:00",
-      "model_peak_score": 0.21469804141715798,
+      "model_peak_score": 0.21774705195111163,
       "baseline_zscore_peak": 0.06666666666666667,
       "baseline_ewma_peak": 0.0,
       "baseline_threshold_peak": 0.0,
@@ -100,15 +100,15 @@
       "top_routes": [
         {
           "route_id": "7",
-          "peak_score": 0.21469804141715798
+          "peak_score": 0.21774705195111163
         },
         {
           "route_id": "F",
-          "peak_score": 0.18198862150270853
+          "peak_score": 0.17890500637753265
         },
         {
           "route_id": "A",
-          "peak_score": 0.172725628456818
+          "peak_score": 0.1720292213890619
         }
       ],
       "top_stops": [
@@ -117,20 +117,8 @@
           "stop_id": "705N",
           "stop_name": "74 St - Broadway",
           "headway_sec": 232.0,
-          "predicted_headway_sec": 80.04112617299843,
-          "online_model_score": 0.21469804141715798,
-          "baseline_zscore": 0.06666666666666667,
-          "baseline_ewma": 0.0,
-          "baseline_threshold": 0.0,
-          "reasons": []
-        },
-        {
-          "route_id": "F",
-          "stop_id": "F20N",
-          "stop_name": "Bergen St",
-          "headway_sec": 292.0,
-          "predicted_headway_sec": 153.2837915485921,
-          "online_model_score": 0.18198862150270853,
+          "predicted_headway_sec": 77.8420286892826,
+          "online_model_score": 0.21774705195111163,
           "baseline_zscore": 0.06666666666666667,
           "baseline_ewma": 0.0,
           "baseline_threshold": 0.0,
@@ -141,8 +129,20 @@
           "stop_id": "726N",
           "stop_name": "Queensboro Plaza",
           "headway_sec": 212.0,
-          "predicted_headway_sec": 94.09983506423116,
-          "online_model_score": 0.1817840624577285,
+          "predicted_headway_sec": 92.43090753318693,
+          "online_model_score": 0.18416453309848263,
+          "baseline_zscore": 0.06666666666666667,
+          "baseline_ewma": 0.0,
+          "baseline_threshold": 0.0,
+          "reasons": []
+        },
+        {
+          "route_id": "F",
+          "stop_id": "F20N",
+          "stop_name": "Bergen St",
+          "headway_sec": 292.0,
+          "predicted_headway_sec": 156.38537954133233,
+          "online_model_score": 0.17890500637753265,
           "baseline_zscore": 0.06666666666666667,
           "baseline_ewma": 0.0,
           "baseline_threshold": 0.0,
@@ -153,8 +153,8 @@
           "stop_id": "F09N",
           "stop_name": "Jay St - MetroTech",
           "headway_sec": 252.0,
-          "predicted_headway_sec": 126.6938946901981,
-          "online_model_score": 0.17866700434172642,
+          "predicted_headway_sec": 129.80129008258905,
+          "online_model_score": 0.17514424325460934,
           "baseline_zscore": 0.06666666666666667,
           "baseline_ewma": 0.0,
           "baseline_threshold": 0.0,
@@ -165,8 +165,8 @@
           "stop_id": "A15N",
           "stop_name": "125 St",
           "headway_sec": 232.0,
-          "predicted_headway_sec": 115.35110350574251,
-          "online_model_score": 0.172725628456818,
+          "predicted_headway_sec": 116.03859448420846,
+          "online_model_score": 0.1720292213890619,
           "baseline_zscore": 0.06666666666666667,
           "baseline_ewma": 0.0,
           "baseline_threshold": 0.0,
@@ -177,7 +177,7 @@
     {
       "index": 2,
       "observed_ts": "2026-02-05T11:10:00+00:00",
-      "model_peak_score": 0.15575354671008013,
+      "model_peak_score": 0.1590809880793644,
       "baseline_zscore_peak": 0.1,
       "baseline_ewma_peak": 0.0,
       "baseline_threshold_peak": 0.0,
@@ -187,15 +187,15 @@
       "top_routes": [
         {
           "route_id": "7",
-          "peak_score": 0.15575354671008013
+          "peak_score": 0.1590809880793644
         },
         {
           "route_id": "F",
-          "peak_score": 0.14422448867094445
+          "peak_score": 0.14065509936892182
         },
         {
           "route_id": "A",
-          "peak_score": 0.1378035784791237
+          "peak_score": 0.13727373518643893
         }
       ],
       "top_stops": [
@@ -204,38 +204,8 @@
           "stop_id": "705N",
           "stop_name": "74 St - Broadway",
           "headway_sec": 240.0,
-          "predicted_headway_sec": 147.0235580024056,
-          "online_model_score": 0.15575354671008013,
-          "baseline_zscore": 0.1,
-          "baseline_ewma": 0.0,
-          "baseline_threshold": 0.0,
-          "reasons": [
-            "station baseline deviation",
-            "rolling z-score jump"
-          ]
-        },
-        {
-          "route_id": "F",
-          "stop_id": "F20N",
-          "stop_name": "Bergen St",
-          "headway_sec": 300.0,
-          "predicted_headway_sec": 212.34831478711772,
-          "online_model_score": 0.14422448867094445,
-          "baseline_zscore": 0.1,
-          "baseline_ewma": 0.0,
-          "baseline_threshold": 0.0,
-          "reasons": [
-            "station baseline deviation",
-            "rolling z-score jump"
-          ]
-        },
-        {
-          "route_id": "F",
-          "stop_id": "F09N",
-          "stop_name": "Jay St - MetroTech",
-          "headway_sec": 260.0,
-          "predicted_headway_sec": 177.71660590896764,
-          "online_model_score": 0.14409685808075465,
+          "predicted_headway_sec": 144.6193182962778,
+          "online_model_score": 0.1590809880793644,
           "baseline_zscore": 0.1,
           "baseline_ewma": 0.0,
           "baseline_threshold": 0.0,
@@ -249,8 +219,38 @@
           "stop_id": "726N",
           "stop_name": "Queensboro Plaza",
           "headway_sec": 220.0,
-          "predicted_headway_sec": 141.9532882831212,
-          "online_model_score": 0.14363098621061737,
+          "predicted_headway_sec": 139.88486515809115,
+          "online_model_score": 0.14660679042118588,
+          "baseline_zscore": 0.1,
+          "baseline_ewma": 0.0,
+          "baseline_threshold": 0.0,
+          "reasons": [
+            "station baseline deviation",
+            "rolling z-score jump"
+          ]
+        },
+        {
+          "route_id": "F",
+          "stop_id": "F20N",
+          "stop_name": "Bergen St",
+          "headway_sec": 300.0,
+          "predicted_headway_sec": 215.5094279633236,
+          "online_model_score": 0.14065509936892182,
+          "baseline_zscore": 0.1,
+          "baseline_ewma": 0.0,
+          "baseline_threshold": 0.0,
+          "reasons": [
+            "station baseline deviation",
+            "rolling z-score jump"
+          ]
+        },
+        {
+          "route_id": "F",
+          "stop_id": "F09N",
+          "stop_name": "Jay St - MetroTech",
+          "headway_sec": 260.0,
+          "predicted_headway_sec": 180.583164256471,
+          "online_model_score": 0.14054539534900448,
           "baseline_zscore": 0.1,
           "baseline_ewma": 0.0,
           "baseline_threshold": 0.0,
@@ -264,8 +264,8 @@
           "stop_id": "A15N",
           "stop_name": "125 St",
           "headway_sec": 240.0,
-          "predicted_headway_sec": 163.39837767752547,
-          "online_model_score": 0.1378035784791237,
+          "predicted_headway_sec": 163.8928048580314,
+          "online_model_score": 0.13727373518643893,
           "baseline_zscore": 0.1,
           "baseline_ewma": 0.0,
           "baseline_threshold": 0.0,
@@ -306,7 +306,7 @@
           "stop_id": "705N",
           "stop_name": "74 St - Broadway",
           "headway_sec": 248.0,
-          "predicted_headway_sec": 212.9626298398811,
+          "predicted_headway_sec": 210.4611508802073,
           "online_model_score": 0.1795093795093795,
           "baseline_zscore": 0.13333333333333333,
           "baseline_ewma": 0.0,
@@ -321,7 +321,7 @@
           "stop_id": "726N",
           "stop_name": "Queensboro Plaza",
           "headway_sec": 228.0,
-          "predicted_headway_sec": 205.56517980980536,
+          "predicted_headway_sec": 203.28879979987553,
           "online_model_score": 0.1795093795093795,
           "baseline_zscore": 0.13333333333333333,
           "baseline_ewma": 0.0,
@@ -336,7 +336,7 @@
           "stop_id": "A15N",
           "stop_name": "125 St",
           "headway_sec": 248.0,
-          "predicted_headway_sec": 231.7732055722706,
+          "predicted_headway_sec": 232.15202674186858,
           "online_model_score": 0.1795093795093795,
           "baseline_zscore": 0.13333333333333333,
           "baseline_ewma": 0.0,
@@ -351,7 +351,7 @@
           "stop_id": "A27N",
           "stop_name": "59 St - Columbus Circle",
           "headway_sec": 218.0,
-          "predicted_headway_sec": 206.10297523324306,
+          "predicted_headway_sec": 205.95255479882206,
           "online_model_score": 0.1795093795093795,
           "baseline_zscore": 0.13333333333333333,
           "baseline_ewma": 0.0,
@@ -366,7 +366,7 @@
           "stop_id": "F09N",
           "stop_name": "Jay St - MetroTech",
           "headway_sec": 268.0,
-          "predicted_headway_sec": 252.0408485121987,
+          "predicted_headway_sec": 254.8574762076709,
           "online_model_score": 0.1795093795093795,
           "baseline_zscore": 0.13333333333333333,
           "baseline_ewma": 0.0,
@@ -408,7 +408,7 @@
           "stop_id": "F09N",
           "stop_name": "Jay St - MetroTech",
           "headway_sec": 276.0,
-          "predicted_headway_sec": 280.7851211438482,
+          "predicted_headway_sec": 286.3295307102727,
           "online_model_score": 0.22438672438672438,
           "baseline_zscore": 0.16666666666666666,
           "baseline_ewma": 0.0,
@@ -423,7 +423,7 @@
           "stop_id": "F20N",
           "stop_name": "Bergen St",
           "headway_sec": 316.0,
-          "predicted_headway_sec": 304.4671922878378,
+          "predicted_headway_sec": 309.09109330826675,
           "online_model_score": 0.22438672438672438,
           "baseline_zscore": 0.16666666666666666,
           "baseline_ewma": 0.0,
@@ -438,7 +438,7 @@
           "stop_id": "A27N",
           "stop_name": "59 St - Columbus Circle",
           "headway_sec": 226.0,
-          "predicted_headway_sec": 216.56710899348042,
+          "predicted_headway_sec": 215.3184105447531,
           "online_model_score": 0.22438672438672438,
           "baseline_zscore": 0.16666666666666666,
           "baseline_ewma": 0.0,
@@ -453,7 +453,7 @@
           "stop_id": "705N",
           "stop_name": "74 St - Broadway",
           "headway_sec": 256.0,
-          "predicted_headway_sec": 294.27808330203345,
+          "predicted_headway_sec": 291.71475981486697,
           "online_model_score": 0.22438672438672438,
           "baseline_zscore": 0.16666666666666666,
           "baseline_ewma": 0.0,
@@ -468,7 +468,7 @@
           "stop_id": "726N",
           "stop_name": "Queensboro Plaza",
           "headway_sec": 236.0,
-          "predicted_headway_sec": 241.19434777535173,
+          "predicted_headway_sec": 239.65645576128233,
           "online_model_score": 0.22438672438672438,
           "baseline_zscore": 0.16666666666666666,
           "baseline_ewma": 0.0,
@@ -483,7 +483,7 @@
     {
       "index": 5,
       "observed_ts": "2026-02-05T11:25:00+00:00",
-      "model_peak_score": 0.4419216107748357,
+      "model_peak_score": 0.4466015625201692,
       "baseline_zscore_peak": 0.2,
       "baseline_ewma_peak": 0.0,
       "baseline_threshold_peak": 0.0,
@@ -493,11 +493,11 @@
       "top_routes": [
         {
           "route_id": "A",
-          "peak_score": 0.4419216107748357
+          "peak_score": 0.4466015625201692
         },
         {
           "route_id": "F",
-          "peak_score": 0.3957125079275629
+          "peak_score": 0.38692301104662624
         },
         {
           "route_id": "7",
@@ -511,7 +511,7 @@
           "stop_name": "125 St",
           "headway_sec": 264.0,
           "predicted_headway_sec": 84.0,
-          "online_model_score": 0.4419216107748357,
+          "online_model_score": 0.4466015625201692,
           "baseline_zscore": 0.2,
           "baseline_ewma": 0.0,
           "baseline_threshold": 0.0,
@@ -525,8 +525,8 @@
           "stop_id": "A27N",
           "stop_name": "59 St - Columbus Circle",
           "headway_sec": 234.0,
-          "predicted_headway_sec": 64.28042228563766,
-          "online_model_score": 0.4042297480443944,
+          "predicted_headway_sec": 63.59139777930665,
+          "online_model_score": 0.40843575086748674,
           "baseline_zscore": 0.2,
           "baseline_ewma": 0.0,
           "baseline_threshold": 0.0,
@@ -540,8 +540,8 @@
           "stop_id": "F09N",
           "stop_name": "Jay St - MetroTech",
           "headway_sec": 284.0,
-          "predicted_headway_sec": 87.07861552436307,
-          "online_model_score": 0.3957125079275629,
+          "predicted_headway_sec": 94.6296314257205,
+          "online_model_score": 0.38692301104662624,
           "baseline_zscore": 0.2,
           "baseline_ewma": 0.0,
           "baseline_threshold": 0.0,
@@ -555,8 +555,8 @@
           "stop_id": "F20N",
           "stop_name": "Bergen St",
           "headway_sec": 324.0,
-          "predicted_headway_sec": 134.65445346117545,
-          "online_model_score": 0.34621306192243123,
+          "predicted_headway_sec": 136.7388672121189,
+          "online_model_score": 0.34623815257413826,
           "baseline_zscore": 0.2,
           "baseline_ewma": 0.0,
           "baseline_threshold": 0.0,
@@ -567,10 +567,10 @@
         },
         {
           "route_id": "7",
-          "stop_id": "726N",
-          "stop_name": "Queensboro Plaza",
-          "headway_sec": 244.0,
-          "predicted_headway_sec": 229.38701512722264,
+          "stop_id": "705N",
+          "stop_name": "74 St - Broadway",
+          "headway_sec": 264.0,
+          "predicted_headway_sec": 279.60753901911653,
           "online_model_score": 0.26926406926406926,
           "baseline_zscore": 0.2,
           "baseline_ewma": 0.0,
@@ -585,7 +585,7 @@
     {
       "index": 6,
       "observed_ts": "2026-02-05T11:30:00+00:00",
-      "model_peak_score": 0.1755218600412534,
+      "model_peak_score": 0.18212445321428064,
       "baseline_zscore_peak": 0.0,
       "baseline_ewma_peak": 0.0,
       "baseline_threshold_peak": 0.0,
@@ -595,15 +595,15 @@
       "top_routes": [
         {
           "route_id": "7",
-          "peak_score": 0.1755218600412534
+          "peak_score": 0.18212445321428064
         },
         {
           "route_id": "A",
-          "peak_score": 0.15920554519257668
+          "peak_score": 0.16016311521225596
         },
         {
           "route_id": "F",
-          "peak_score": 0.15824512296582366
+          "peak_score": 0.1527923519910323
         }
       ],
       "top_stops": [
@@ -612,8 +612,8 @@
           "stop_id": "726N",
           "stop_name": "Queensboro Plaza",
           "headway_sec": 204.0,
-          "predicted_headway_sec": 98.39029830084203,
-          "online_model_score": 0.1755218600412534,
+          "predicted_headway_sec": 95.20509153837038,
+          "online_model_score": 0.18212445321428064,
           "baseline_zscore": 0.0,
           "baseline_ewma": 0.0,
           "baseline_threshold": 0.0,
@@ -628,8 +628,8 @@
           "stop_id": "A15N",
           "stop_name": "125 St",
           "headway_sec": 224.0,
-          "predicted_headway_sec": 123.83950168472816,
-          "online_model_score": 0.15920554519257668,
+          "predicted_headway_sec": 123.91716809885914,
+          "online_model_score": 0.16016311521225596,
           "baseline_zscore": 0.0,
           "baseline_ewma": 0.0,
           "baseline_threshold": 0.0,
@@ -641,11 +641,11 @@
         },
         {
           "route_id": "F",
-          "stop_id": "F09N",
-          "stop_name": "Jay St - MetroTech",
-          "headway_sec": 244.0,
-          "predicted_headway_sec": 140.15748065215882,
-          "online_model_score": 0.15824512296582366,
+          "stop_id": "F20N",
+          "stop_name": "Bergen St",
+          "headway_sec": 284.0,
+          "predicted_headway_sec": 177.82327872121027,
+          "online_model_score": 0.1527923519910323,
           "baseline_zscore": 0.0,
           "baseline_ewma": 0.0,
           "baseline_threshold": 0.0,
@@ -656,11 +656,11 @@
         },
         {
           "route_id": "F",
-          "stop_id": "F20N",
-          "stop_name": "Bergen St",
-          "headway_sec": 284.0,
-          "predicted_headway_sec": 176.09897736315997,
-          "online_model_score": 0.1539753576393848,
+          "stop_id": "F09N",
+          "stop_name": "Jay St - MetroTech",
+          "headway_sec": 244.0,
+          "predicted_headway_sec": 146.0477138039166,
+          "online_model_score": 0.15044228991429792,
           "baseline_zscore": 0.0,
           "baseline_ewma": 0.0,
           "baseline_threshold": 0.0,
@@ -674,8 +674,8 @@
           "stop_id": "A27N",
           "stop_name": "59 St - Columbus Circle",
           "headway_sec": 194.0,
-          "predicted_headway_sec": 107.86739535010588,
-          "online_model_score": 0.1447915717973703,
+          "predicted_headway_sec": 105.45418327333138,
+          "online_model_score": 0.1495368827248162,
           "baseline_zscore": 0.0,
           "baseline_ewma": 0.0,
           "baseline_threshold": 0.0,
@@ -690,7 +690,7 @@
     {
       "index": 7,
       "observed_ts": "2026-02-05T11:35:00+00:00",
-      "model_peak_score": 0.2025136829530567,
+      "model_peak_score": 0.20709738188026638,
       "baseline_zscore_peak": 0.0,
       "baseline_ewma_peak": 0.0,
       "baseline_threshold_peak": 0.0,
@@ -700,25 +700,25 @@
       "top_routes": [
         {
           "route_id": "7",
-          "peak_score": 0.2025136829530567
+          "peak_score": 0.20709738188026638
         },
         {
           "route_id": "A",
-          "peak_score": 0.181704296119253
+          "peak_score": 0.18276526404290702
         },
         {
           "route_id": "F",
-          "peak_score": 0.17652927191712384
+          "peak_score": 0.17140832653654287
         }
       ],
       "top_stops": [
         {
           "route_id": "7",
-          "stop_id": "705N",
-          "stop_name": "74 St - Broadway",
-          "headway_sec": 232.0,
-          "predicted_headway_sec": 101.03784607389574,
-          "online_model_score": 0.2025136829530567,
+          "stop_id": "726N",
+          "stop_name": "Queensboro Plaza",
+          "headway_sec": 212.0,
+          "predicted_headway_sec": 81.67653619305851,
+          "online_model_score": 0.20709738188026638,
           "baseline_zscore": 0.0,
           "baseline_ewma": 0.0,
           "baseline_threshold": 0.0,
@@ -728,11 +728,11 @@
         },
         {
           "route_id": "7",
-          "stop_id": "726N",
-          "stop_name": "Queensboro Plaza",
-          "headway_sec": 212.0,
-          "predicted_headway_sec": 85.50616084660226,
-          "online_model_score": 0.20023296837006116,
+          "stop_id": "705N",
+          "stop_name": "74 St - Broadway",
+          "headway_sec": 232.0,
+          "predicted_headway_sec": 102.24115837616567,
+          "online_model_score": 0.20213221817921853,
           "baseline_zscore": 0.0,
           "baseline_ewma": 0.0,
           "baseline_threshold": 0.0,
@@ -745,22 +745,8 @@
           "stop_id": "A15N",
           "stop_name": "125 St",
           "headway_sec": 232.0,
-          "predicted_headway_sec": 111.29026975432964,
-          "online_model_score": 0.181704296119253,
-          "baseline_zscore": 0.0,
-          "baseline_ewma": 0.0,
-          "baseline_threshold": 0.0,
-          "reasons": [
-            "rolling z-score jump"
-          ]
-        },
-        {
-          "route_id": "F",
-          "stop_id": "F09N",
-          "stop_name": "Jay St - MetroTech",
-          "headway_sec": 252.0,
-          "predicted_headway_sec": 128.405568640181,
-          "online_model_score": 0.17652927191712384,
+          "predicted_headway_sec": 111.05836246893163,
+          "online_model_score": 0.18276526404290702,
           "baseline_zscore": 0.0,
           "baseline_ewma": 0.0,
           "baseline_threshold": 0.0,
@@ -773,8 +759,22 @@
           "stop_id": "A27N",
           "stop_name": "59 St - Columbus Circle",
           "headway_sec": 202.0,
-          "predicted_headway_sec": 93.11615499208528,
-          "online_model_score": 0.17379658313855353,
+          "predicted_headway_sec": 89.91601609647837,
+          "online_model_score": 0.17916080808695112,
+          "baseline_zscore": 0.0,
+          "baseline_ewma": 0.0,
+          "baseline_threshold": 0.0,
+          "reasons": [
+            "rolling z-score jump"
+          ]
+        },
+        {
+          "route_id": "F",
+          "stop_id": "F20N",
+          "stop_name": "Bergen St",
+          "headway_sec": 292.0,
+          "predicted_headway_sec": 163.39670364177428,
+          "online_model_score": 0.17140832653654287,
           "baseline_zscore": 0.0,
           "baseline_ewma": 0.0,
           "baseline_threshold": 0.0,
@@ -787,7 +787,7 @@
     {
       "index": 8,
       "observed_ts": "2026-02-05T11:40:00+00:00",
-      "model_peak_score": 0.23523913183439393,
+      "model_peak_score": 0.2396202571313713,
       "baseline_zscore_peak": 0.0,
       "baseline_ewma_peak": 0.0,
       "baseline_threshold_peak": 0.0,
@@ -797,25 +797,25 @@
       "top_routes": [
         {
           "route_id": "7",
-          "peak_score": 0.23523913183439393
+          "peak_score": 0.2396202571313713
         },
         {
           "route_id": "A",
-          "peak_score": 0.215348997127265
+          "peak_score": 0.21636848668776226
         },
         {
           "route_id": "F",
-          "peak_score": 0.21084971092294053
+          "peak_score": 0.20966648596868123
         }
       ],
       "top_stops": [
         {
           "route_id": "7",
-          "stop_id": "705N",
-          "stop_name": "74 St - Broadway",
-          "headway_sec": 240.0,
-          "predicted_headway_sec": 80.57237017854177,
-          "online_model_score": 0.23523913183439393,
+          "stop_id": "726N",
+          "stop_name": "Queensboro Plaza",
+          "headway_sec": 220.0,
+          "predicted_headway_sec": 61.78899077196998,
+          "online_model_score": 0.2396202571313713,
           "baseline_zscore": 0.0,
           "baseline_ewma": 0.0,
           "baseline_threshold": 0.0,
@@ -823,11 +823,11 @@
         },
         {
           "route_id": "7",
-          "stop_id": "726N",
-          "stop_name": "Queensboro Plaza",
-          "headway_sec": 220.0,
-          "predicted_headway_sec": 65.9859100992712,
-          "online_model_score": 0.2330175450945825,
+          "stop_id": "705N",
+          "stop_name": "74 St - Broadway",
+          "headway_sec": 240.0,
+          "predicted_headway_sec": 82.09475242885276,
+          "online_model_score": 0.23417779391532723,
           "baseline_zscore": 0.0,
           "baseline_ewma": 0.0,
           "baseline_threshold": 0.0,
@@ -838,8 +838,20 @@
           "stop_id": "A15N",
           "stop_name": "125 St",
           "headway_sec": 240.0,
-          "predicted_headway_sec": 89.88965046348831,
-          "online_model_score": 0.215348997127265,
+          "predicted_headway_sec": 89.46458196315497,
+          "online_model_score": 0.21636848668776226,
+          "baseline_zscore": 0.0,
+          "baseline_ewma": 0.0,
+          "baseline_threshold": 0.0,
+          "reasons": []
+        },
+        {
+          "route_id": "A",
+          "stop_id": "A27N",
+          "stop_name": "59 St - Columbus Circle",
+          "headway_sec": 210.0,
+          "predicted_headway_sec": 71.72683169813016,
+          "online_model_score": 0.21113803649149565,
           "baseline_zscore": 0.0,
           "baseline_ewma": 0.0,
           "baseline_threshold": 0.0,
@@ -850,20 +862,8 @@
           "stop_id": "F20N",
           "stop_name": "Bergen St",
           "headway_sec": 300.0,
-          "predicted_headway_sec": 130.17804626296953,
-          "online_model_score": 0.21084971092294053,
-          "baseline_zscore": 0.0,
-          "baseline_ewma": 0.0,
-          "baseline_threshold": 0.0,
-          "reasons": []
-        },
-        {
-          "route_id": "F",
-          "stop_id": "F09N",
-          "stop_name": "Jay St - MetroTech",
-          "headway_sec": 260.0,
-          "predicted_headway_sec": 104.21379208745589,
-          "online_model_score": 0.210599093759632,
+          "predicted_headway_sec": 131.74287182415395,
+          "online_model_score": 0.20966648596868123,
           "baseline_zscore": 0.0,
           "baseline_ewma": 0.0,
           "baseline_threshold": 0.0,
@@ -888,11 +888,11 @@
         },
         {
           "route_id": "7",
-          "peak_score": 0.2516601737645122
+          "peak_score": 0.2534694797830032
         },
         {
           "route_id": "F",
-          "peak_score": 0.20887194400173392
+          "peak_score": 0.20613756681036907
         }
       ],
       "top_stops": [
@@ -901,7 +901,7 @@
           "stop_id": "A15N",
           "stop_name": "125 St",
           "headway_sec": 320.0,
-          "predicted_headway_sec": -51.52704845674252,
+          "predicted_headway_sec": -52.09101640065053,
           "online_model_score": 0.8975468975468975,
           "baseline_zscore": 0.6333333333333333,
           "baseline_ewma": 0.3792720570856482,
@@ -914,11 +914,11 @@
         },
         {
           "route_id": "7",
-          "stop_id": "705N",
-          "stop_name": "74 St - Broadway",
-          "headway_sec": 248.0,
-          "predicted_headway_sec": 69.39547611466347,
-          "online_model_score": 0.2516601737645122,
+          "stop_id": "726N",
+          "stop_name": "Queensboro Plaza",
+          "headway_sec": 228.0,
+          "predicted_headway_sec": 54.1711067634468,
+          "online_model_score": 0.2534694797830032,
           "baseline_zscore": 0.03333333333333333,
           "baseline_ewma": 0.0,
           "baseline_threshold": 0.0,
@@ -926,23 +926,23 @@
         },
         {
           "route_id": "7",
-          "stop_id": "726N",
-          "stop_name": "Queensboro Plaza",
-          "headway_sec": 228.0,
-          "predicted_headway_sec": 58.62483969892516,
-          "online_model_score": 0.24723817029057443,
+          "stop_id": "705N",
+          "stop_name": "74 St - Broadway",
+          "headway_sec": 248.0,
+          "predicted_headway_sec": 71.16568668397058,
+          "online_model_score": 0.25010533990543415,
           "baseline_zscore": 0.03333333333333333,
           "baseline_ewma": 0.0,
           "baseline_threshold": 0.0,
           "reasons": []
         },
         {
-          "route_id": "F",
-          "stop_id": "F09N",
-          "stop_name": "Jay St - MetroTech",
-          "headway_sec": 268.0,
-          "predicted_headway_sec": 103.81211584699557,
-          "online_model_score": 0.20887194400173392,
+          "route_id": "A",
+          "stop_id": "A27N",
+          "stop_name": "59 St - Columbus Circle",
+          "headway_sec": 218.0,
+          "predicted_headway_sec": 71.75078957186606,
+          "online_model_score": 0.2103907561791683,
           "baseline_zscore": 0.03333333333333333,
           "baseline_ewma": 0.0,
           "baseline_threshold": 0.0,
@@ -953,8 +953,8 @@
           "stop_id": "F20N",
           "stop_name": "Bergen St",
           "headway_sec": 308.0,
-          "predicted_headway_sec": 131.30315935201364,
-          "online_model_score": 0.2073780824856145,
+          "predicted_headway_sec": 132.83371895195515,
+          "online_model_score": 0.20613756681036907,
           "baseline_zscore": 0.03333333333333333,
           "baseline_ewma": 0.0,
           "baseline_threshold": 0.0,
@@ -979,11 +979,11 @@
         },
         {
           "route_id": "F",
-          "peak_score": 0.25228156574386984
+          "peak_score": 0.25369490292511376
         },
         {
           "route_id": "7",
-          "peak_score": 0.23817466014339675
+          "peak_score": 0.2440746212940433
         }
       ],
       "top_stops": [
@@ -992,7 +992,7 @@
           "stop_id": "A15N",
           "stop_name": "125 St",
           "headway_sec": 410.0,
-          "predicted_headway_sec": 408.95983131523985,
+          "predicted_headway_sec": 408.28795480854205,
           "online_model_score": 1.0,
           "baseline_zscore": 1.0,
           "baseline_ewma": 0.7607526604533379,
@@ -1008,23 +1008,8 @@
           "stop_id": "F20N",
           "stop_name": "Bergen St",
           "headway_sec": 316.0,
-          "predicted_headway_sec": 138.11956867609933,
-          "online_model_score": 0.25228156574386984,
-          "baseline_zscore": 0.1,
-          "baseline_ewma": 0.0,
-          "baseline_threshold": 0.0,
-          "reasons": [
-            "station baseline deviation",
-            "rolling z-score jump"
-          ]
-        },
-        {
-          "route_id": "F",
-          "stop_id": "F09N",
-          "stop_name": "Jay St - MetroTech",
-          "headway_sec": 276.0,
-          "predicted_headway_sec": 108.1023273601758,
-          "online_model_score": 0.24122100212330821,
+          "predicted_headway_sec": 139.62618275665957,
+          "online_model_score": 0.25369490292511376,
           "baseline_zscore": 0.1,
           "baseline_ewma": 0.0,
           "baseline_threshold": 0.0,
@@ -1038,8 +1023,8 @@
           "stop_id": "A27N",
           "stop_name": "59 St - Columbus Circle",
           "headway_sec": 226.0,
-          "predicted_headway_sec": 77.85000969352612,
-          "online_model_score": 0.2386452359865067,
+          "predicted_headway_sec": 73.4800807516051,
+          "online_model_score": 0.24427933354960388,
           "baseline_zscore": 0.1,
           "baseline_ewma": 0.0,
           "baseline_threshold": 0.0,
@@ -1053,8 +1038,23 @@
           "stop_id": "726N",
           "stop_name": "Queensboro Plaza",
           "headway_sec": 236.0,
-          "predicted_headway_sec": 78.97977834465428,
-          "online_model_score": 0.23817466014339675,
+          "predicted_headway_sec": 74.32865379575924,
+          "online_model_score": 0.2440746212940433,
+          "baseline_zscore": 0.1,
+          "baseline_ewma": 0.0,
+          "baseline_threshold": 0.0,
+          "reasons": [
+            "station baseline deviation",
+            "rolling z-score jump"
+          ]
+        },
+        {
+          "route_id": "7",
+          "stop_id": "705N",
+          "stop_name": "74 St - Broadway",
+          "headway_sec": 256.0,
+          "predicted_headway_sec": 94.55765318666165,
+          "online_model_score": 0.2344954032624181,
           "baseline_zscore": 0.1,
           "baseline_ewma": 0.0,
           "baseline_threshold": 0.0,
@@ -1082,7 +1082,7 @@
         },
         {
           "route_id": "7",
-          "peak_score": 0.26926406926406926
+          "peak_score": 0.27689473950975113
         },
         {
           "route_id": "F",
@@ -1095,7 +1095,7 @@
           "stop_id": "A15N",
           "stop_name": "125 St",
           "headway_sec": 520.0,
-          "predicted_headway_sec": 547.7353838751961,
+          "predicted_headway_sec": 546.9755266164921,
           "online_model_score": 1.0,
           "baseline_zscore": 0.8298010057570923,
           "baseline_ewma": 0.6167656910787527,
@@ -1107,11 +1107,41 @@
           ]
         },
         {
+          "route_id": "A",
+          "stop_id": "A27N",
+          "stop_name": "59 St - Columbus Circle",
+          "headway_sec": 234.0,
+          "predicted_headway_sec": 70.79462440948352,
+          "online_model_score": 0.2814821665520368,
+          "baseline_zscore": 0.16666666666666666,
+          "baseline_ewma": 0.0,
+          "baseline_threshold": 0.0,
+          "reasons": [
+            "station baseline deviation",
+            "rolling z-score jump"
+          ]
+        },
+        {
+          "route_id": "7",
+          "stop_id": "726N",
+          "stop_name": "Queensboro Plaza",
+          "headway_sec": 244.0,
+          "predicted_headway_sec": 79.53681032355304,
+          "online_model_score": 0.27689473950975113,
+          "baseline_zscore": 0.16666666666666666,
+          "baseline_ewma": 0.0,
+          "baseline_threshold": 0.0,
+          "reasons": [
+            "station baseline deviation",
+            "rolling z-score jump"
+          ]
+        },
+        {
           "route_id": "F",
           "stop_id": "F09N",
           "stop_name": "Jay St - MetroTech",
           "headway_sec": 284.0,
-          "predicted_headway_sec": 115.49411825387484,
+          "predicted_headway_sec": 122.93357468555598,
           "online_model_score": 0.26926406926406926,
           "baseline_zscore": 0.16666666666666666,
           "baseline_ewma": 0.0,
@@ -1126,37 +1156,7 @@
           "stop_id": "705N",
           "stop_name": "74 St - Broadway",
           "headway_sec": 264.0,
-          "predicted_headway_sec": 100.82692413902814,
-          "online_model_score": 0.26926406926406926,
-          "baseline_zscore": 0.16666666666666666,
-          "baseline_ewma": 0.0,
-          "baseline_threshold": 0.0,
-          "reasons": [
-            "station baseline deviation",
-            "rolling z-score jump"
-          ]
-        },
-        {
-          "route_id": "7",
-          "stop_id": "726N",
-          "stop_name": "Queensboro Plaza",
-          "headway_sec": 244.0,
-          "predicted_headway_sec": 84.34821968243477,
-          "online_model_score": 0.26926406926406926,
-          "baseline_zscore": 0.16666666666666666,
-          "baseline_ewma": 0.0,
-          "baseline_threshold": 0.0,
-          "reasons": [
-            "station baseline deviation",
-            "rolling z-score jump"
-          ]
-        },
-        {
-          "route_id": "A",
-          "stop_id": "A27N",
-          "stop_name": "59 St - Columbus Circle",
-          "headway_sec": 234.0,
-          "predicted_headway_sec": 75.40568002276551,
+          "predicted_headway_sec": 102.96613675294927,
           "online_model_score": 0.26926406926406926,
           "baseline_zscore": 0.16666666666666666,
           "baseline_ewma": 0.0,
@@ -1198,7 +1198,7 @@
           "stop_id": "A15N",
           "stop_name": "125 St",
           "headway_sec": 780.0,
-          "predicted_headway_sec": 785.699894779305,
+          "predicted_headway_sec": 784.8658994787975,
           "online_model_score": 1.0,
           "baseline_zscore": 0.9536376697972294,
           "baseline_ewma": 0.8514367143938004,
@@ -1214,7 +1214,7 @@
           "stop_id": "F20N",
           "stop_name": "Bergen St",
           "headway_sec": 338.0,
-          "predicted_headway_sec": 218.6554317007393,
+          "predicted_headway_sec": 220.1302678709546,
           "online_model_score": 0.38145743145743144,
           "baseline_zscore": 0.2833333333333333,
           "baseline_ewma": 0.0,
@@ -1229,7 +1229,7 @@
           "stop_id": "F09N",
           "stop_name": "Jay St - MetroTech",
           "headway_sec": 290.8,
-          "predicted_headway_sec": 160.54397150999296,
+          "predicted_headway_sec": 168.17261241246942,
           "online_model_score": 0.3006782106782109,
           "baseline_zscore": 0.22333333333333344,
           "baseline_ewma": 0.0,
@@ -1244,7 +1244,7 @@
           "stop_id": "705N",
           "stop_name": "74 St - Broadway",
           "headway_sec": 267.2,
-          "predicted_headway_sec": 104.75669469088103,
+          "predicted_headway_sec": 107.04079913036234,
           "online_model_score": 0.2602886002886002,
           "baseline_zscore": 0.19333333333333325,
           "baseline_ewma": 0.0,
@@ -1259,7 +1259,7 @@
           "stop_id": "726N",
           "stop_name": "Queensboro Plaza",
           "headway_sec": 243.6,
-          "predicted_headway_sec": 105.72425299288477,
+          "predicted_headway_sec": 100.77792959370007,
           "online_model_score": 0.21989898989898982,
           "baseline_zscore": 0.16333333333333327,
           "baseline_ewma": 0.0,
@@ -1301,7 +1301,7 @@
           "stop_id": "A15N",
           "stop_name": "125 St",
           "headway_sec": 860.0,
-          "predicted_headway_sec": 906.0401777248208,
+          "predicted_headway_sec": 905.142196730236,
           "online_model_score": 0.9991270101739416,
           "baseline_zscore": 0.5311399346290778,
           "baseline_ewma": 0.39302327047781166,
@@ -1317,7 +1317,7 @@
           "stop_id": "F20N",
           "stop_name": "Bergen St",
           "headway_sec": 346.0,
-          "predicted_headway_sec": 251.84326264779673,
+          "predicted_headway_sec": 253.30688062214972,
           "online_model_score": 0.42633477633477634,
           "baseline_zscore": 0.275,
           "baseline_ewma": 0.0,
@@ -1332,7 +1332,7 @@
           "stop_id": "F09N",
           "stop_name": "Jay St - MetroTech",
           "headway_sec": 298.8,
-          "predicted_headway_sec": 184.24556193255881,
+          "predicted_headway_sec": 192.04263031594655,
           "online_model_score": 0.34555555555555567,
           "baseline_zscore": 0.225,
           "baseline_ewma": 0.0,
@@ -1347,7 +1347,7 @@
           "stop_id": "705N",
           "stop_name": "74 St - Broadway",
           "headway_sec": 275.2,
-          "predicted_headway_sec": 154.36389662075464,
+          "predicted_headway_sec": 156.77518552424073,
           "online_model_score": 0.3051659451659451,
           "baseline_zscore": 0.19999999999999976,
           "baseline_ewma": 0.0,
@@ -1362,7 +1362,7 @@
           "stop_id": "726N",
           "stop_name": "Queensboro Plaza",
           "headway_sec": 251.6,
-          "predicted_headway_sec": 125.10796525315338,
+          "predicted_headway_sec": 120.04516825302946,
           "online_model_score": 0.26477633477633467,
           "baseline_zscore": 0.175,
           "baseline_ewma": 0.0,
@@ -1404,7 +1404,7 @@
           "stop_id": "A15N",
           "stop_name": "125 St",
           "headway_sec": 735.0,
-          "predicted_headway_sec": 929.3196510909643,
+          "predicted_headway_sec": 928.3654362537627,
           "online_model_score": 0.7774164515453847,
           "baseline_zscore": 0.21293056572196895,
           "baseline_ewma": 0.07253737518642117,
@@ -1420,7 +1420,7 @@
           "stop_id": "F20N",
           "stop_name": "Bergen St",
           "headway_sec": 354.0,
-          "predicted_headway_sec": 244.5281760893907,
+          "predicted_headway_sec": 245.53671474891448,
           "online_model_score": 0.5007359307359307,
           "baseline_zscore": 0.26666666666666666,
           "baseline_ewma": 0.0,
@@ -1435,7 +1435,7 @@
           "stop_id": "F09N",
           "stop_name": "Jay St - MetroTech",
           "headway_sec": 306.8,
-          "predicted_headway_sec": 190.99537312189955,
+          "predicted_headway_sec": 196.5435622937472,
           "online_model_score": 0.4199567099567101,
           "baseline_zscore": 0.22666666666666704,
           "baseline_ewma": 0.0,
@@ -1450,7 +1450,7 @@
           "stop_id": "705N",
           "stop_name": "74 St - Broadway",
           "headway_sec": 283.2,
-          "predicted_headway_sec": 169.22618285449641,
+          "predicted_headway_sec": 171.75081177532041,
           "online_model_score": 0.37956709956709944,
           "baseline_zscore": 0.20666666666666628,
           "baseline_ewma": 0.0,
@@ -1465,7 +1465,7 @@
           "stop_id": "726N",
           "stop_name": "Queensboro Plaza",
           "headway_sec": 259.6,
-          "predicted_headway_sec": 132.951724158789,
+          "predicted_headway_sec": 127.78646121732149,
           "online_model_score": 0.33917748917748947,
           "baseline_zscore": 0.1866666666666667,
           "baseline_ewma": 0.0,
@@ -1507,7 +1507,7 @@
           "stop_id": "A15N",
           "stop_name": "125 St",
           "headway_sec": 510.0,
-          "predicted_headway_sec": 537.2306824338061,
+          "predicted_headway_sec": 538.094504756356,
           "online_model_score": 0.6893837211250147,
           "baseline_zscore": 0.0,
           "baseline_ewma": 0.1887747683269431,
@@ -1523,7 +1523,7 @@
           "stop_id": "F20N",
           "stop_name": "Bergen St",
           "headway_sec": 362.0,
-          "predicted_headway_sec": 270.64240991806605,
+          "predicted_headway_sec": 271.642649083076,
           "online_model_score": 0.550202240507584,
           "baseline_zscore": 0.25833333333333336,
           "baseline_ewma": 0.0,
@@ -1538,7 +1538,7 @@
           "stop_id": "F09N",
           "stop_name": "Jay St - MetroTech",
           "headway_sec": 314.8,
-          "predicted_headway_sec": 209.07773353971714,
+          "predicted_headway_sec": 214.7675462311525,
           "online_model_score": 0.493698885185611,
           "baseline_zscore": 0.22833333333333314,
           "baseline_ewma": 0.0,
@@ -1553,7 +1553,7 @@
           "stop_id": "705N",
           "stop_name": "74 St - Broadway",
           "headway_sec": 291.2,
-          "predicted_headway_sec": 178.20725834191248,
+          "predicted_headway_sec": 181.28424096822448,
           "online_model_score": 0.4539682539682539,
           "baseline_zscore": 0.2133333333333335,
           "baseline_ewma": 0.0,
@@ -1568,7 +1568,7 @@
           "stop_id": "726N",
           "stop_name": "Queensboro Plaza",
           "headway_sec": 267.6,
-          "predicted_headway_sec": 152.92110403670648,
+          "predicted_headway_sec": 146.1201475577018,
           "online_model_score": 0.4135786435786438,
           "baseline_zscore": 0.19833333333333367,
           "baseline_ewma": 0.0,
@@ -1610,7 +1610,7 @@
           "stop_id": "A15N",
           "stop_name": "125 St",
           "headway_sec": 410.0,
-          "predicted_headway_sec": 619.2474288401048,
+          "predicted_headway_sec": 620.0642075507542,
           "online_model_score": 0.6343223277551636,
           "baseline_zscore": 0.0,
           "baseline_ewma": 0.27424343309674265,
@@ -1626,7 +1626,7 @@
           "stop_id": "F20N",
           "stop_name": "Bergen St",
           "headway_sec": 370.0,
-          "predicted_headway_sec": 270.53792900958854,
+          "predicted_headway_sec": 271.0860216096596,
           "online_model_score": 0.571081391015166,
           "baseline_zscore": 0.25,
           "baseline_ewma": 0.0,
@@ -1641,7 +1641,7 @@
           "stop_id": "F09N",
           "stop_name": "Jay St - MetroTech",
           "headway_sec": 322.8,
-          "predicted_headway_sec": 214.51666909030337,
+          "predicted_headway_sec": 217.9493427530902,
           "online_model_score": 0.5139134199134201,
           "baseline_zscore": 0.23000000000000018,
           "baseline_ewma": 0.0,
@@ -1656,7 +1656,7 @@
           "stop_id": "705N",
           "stop_name": "74 St - Broadway",
           "headway_sec": 299.2,
-          "predicted_headway_sec": 181.41941957065694,
+          "predicted_headway_sec": 184.59071919472052,
           "online_model_score": 0.4848912163105711,
           "baseline_zscore": 0.2199999999999998,
           "baseline_ewma": 0.0,
@@ -1671,7 +1671,7 @@
           "stop_id": "726N",
           "stop_name": "Queensboro Plaza",
           "headway_sec": 275.6,
-          "predicted_headway_sec": 145.29026993453758,
+          "predicted_headway_sec": 138.4067175382255,
           "online_model_score": 0.45623640127987974,
           "baseline_zscore": 0.21000000000000013,
           "baseline_ewma": 0.0,
@@ -1713,7 +1713,7 @@
           "stop_id": "F20N",
           "stop_name": "Bergen St",
           "headway_sec": 378.0,
-          "predicted_headway_sec": 288.83319596358973,
+          "predicted_headway_sec": 288.9299740878353,
           "online_model_score": 0.5939826839826841,
           "baseline_zscore": 0.24166666666666667,
           "baseline_ewma": 0.0,
@@ -1728,7 +1728,7 @@
           "stop_id": "F09N",
           "stop_name": "Jay St - MetroTech",
           "headway_sec": 330.8,
-          "predicted_headway_sec": 226.46426971981094,
+          "predicted_headway_sec": 227.63724084239334,
           "online_model_score": 0.5365617519735169,
           "baseline_zscore": 0.23166666666666677,
           "baseline_ewma": 0.0,
@@ -1743,7 +1743,7 @@
           "stop_id": "705N",
           "stop_name": "74 St - Broadway",
           "headway_sec": 307.2,
-          "predicted_headway_sec": 197.7426631550252,
+          "predicted_headway_sec": 201.45980910166315,
           "online_model_score": 0.5074502164502164,
           "baseline_zscore": 0.22666666666666657,
           "baseline_ewma": 0.0,
@@ -1758,7 +1758,7 @@
           "stop_id": "726N",
           "stop_name": "Queensboro Plaza",
           "headway_sec": 283.6,
-          "predicted_headway_sec": 173.89688779473167,
+          "predicted_headway_sec": 165.38335414057138,
           "online_model_score": 0.47863973063973086,
           "baseline_zscore": 0.22166666666666685,
           "baseline_ewma": 0.0,
@@ -1773,7 +1773,7 @@
           "stop_id": "A27N",
           "stop_name": "59 St - Columbus Circle",
           "headway_sec": 271.8,
-          "predicted_headway_sec": 148.68816016448596,
+          "predicted_headway_sec": 149.28744518471535,
           "online_model_score": 0.46676583569687036,
           "baseline_zscore": 0.21916666666666676,
           "baseline_ewma": 0.0,
@@ -1788,7 +1788,7 @@
     {
       "index": 18,
       "observed_ts": "2026-02-05T12:30:00+00:00",
-      "model_peak_score": 0.19825640489521712,
+      "model_peak_score": 0.21569608889541558,
       "baseline_zscore_peak": 0.0,
       "baseline_ewma_peak": 0.24934735733297023,
       "baseline_threshold_peak": 0.0,
@@ -1798,7 +1798,7 @@
       "top_routes": [
         {
           "route_id": "A",
-          "peak_score": 0.19825640489521712
+          "peak_score": 0.21569608889541558
         },
         {
           "route_id": "F",
@@ -1806,7 +1806,7 @@
         },
         {
           "route_id": "7",
-          "peak_score": 0.15459355937919828
+          "peak_score": 0.1798793675055429
         }
       ],
       "top_stops": [
@@ -1815,8 +1815,8 @@
           "stop_id": "A27N",
           "stop_name": "59 St - Columbus Circle",
           "headway_sec": 231.8,
-          "predicted_headway_sec": 80.86498313344009,
-          "online_model_score": 0.19825640489521712,
+          "predicted_headway_sec": 77.15593840898563,
+          "online_model_score": 0.21569608889541558,
           "baseline_zscore": 0.0,
           "baseline_ewma": 0.0,
           "baseline_threshold": 0.0,
@@ -1829,7 +1829,7 @@
           "stop_id": "F20N",
           "stop_name": "Bergen St",
           "headway_sec": 340.0,
-          "predicted_headway_sec": 277.37701269218167,
+          "predicted_headway_sec": 221.73491871153584,
           "online_model_score": 0.19749031073638407,
           "baseline_zscore": 0.0,
           "baseline_ewma": 0.0,
@@ -1842,17 +1842,16 @@
         },
         {
           "route_id": "7",
-          "stop_id": "705N",
-          "stop_name": "74 St - Broadway",
-          "headway_sec": 267.2,
-          "predicted_headway_sec": 128.7059525630917,
-          "online_model_score": 0.15459355937919828,
+          "stop_id": "726N",
+          "stop_name": "Queensboro Plaza",
+          "headway_sec": 243.6,
+          "predicted_headway_sec": 98.26969110824504,
+          "online_model_score": 0.1798793675055429,
           "baseline_zscore": 0.0,
           "baseline_ewma": 0.0,
           "baseline_threshold": 0.0,
           "reasons": [
-            "rolling z-score jump",
-            "station baseline deviation"
+            "rolling z-score jump"
           ]
         },
         {
@@ -1860,8 +1859,8 @@
           "stop_id": "A15N",
           "stop_name": "125 St",
           "headway_sec": 280.0,
-          "predicted_headway_sec": 435.226247662136,
-          "online_model_score": 0.15147521234137099,
+          "predicted_headway_sec": 439.68881110281484,
+          "online_model_score": 0.1679404468106911,
           "baseline_zscore": 0.0,
           "baseline_ewma": 0.24934735733297023,
           "baseline_threshold": 0.0,
@@ -1873,16 +1872,17 @@
         },
         {
           "route_id": "7",
-          "stop_id": "726N",
-          "stop_name": "Queensboro Plaza",
-          "headway_sec": 243.6,
-          "predicted_headway_sec": 108.4110469014877,
-          "online_model_score": 0.1419032624399746,
+          "stop_id": "705N",
+          "stop_name": "74 St - Broadway",
+          "headway_sec": 267.2,
+          "predicted_headway_sec": 132.96663119521767,
+          "online_model_score": 0.13973897586694461,
           "baseline_zscore": 0.0,
           "baseline_ewma": 0.0,
           "baseline_threshold": 0.0,
           "reasons": [
-            "rolling z-score jump"
+            "rolling z-score jump",
+            "station baseline deviation"
           ]
         }
       ]
@@ -1903,12 +1903,12 @@
           "peak_score": 0.674978354978355
         },
         {
-          "route_id": "A",
-          "peak_score": 0.23681016701056803
-        },
-        {
           "route_id": "7",
           "peak_score": 0.16570418470418463
+        },
+        {
+          "route_id": "A",
+          "peak_score": 0.12468890879235717
         }
       ],
       "top_stops": [
@@ -1917,7 +1917,7 @@
           "stop_id": "F20N",
           "stop_name": "Bergen St",
           "headway_sec": 390.0,
-          "predicted_headway_sec": 355.8890195858023,
+          "predicted_headway_sec": 332.04422407290394,
           "online_model_score": 0.674978354978355,
           "baseline_zscore": 0.26388888888888906,
           "baseline_ewma": 0.037536571712175996,
@@ -1929,25 +1929,11 @@
           ]
         },
         {
-          "route_id": "A",
-          "stop_id": "A15N",
-          "stop_name": "125 St",
-          "headway_sec": 275.2,
-          "predicted_headway_sec": 452.39577050693003,
-          "online_model_score": 0.23681016701056803,
-          "baseline_zscore": 0.0,
-          "baseline_ewma": 0.15913077706504755,
-          "baseline_threshold": 0.0,
-          "reasons": [
-            "rolling z-score jump"
-          ]
-        },
-        {
           "route_id": "F",
           "stop_id": "F09N",
           "stop_name": "Jay St - MetroTech",
           "headway_sec": 298.8,
-          "predicted_headway_sec": 209.6899831684039,
+          "predicted_headway_sec": 210.19530186072308,
           "online_model_score": 0.1908644427467958,
           "baseline_zscore": 0.0,
           "baseline_ewma": 0.0,
@@ -1962,7 +1948,7 @@
           "stop_id": "705N",
           "stop_name": "74 St - Broadway",
           "headway_sec": 275.2,
-          "predicted_headway_sec": 173.43756323638252,
+          "predicted_headway_sec": 174.28226376868642,
           "online_model_score": 0.16570418470418463,
           "baseline_zscore": 0.0,
           "baseline_ewma": 0.0,
@@ -1977,8 +1963,23 @@
           "stop_id": "726N",
           "stop_name": "Queensboro Plaza",
           "headway_sec": 251.6,
-          "predicted_headway_sec": 149.9904095148305,
+          "predicted_headway_sec": 143.70956043210776,
           "online_model_score": 0.14009235209235202,
+          "baseline_zscore": 0.0,
+          "baseline_ewma": 0.0,
+          "baseline_threshold": 0.0,
+          "reasons": [
+            "station baseline deviation",
+            "rolling z-score jump"
+          ]
+        },
+        {
+          "route_id": "A",
+          "stop_id": "A27N",
+          "stop_name": "59 St - Columbus Circle",
+          "headway_sec": 239.8,
+          "predicted_headway_sec": 119.59738919448803,
+          "online_model_score": 0.12468890879235717,
           "baseline_zscore": 0.0,
           "baseline_ewma": 0.0,
           "baseline_threshold": 0.0,
@@ -2019,7 +2020,7 @@
           "stop_id": "F20N",
           "stop_name": "Bergen St",
           "headway_sec": 430.0,
-          "predicted_headway_sec": 394.59560785277927,
+          "predicted_headway_sec": 370.9164562106169,
           "online_model_score": 0.8396969696969697,
           "baseline_zscore": 0.536111111111111,
           "baseline_ewma": 0.24291729013143257,
@@ -2035,7 +2036,7 @@
           "stop_id": "F09N",
           "stop_name": "Jay St - MetroTech",
           "headway_sec": 306.8,
-          "predicted_headway_sec": 227.38170158660316,
+          "predicted_headway_sec": 225.31881797220703,
           "online_model_score": 0.2367705627705629,
           "baseline_zscore": 0.0,
           "baseline_ewma": 0.0,
@@ -2049,7 +2050,7 @@
           "stop_id": "705N",
           "stop_name": "74 St - Broadway",
           "headway_sec": 283.2,
-          "predicted_headway_sec": 187.22713012180844,
+          "predicted_headway_sec": 194.82909061280168,
           "online_model_score": 0.21302695154308054,
           "baseline_zscore": 0.0,
           "baseline_ewma": 0.0,
@@ -2063,7 +2064,7 @@
           "stop_id": "726N",
           "stop_name": "Queensboro Plaza",
           "headway_sec": 259.6,
-          "predicted_headway_sec": 162.98287549257913,
+          "predicted_headway_sec": 155.58748889952534,
           "online_model_score": 0.19045115753811417,
           "baseline_zscore": 0.0,
           "baseline_ewma": 0.0,
@@ -2077,7 +2078,7 @@
           "stop_id": "A27N",
           "stop_name": "59 St - Columbus Circle",
           "headway_sec": 247.8,
-          "predicted_headway_sec": 116.45734758485155,
+          "predicted_headway_sec": 126.25925140195542,
           "online_model_score": 0.1813383838383839,
           "baseline_zscore": 0.0,
           "baseline_ewma": 0.0,
@@ -2118,7 +2119,7 @@
           "stop_id": "F20N",
           "stop_name": "Bergen St",
           "headway_sec": 690.0,
-          "predicted_headway_sec": 740.2597127828267,
+          "predicted_headway_sec": 736.1006819421325,
           "online_model_score": 1.0,
           "baseline_zscore": 1.0,
           "baseline_ewma": 1.0,
@@ -2134,7 +2135,7 @@
           "stop_id": "F09N",
           "stop_name": "Jay St - MetroTech",
           "headway_sec": 314.8,
-          "predicted_headway_sec": 257.5597947749098,
+          "predicted_headway_sec": 254.90551783796087,
           "online_model_score": 0.2884757307589167,
           "baseline_zscore": 0.03333333333333333,
           "baseline_ewma": 0.0,
@@ -2148,7 +2149,7 @@
           "stop_id": "705N",
           "stop_name": "74 St - Broadway",
           "headway_sec": 291.2,
-          "predicted_headway_sec": 202.56875492643115,
+          "predicted_headway_sec": 210.59068619934658,
           "online_model_score": 0.2621760461760461,
           "baseline_zscore": 0.03333333333333333,
           "baseline_ewma": 0.0,
@@ -2162,7 +2163,7 @@
           "stop_id": "726N",
           "stop_name": "Queensboro Plaza",
           "headway_sec": 267.6,
-          "predicted_headway_sec": 178.32080809854565,
+          "predicted_headway_sec": 169.60579344965743,
           "online_model_score": 0.2385569985569989,
           "baseline_zscore": 0.03333333333333333,
           "baseline_ewma": 0.0,
@@ -2176,7 +2177,7 @@
           "stop_id": "A27N",
           "stop_name": "59 St - Columbus Circle",
           "headway_sec": 255.8,
-          "predicted_headway_sec": 126.53299438423227,
+          "predicted_headway_sec": 136.25264668912607,
           "online_model_score": 0.23855699855699858,
           "baseline_zscore": 0.03333333333333357,
           "baseline_ewma": 0.0,
@@ -2217,7 +2218,7 @@
           "stop_id": "F20N",
           "stop_name": "Bergen St",
           "headway_sec": 760.0,
-          "predicted_headway_sec": 552.5051525256886,
+          "predicted_headway_sec": 525.3277259793383,
           "online_model_score": 1.0,
           "baseline_zscore": 0.6324111762696291,
           "baseline_ewma": 0.43287381177409684,
@@ -2233,7 +2234,7 @@
           "stop_id": "F09N",
           "stop_name": "Jay St - MetroTech",
           "headway_sec": 322.8,
-          "predicted_headway_sec": 265.7698670202418,
+          "predicted_headway_sec": 263.6803873267972,
           "online_model_score": 0.3631486291486292,
           "baseline_zscore": 0.1,
           "baseline_ewma": 0.0,
@@ -2248,7 +2249,7 @@
           "stop_id": "705N",
           "stop_name": "74 St - Broadway",
           "headway_sec": 299.2,
-          "predicted_headway_sec": 214.57993067265448,
+          "predicted_headway_sec": 223.80488228017848,
           "online_model_score": 0.3365772005772005,
           "baseline_zscore": 0.1,
           "baseline_ewma": 0.0,
@@ -2263,7 +2264,7 @@
           "stop_id": "726N",
           "stop_name": "Queensboro Plaza",
           "headway_sec": 275.6,
-          "predicted_headway_sec": 190.22488690811315,
+          "predicted_headway_sec": 181.61275245649182,
           "online_model_score": 0.31295815295815316,
           "baseline_zscore": 0.10000000000000048,
           "baseline_ewma": 0.0,
@@ -2278,7 +2279,7 @@
           "stop_id": "A27N",
           "stop_name": "59 St - Columbus Circle",
           "headway_sec": 263.8,
-          "predicted_headway_sec": 138.39627062176115,
+          "predicted_headway_sec": 147.39467919003334,
           "online_model_score": 0.312958152958153,
           "baseline_zscore": 0.09999999999999977,
           "baseline_ewma": 0.0,
@@ -2320,7 +2321,7 @@
           "stop_id": "F20N",
           "stop_name": "Bergen St",
           "headway_sec": 640.0,
-          "predicted_headway_sec": 544.8443618447814,
+          "predicted_headway_sec": 502.5548670706173,
           "online_model_score": 0.7652648027233662,
           "baseline_zscore": 0.1977355361804068,
           "baseline_ewma": 0.03509372602854717,
@@ -2336,7 +2337,7 @@
           "stop_id": "F09N",
           "stop_name": "Jay St - MetroTech",
           "headway_sec": 330.8,
-          "predicted_headway_sec": 277.28277107477743,
+          "predicted_headway_sec": 273.19921084267037,
           "online_model_score": 0.43754978354978363,
           "baseline_zscore": 0.16666666666666666,
           "baseline_ewma": 0.0,
@@ -2351,7 +2352,7 @@
           "stop_id": "705N",
           "stop_name": "74 St - Broadway",
           "headway_sec": 307.2,
-          "predicted_headway_sec": 225.3541496149909,
+          "predicted_headway_sec": 234.891600298968,
           "online_model_score": 0.41097835497835494,
           "baseline_zscore": 0.16666666666666666,
           "baseline_ewma": 0.0,
@@ -2366,7 +2367,7 @@
           "stop_id": "726N",
           "stop_name": "Queensboro Plaza",
           "headway_sec": 283.6,
-          "predicted_headway_sec": 192.33416891598404,
+          "predicted_headway_sec": 183.84744309801536,
           "online_model_score": 0.3873593073593076,
           "baseline_zscore": 0.16666666666666666,
           "baseline_ewma": 0.0,
@@ -2381,7 +2382,7 @@
           "stop_id": "A27N",
           "stop_name": "59 St - Columbus Circle",
           "headway_sec": 271.8,
-          "predicted_headway_sec": 134.93898330278887,
+          "predicted_headway_sec": 146.04990116398346,
           "online_model_score": 0.38735930735930735,
           "baseline_zscore": 0.16666666666666644,
           "baseline_ewma": 0.0,
@@ -2414,7 +2415,7 @@
         },
         {
           "route_id": "A",
-          "peak_score": 0.03811967873342414
+          "peak_score": 0.03609785919392965
         }
       ],
       "top_stops": [
@@ -2423,7 +2424,7 @@
           "stop_id": "F20N",
           "stop_name": "Bergen St",
           "headway_sec": 470.0,
-          "predicted_headway_sec": 599.9673791338626,
+          "predicted_headway_sec": 553.7534867277172,
           "online_model_score": 0.6681469749762433,
           "baseline_zscore": 0.0,
           "baseline_ewma": 0.20062945002177973,
@@ -2439,7 +2440,7 @@
           "stop_id": "726N",
           "stop_name": "Queensboro Plaza",
           "headway_sec": 300.0,
-          "predicted_headway_sec": 329.0678021661074,
+          "predicted_headway_sec": 318.39369247074205,
           "online_model_score": 0.5545266955266953,
           "baseline_zscore": 0.3033333333333336,
           "baseline_ewma": 0.0,
@@ -2452,25 +2453,11 @@
         },
         {
           "route_id": "A",
-          "stop_id": "A27N",
-          "stop_name": "59 St - Columbus Circle",
-          "headway_sec": 231.8,
-          "predicted_headway_sec": 171.80915559327377,
-          "online_model_score": 0.03811967873342414,
-          "baseline_zscore": 0.0,
-          "baseline_ewma": 0.0,
-          "baseline_threshold": 0.0,
-          "reasons": [
-            "rolling z-score jump"
-          ]
-        },
-        {
-          "route_id": "A",
           "stop_id": "A15N",
           "stop_name": "125 St",
           "headway_sec": 267.2,
-          "predicted_headway_sec": 347.35305132329256,
-          "online_model_score": 0.03692061481213433,
+          "predicted_headway_sec": 345.04649977690656,
+          "online_model_score": 0.03609785919392965,
           "baseline_zscore": 0.0,
           "baseline_ewma": 0.0511662263716068,
           "baseline_threshold": 0.0,
@@ -2480,11 +2467,25 @@
           ]
         },
         {
+          "route_id": "A",
+          "stop_id": "A27N",
+          "stop_name": "59 St - Columbus Circle",
+          "headway_sec": 231.8,
+          "predicted_headway_sec": 178.2814446765269,
+          "online_model_score": 0.03400702482825933,
+          "baseline_zscore": 0.0,
+          "baseline_ewma": 0.0,
+          "baseline_threshold": 0.0,
+          "reasons": [
+            "rolling z-score jump"
+          ]
+        },
+        {
           "route_id": "F",
           "stop_id": "F09N",
           "stop_name": "Jay St - MetroTech",
           "headway_sec": 290.8,
-          "predicted_headway_sec": 325.9575617657225,
+          "predicted_headway_sec": 317.906044913594,
           "online_model_score": 0.025095238095238347,
           "baseline_zscore": 0.0,
           "baseline_ewma": 0.0,
@@ -2516,7 +2517,7 @@
         },
         {
           "route_id": "A",
-          "peak_score": 0.05592144625315007
+          "peak_score": 0.05092857142857147
         }
       ],
       "top_stops": [
@@ -2525,7 +2526,7 @@
           "stop_id": "726N",
           "stop_name": "Queensboro Plaza",
           "headway_sec": 330.0,
-          "predicted_headway_sec": 180.0712451973958,
+          "predicted_headway_sec": 173.36653352656057,
           "online_model_score": 0.8595151515151513,
           "baseline_zscore": 0.475,
           "baseline_ewma": 0.13273445911385587,
@@ -2541,7 +2542,7 @@
           "stop_id": "705N",
           "stop_name": "74 St - Broadway",
           "headway_sec": 275.2,
-          "predicted_headway_sec": 265.1550301954224,
+          "predicted_headway_sec": 272.89618143768223,
           "online_model_score": 0.05904761904761905,
           "baseline_zscore": 0.0,
           "baseline_ewma": 0.0,
@@ -2555,7 +2556,7 @@
           "stop_id": "F09N",
           "stop_name": "Jay St - MetroTech",
           "headway_sec": 298.8,
-          "predicted_headway_sec": 307.1224327507082,
+          "predicted_headway_sec": 301.50234307967395,
           "online_model_score": 0.05904761904761905,
           "baseline_zscore": 0.0,
           "baseline_ewma": 0.0,
@@ -2569,8 +2570,8 @@
           "stop_id": "A27N",
           "stop_name": "59 St - Columbus Circle",
           "headway_sec": 239.8,
-          "predicted_headway_sec": 176.17560345456508,
-          "online_model_score": 0.05592144625315007,
+          "predicted_headway_sec": 188.48321569668587,
+          "online_model_score": 0.05092857142857147,
           "baseline_zscore": 0.0,
           "baseline_ewma": 0.0,
           "baseline_threshold": 0.0,
@@ -2583,8 +2584,8 @@
           "stop_id": "F20N",
           "stop_name": "Bergen St",
           "headway_sec": 340.0,
-          "predicted_headway_sec": 440.14459556059313,
-          "online_model_score": 0.03231860549352111,
+          "predicted_headway_sec": 415.4597591030731,
+          "online_model_score": 0.02530752768310123,
           "baseline_zscore": 0.0,
           "baseline_ewma": 0.38520162989697426,
           "baseline_threshold": 0.0,
@@ -2626,7 +2627,7 @@
           "stop_id": "726N",
           "stop_name": "Queensboro Plaza",
           "headway_sec": 420.0,
-          "predicted_headway_sec": 410.5276971716499,
+          "predicted_headway_sec": 380.9958932634601,
           "online_model_score": 1.0,
           "baseline_zscore": 1.0,
           "baseline_ewma": 0.6751662873128954,
@@ -2642,7 +2643,7 @@
           "stop_id": "F20N",
           "stop_name": "Bergen St",
           "headway_sec": 260.0,
-          "predicted_headway_sec": -1.707199163364569e+16,
+          "predicted_headway_sec": -1.709235224427435e+16,
           "online_model_score": 0.44231000000000004,
           "baseline_zscore": 0.0,
           "baseline_ewma": 0.3472302667450316,
@@ -2659,7 +2660,7 @@
           "stop_name": "Jay St - MetroTech",
           "headway_sec": 306.8,
           "predicted_headway_sec": 108.78,
-          "online_model_score": 0.3844986741840738,
+          "online_model_score": 0.35746785142945725,
           "baseline_zscore": 0.0,
           "baseline_ewma": 0.0,
           "baseline_threshold": 0.0,
@@ -2672,7 +2673,7 @@
           "stop_id": "705N",
           "stop_name": "74 St - Broadway",
           "headway_sec": 283.2,
-          "predicted_headway_sec": 253.87736385754795,
+          "predicted_headway_sec": 276.65411529820307,
           "online_model_score": 0.1180952380952381,
           "baseline_zscore": 0.0,
           "baseline_ewma": 0.0,
@@ -2686,7 +2687,7 @@
           "stop_id": "A27N",
           "stop_name": "59 St - Columbus Circle",
           "headway_sec": 247.8,
-          "predicted_headway_sec": 190.6760682935267,
+          "predicted_headway_sec": 185.51274779733492,
           "online_model_score": 0.10185714285714294,
           "baseline_zscore": 0.0,
           "baseline_ewma": 0.0,
@@ -2714,11 +2715,11 @@
         },
         {
           "route_id": "F",
-          "peak_score": 0.23930023609639375
+          "peak_score": 0.23737819637807364
         },
         {
           "route_id": "A",
-          "peak_score": 0.22134986576000953
+          "peak_score": 0.22149886628409568
         }
       ],
       "top_stops": [
@@ -2727,7 +2728,7 @@
           "stop_id": "726N",
           "stop_name": "Queensboro Plaza",
           "headway_sec": 560.0,
-          "predicted_headway_sec": 115.78404972288403,
+          "predicted_headway_sec": 110.60835824801035,
           "online_model_score": 1.0,
           "baseline_zscore": 1.0,
           "baseline_ewma": 0.8237772106677177,
@@ -2743,8 +2744,8 @@
           "stop_id": "705N",
           "stop_name": "74 St - Broadway",
           "headway_sec": 291.2,
-          "predicted_headway_sec": 109.053378197029,
-          "online_model_score": 0.26867040800775654,
+          "predicted_headway_sec": 86.75743489704656,
+          "online_model_score": 0.3046874434534867,
           "baseline_zscore": 0.03333333333333333,
           "baseline_ewma": 0.0,
           "baseline_threshold": 0.0,
@@ -2757,8 +2758,8 @@
           "stop_id": "F09N",
           "stop_name": "Jay St - MetroTech",
           "headway_sec": 314.8,
-          "predicted_headway_sec": 109.10707902864341,
-          "online_model_score": 0.23930023609639375,
+          "predicted_headway_sec": 110.69212409782985,
+          "online_model_score": 0.23737819637807364,
           "baseline_zscore": 0.03333333333333333,
           "baseline_ewma": 0.0,
           "baseline_threshold": 0.0,
@@ -2771,8 +2772,8 @@
           "stop_id": "A27N",
           "stop_name": "59 St - Columbus Circle",
           "headway_sec": 255.8,
-          "predicted_headway_sec": 75.65935016751456,
-          "online_model_score": 0.22134986576000953,
+          "predicted_headway_sec": 75.96238296791306,
+          "online_model_score": 0.22149886628409568,
           "baseline_zscore": 0.0333333333333331,
           "baseline_ewma": 0.0,
           "baseline_threshold": 0.0,
@@ -2785,8 +2786,8 @@
           "stop_id": "A15N",
           "stop_name": "125 St",
           "headway_sec": 291.2,
-          "predicted_headway_sec": 92.92429914542626,
-          "online_model_score": 0.20650159026157125,
+          "predicted_headway_sec": 94.47078360252935,
+          "online_model_score": 0.2038154017893619,
           "baseline_zscore": 0.03333333333333333,
           "baseline_ewma": 0.0,
           "baseline_threshold": 0.0,
@@ -2797,7 +2798,7 @@
     {
       "index": 28,
       "observed_ts": "2026-02-05T13:20:00+00:00",
-      "model_peak_score": 0.9798303336008254,
+      "model_peak_score": 0.9798303336008253,
       "baseline_zscore_peak": 0.5621649692891525,
       "baseline_ewma_peak": 0.37722515779582483,
       "baseline_threshold_peak": 0.4849839779417242,
@@ -2807,15 +2808,15 @@
       "top_routes": [
         {
           "route_id": "7",
-          "peak_score": 0.9798303336008254
+          "peak_score": 0.9798303336008253
         },
         {
           "route_id": "F",
-          "peak_score": 0.25120730788592743
+          "peak_score": 0.24768152994268045
         },
         {
           "route_id": "A",
-          "peak_score": 0.2313533459869324
+          "peak_score": 0.23054812889364856
         }
       ],
       "top_stops": [
@@ -2824,8 +2825,8 @@
           "stop_id": "726N",
           "stop_name": "Queensboro Plaza",
           "headway_sec": 610.0,
-          "predicted_headway_sec": 145.36023266038043,
-          "online_model_score": 0.9798303336008254,
+          "predicted_headway_sec": 141.11240587981973,
+          "online_model_score": 0.9798303336008253,
           "baseline_zscore": 0.5621649692891525,
           "baseline_ewma": 0.37722515779582483,
           "baseline_threshold": 0.4849839779417242,
@@ -2836,28 +2837,12 @@
           ]
         },
         {
-          "route_id": "F",
-          "stop_id": "F20N",
-          "stop_name": "Bergen St",
-          "headway_sec": 370.0,
-          "predicted_headway_sec": 160.88520321743076,
-          "online_model_score": 0.25120730788592743,
-          "baseline_zscore": 0.0,
-          "baseline_ewma": 0.0,
-          "baseline_threshold": 0.0,
-          "reasons": [
-            "headway jump vs previous train",
-            "station baseline deviation",
-            "rolling z-score jump"
-          ]
-        },
-        {
           "route_id": "7",
           "stop_id": "705N",
           "stop_name": "74 St - Broadway",
           "headway_sec": 299.2,
-          "predicted_headway_sec": 101.54500674167727,
-          "online_model_score": 0.2506876112896055,
+          "predicted_headway_sec": 100.06637360298157,
+          "online_model_score": 0.253529777557686,
           "baseline_zscore": 0.1,
           "baseline_ewma": 0.0,
           "baseline_threshold": 0.0,
@@ -2868,11 +2853,27 @@
         },
         {
           "route_id": "F",
+          "stop_id": "F20N",
+          "stop_name": "Bergen St",
+          "headway_sec": 370.0,
+          "predicted_headway_sec": 162.25644927913928,
+          "online_model_score": 0.24768152994268045,
+          "baseline_zscore": 0.0,
+          "baseline_ewma": 0.0,
+          "baseline_threshold": 0.0,
+          "reasons": [
+            "headway jump vs previous train",
+            "station baseline deviation",
+            "rolling z-score jump"
+          ]
+        },
+        {
+          "route_id": "F",
           "stop_id": "F09N",
           "stop_name": "Jay St - MetroTech",
           "headway_sec": 322.8,
-          "predicted_headway_sec": 111.95133069849341,
-          "online_model_score": 0.24568775541179597,
+          "predicted_headway_sec": 113.79693235603816,
+          "online_model_score": 0.2416638940628452,
           "baseline_zscore": 0.1,
           "baseline_ewma": 0.0,
           "baseline_threshold": 0.0,
@@ -2886,8 +2887,8 @@
           "stop_id": "A27N",
           "stop_name": "59 St - Columbus Circle",
           "headway_sec": 263.8,
-          "predicted_headway_sec": 80.34391863471507,
-          "online_model_score": 0.2313533459869324,
+          "predicted_headway_sec": 80.305051990054,
+          "online_model_score": 0.23054812889364856,
           "baseline_zscore": 0.10000000000000024,
           "baseline_ewma": 0.0,
           "baseline_threshold": 0.0,
@@ -2928,7 +2929,7 @@
           "stop_id": "726N",
           "stop_name": "Queensboro Plaza",
           "headway_sec": 655.0,
-          "predicted_headway_sec": 178.09779950127043,
+          "predicted_headway_sec": 174.11305602471006,
           "online_model_score": 0.8384976467674015,
           "baseline_zscore": 0.4272350371351705,
           "baseline_ewma": 0.2877178368343903,
@@ -2944,7 +2945,7 @@
           "stop_id": "F09N",
           "stop_name": "Jay St - MetroTech",
           "headway_sec": 330.8,
-          "predicted_headway_sec": 115.07700105836491,
+          "predicted_headway_sec": 117.0667801636566,
           "online_model_score": 0.312958152958153,
           "baseline_zscore": 0.16666666666666666,
           "baseline_ewma": 0.0,
@@ -2959,7 +2960,7 @@
           "stop_id": "A27N",
           "stop_name": "59 St - Columbus Circle",
           "headway_sec": 271.8,
-          "predicted_headway_sec": 85.34484837722587,
+          "predicted_headway_sec": 85.08866747379763,
           "online_model_score": 0.312958152958153,
           "baseline_zscore": 0.1666666666666669,
           "baseline_ewma": 0.0,
@@ -2974,7 +2975,7 @@
           "stop_id": "705N",
           "stop_name": "74 St - Broadway",
           "headway_sec": 307.2,
-          "predicted_headway_sec": 107.23232067506177,
+          "predicted_headway_sec": 106.1356139121978,
           "online_model_score": 0.312958152958153,
           "baseline_zscore": 0.16666666666666666,
           "baseline_ewma": 0.0,
@@ -2989,8 +2990,8 @@
           "stop_id": "F20N",
           "stop_name": "Bergen St",
           "headway_sec": 378.0,
-          "predicted_headway_sec": 148.91548889495024,
-          "online_model_score": 0.2409535280539385,
+          "predicted_headway_sec": 150.40372681078463,
+          "online_model_score": 0.23819583312189416,
           "baseline_zscore": 0.0,
           "baseline_ewma": 0.0,
           "baseline_threshold": 0.0,
@@ -3004,7 +3005,7 @@
       "index": 30,
       "observed_ts": "2026-02-05T13:30:00+00:00",
       "model_peak_score": 0.7660784819264683,
-      "baseline_zscore_peak": 0.18478725140115826,
+      "baseline_zscore_peak": 0.18478725140115823,
       "baseline_ewma_peak": 0.03123068240203429,
       "baseline_threshold_peak": 0.0,
       "label": 1,
@@ -3017,11 +3018,11 @@
         },
         {
           "route_id": "F",
-          "peak_score": 0.14432528822537105
+          "peak_score": 0.14236516817966363
         },
         {
           "route_id": "A",
-          "peak_score": 0.13001562013347676
+          "peak_score": 0.12819752795837908
         }
       ],
       "top_stops": [
@@ -3030,9 +3031,9 @@
           "stop_id": "726N",
           "stop_name": "Queensboro Plaza",
           "headway_sec": 590.0,
-          "predicted_headway_sec": 208.42334550452173,
+          "predicted_headway_sec": 204.58729391460665,
           "online_model_score": 0.7660784819264683,
-          "baseline_zscore": 0.18478725140115826,
+          "baseline_zscore": 0.18478725140115823,
           "baseline_ewma": 0.03123068240203429,
           "baseline_threshold": 0.0,
           "reasons": [
@@ -3046,8 +3047,8 @@
           "stop_id": "F20N",
           "stop_name": "Bergen St",
           "headway_sec": 338.0,
-          "predicted_headway_sec": 149.33954716572288,
-          "online_model_score": 0.14432528822537105,
+          "predicted_headway_sec": 150.9069373088448,
+          "online_model_score": 0.14236516817966363,
           "baseline_zscore": 0.0,
           "baseline_ewma": 0.0,
           "baseline_threshold": 0.0,
@@ -3060,8 +3061,8 @@
           "stop_id": "A15N",
           "stop_name": "125 St",
           "headway_sec": 267.2,
-          "predicted_headway_sec": 101.93715289328298,
-          "online_model_score": 0.13001562013347676,
+          "predicted_headway_sec": 102.90929393346728,
+          "online_model_score": 0.12819752795837908,
           "baseline_zscore": 0.0,
           "baseline_ewma": 0.0006146687979442807,
           "baseline_threshold": 0.0,
@@ -3071,12 +3072,12 @@
           ]
         },
         {
-          "route_id": "F",
-          "stop_id": "F09N",
-          "stop_name": "Jay St - MetroTech",
-          "headway_sec": 290.8,
-          "predicted_headway_sec": 121.60658238654418,
-          "online_model_score": 0.12773468256327145,
+          "route_id": "7",
+          "stop_id": "705N",
+          "stop_name": "74 St - Broadway",
+          "headway_sec": 267.2,
+          "predicted_headway_sec": 103.56653441376999,
+          "online_model_score": 0.1274959323147082,
           "baseline_zscore": 0.0,
           "baseline_ewma": 0.0,
           "baseline_threshold": 0.0,
@@ -3086,12 +3087,12 @@
           ]
         },
         {
-          "route_id": "7",
-          "stop_id": "705N",
-          "stop_name": "74 St - Broadway",
-          "headway_sec": 267.2,
-          "predicted_headway_sec": 104.4848369302704,
-          "online_model_score": 0.12661322064136604,
+          "route_id": "F",
+          "stop_id": "F09N",
+          "stop_name": "Jay St - MetroTech",
+          "headway_sec": 290.8,
+          "predicted_headway_sec": 123.69592203146382,
+          "online_model_score": 0.1248180611594839,
           "baseline_zscore": 0.0,
           "baseline_ewma": 0.0,
           "baseline_threshold": 0.0,
@@ -3106,7 +3107,7 @@
       "index": 31,
       "observed_ts": "2026-02-05T13:35:00+00:00",
       "model_peak_score": 0.697021654984831,
-      "baseline_zscore_peak": 0.11024078630853017,
+      "baseline_zscore_peak": 0.1102407863085302,
       "baseline_ewma_peak": 0.14859448727967128,
       "baseline_threshold_peak": 0.0,
       "label": 1,
@@ -3119,11 +3120,11 @@
         },
         {
           "route_id": "F",
-          "peak_score": 0.17679755654615945
+          "peak_score": 0.1760686123839377
         },
         {
           "route_id": "A",
-          "peak_score": 0.13384770119382172
+          "peak_score": 0.13345937946822134
         }
       ],
       "top_stops": [
@@ -3132,7 +3133,7 @@
           "stop_id": "726N",
           "stop_name": "Queensboro Plaza",
           "headway_sec": 470.0,
-          "predicted_headway_sec": 241.44778007527472,
+          "predicted_headway_sec": 237.71645639011817,
           "online_model_score": 0.697021654984831,
           "baseline_zscore": 0.0,
           "baseline_ewma": 0.14859448727967128,
@@ -3148,9 +3149,9 @@
           "stop_id": "F20N",
           "stop_name": "Bergen St",
           "headway_sec": 346.0,
-          "predicted_headway_sec": 142.94014467595574,
-          "online_model_score": 0.17679755654615945,
-          "baseline_zscore": 0.11024078630853017,
+          "predicted_headway_sec": 144.5651420390451,
+          "online_model_score": 0.1760686123839377,
+          "baseline_zscore": 0.1102407863085302,
           "baseline_ewma": 0.0,
           "baseline_threshold": 0.0,
           "reasons": [
@@ -3162,8 +3163,8 @@
           "stop_id": "F09N",
           "stop_name": "Jay St - MetroTech",
           "headway_sec": 298.8,
-          "predicted_headway_sec": 122.87650136003768,
-          "online_model_score": 0.13678232317680877,
+          "predicted_headway_sec": 125.0417637827121,
+          "online_model_score": 0.1350368316110829,
           "baseline_zscore": 0.0,
           "baseline_ewma": 0.0,
           "baseline_threshold": 0.0,
@@ -3176,8 +3177,8 @@
           "stop_id": "A15N",
           "stop_name": "125 St",
           "headway_sec": 275.2,
-          "predicted_headway_sec": 107.5902239280273,
-          "online_model_score": 0.13384770119382172,
+          "predicted_headway_sec": 108.44983908827271,
+          "online_model_score": 0.13345937946822134,
           "baseline_zscore": 0.0,
           "baseline_ewma": 0.0,
           "baseline_threshold": 0.0,
@@ -3191,8 +3192,8 @@
           "stop_id": "705N",
           "stop_name": "74 St - Broadway",
           "headway_sec": 275.2,
-          "predicted_headway_sec": 113.36873982980273,
-          "online_model_score": 0.12645245259291646,
+          "predicted_headway_sec": 112.56514088240326,
+          "online_model_score": 0.1283107182592067,
           "baseline_zscore": 0.0,
           "baseline_ewma": 0.0,
           "baseline_threshold": 0.0,
@@ -3206,7 +3207,7 @@
       "index": 32,
       "observed_ts": "2026-02-05T13:40:00+00:00",
       "model_peak_score": 0.62,
-      "baseline_zscore_peak": 0.1381329059518764,
+      "baseline_zscore_peak": 0.13813290595187644,
       "baseline_ewma_peak": 0.38004906081857776,
       "baseline_threshold_peak": 0.0,
       "label": 0,
@@ -3219,11 +3220,11 @@
         },
         {
           "route_id": "F",
-          "peak_score": 0.18927303600392564
+          "peak_score": 0.18845840047667392
         },
         {
           "route_id": "A",
-          "peak_score": 0.13762648014868772
+          "peak_score": 0.13849125159333903
         }
       ],
       "top_stops": [
@@ -3232,7 +3233,7 @@
           "stop_id": "726N",
           "stop_name": "Queensboro Plaza",
           "headway_sec": 360.0,
-          "predicted_headway_sec": 256.3851679229012,
+          "predicted_headway_sec": 252.73483698398596,
           "online_model_score": 0.62,
           "baseline_zscore": 0.0,
           "baseline_ewma": 0.38004906081857776,
@@ -3248,9 +3249,9 @@
           "stop_id": "F20N",
           "stop_name": "Bergen St",
           "headway_sec": 354.0,
-          "predicted_headway_sec": 147.67792351084285,
-          "online_model_score": 0.18927303600392564,
-          "baseline_zscore": 0.1381329059518764,
+          "predicted_headway_sec": 149.34721512544252,
+          "online_model_score": 0.18845840047667392,
+          "baseline_zscore": 0.13813290595187644,
           "baseline_ewma": 0.0,
           "baseline_threshold": 0.0,
           "reasons": [
@@ -3262,8 +3263,20 @@
           "stop_id": "F09N",
           "stop_name": "Jay St - MetroTech",
           "headway_sec": 306.8,
-          "predicted_headway_sec": 127.42223854299044,
-          "online_model_score": 0.14729450281834902,
+          "predicted_headway_sec": 129.6488289446538,
+          "online_model_score": 0.14615010768531725,
+          "baseline_zscore": 0.0,
+          "baseline_ewma": 0.0,
+          "baseline_threshold": 0.0,
+          "reasons": []
+        },
+        {
+          "route_id": "7",
+          "stop_id": "705N",
+          "stop_name": "74 St - Broadway",
+          "headway_sec": 283.2,
+          "predicted_headway_sec": 117.456620850769,
+          "online_model_score": 0.13875474898342677,
           "baseline_zscore": 0.0,
           "baseline_ewma": 0.0,
           "baseline_threshold": 0.0,
@@ -3274,34 +3287,22 @@
           "stop_id": "A15N",
           "stop_name": "125 St",
           "headway_sec": 283.2,
-          "predicted_headway_sec": 111.52223572018256,
-          "online_model_score": 0.13762648014868772,
+          "predicted_headway_sec": 112.28855464648885,
+          "online_model_score": 0.13849125159333903,
           "baseline_zscore": 0.0,
           "baseline_ewma": 0.0,
           "baseline_threshold": 0.0,
           "reasons": [
             "station baseline deviation"
           ]
-        },
-        {
-          "route_id": "7",
-          "stop_id": "705N",
-          "stop_name": "74 St - Broadway",
-          "headway_sec": 283.2,
-          "predicted_headway_sec": 118.17601193874279,
-          "online_model_score": 0.13575411387233474,
-          "baseline_zscore": 0.0,
-          "baseline_ewma": 0.0,
-          "baseline_threshold": 0.0,
-          "reasons": []
         }
       ]
     },
     {
       "index": 33,
       "observed_ts": "2026-02-05T13:45:00+00:00",
-      "model_peak_score": 0.1835530683494269,
-      "baseline_zscore_peak": 0.12035386205645246,
+      "model_peak_score": 0.18294939624047832,
+      "baseline_zscore_peak": 0.12035386205645247,
       "baseline_ewma_peak": 0.33261774390970056,
       "baseline_threshold_peak": 0.0,
       "label": 0,
@@ -3310,7 +3311,7 @@
       "top_routes": [
         {
           "route_id": "F",
-          "peak_score": 0.1835530683494269
+          "peak_score": 0.18294939624047832
         },
         {
           "route_id": "7",
@@ -3318,7 +3319,7 @@
         },
         {
           "route_id": "A",
-          "peak_score": 0.14775493297747014
+          "peak_score": 0.15090311378316146
         }
       ],
       "top_stops": [
@@ -3327,9 +3328,9 @@
           "stop_id": "F20N",
           "stop_name": "Bergen St",
           "headway_sec": 362.0,
-          "predicted_headway_sec": 160.7471868769829,
-          "online_model_score": 0.1835530683494269,
-          "baseline_zscore": 0.12035386205645246,
+          "predicted_headway_sec": 162.4538020151857,
+          "online_model_score": 0.18294939624047832,
+          "baseline_zscore": 0.12035386205645247,
           "baseline_ewma": 0.0,
           "baseline_threshold": 0.0,
           "reasons": [
@@ -3341,7 +3342,7 @@
           "stop_id": "726N",
           "stop_name": "Queensboro Plaza",
           "headway_sec": 300.0,
-          "predicted_headway_sec": 250.1997773161055,
+          "predicted_headway_sec": 246.61121721710768,
           "online_model_score": 0.1699011680143753,
           "baseline_zscore": 0.0,
           "baseline_ewma": 0.33261774390970056,
@@ -3357,8 +3358,8 @@
           "stop_id": "F09N",
           "stop_name": "Jay St - MetroTech",
           "headway_sec": 314.8,
-          "predicted_headway_sec": 131.73589829915778,
-          "online_model_score": 0.16252344223227835,
+          "predicted_headway_sec": 134.01399973382817,
+          "online_model_score": 0.1612950687840596,
           "baseline_zscore": 0.03333333333333333,
           "baseline_ewma": 0.0,
           "baseline_threshold": 0.0,
@@ -3369,8 +3370,8 @@
           "stop_id": "705N",
           "stop_name": "74 St - Broadway",
           "headway_sec": 291.2,
-          "predicted_headway_sec": 123.6380160703397,
-          "online_model_score": 0.14925145034967188,
+          "predicted_headway_sec": 122.98507179239546,
+          "online_model_score": 0.15213160148769964,
           "baseline_zscore": 0.03333333333333333,
           "baseline_ewma": 0.0,
           "baseline_threshold": 0.0,
@@ -3381,8 +3382,8 @@
           "stop_id": "A27N",
           "stop_name": "59 St - Columbus Circle",
           "headway_sec": 255.8,
-          "predicted_headway_sec": 98.44296818102585,
-          "online_model_score": 0.14775493297747014,
+          "predicted_headway_sec": 97.7094984772736,
+          "online_model_score": 0.15090311378316146,
           "baseline_zscore": 0.03333333333333357,
           "baseline_ewma": 0.0,
           "baseline_threshold": 0.0,
@@ -3393,7 +3394,7 @@
     {
       "index": 34,
       "observed_ts": "2026-02-05T13:50:00+00:00",
-      "model_peak_score": 0.18964684920288813,
+      "model_peak_score": 0.1883138501024604,
       "baseline_zscore_peak": 0.1,
       "baseline_ewma_peak": 0.24339730246764463,
       "baseline_threshold_peak": 0.0,
@@ -3403,15 +3404,15 @@
       "top_routes": [
         {
           "route_id": "F",
-          "peak_score": 0.18964684920288813
+          "peak_score": 0.1883138501024604
         },
         {
           "route_id": "7",
-          "peak_score": 0.1784709849345965
+          "peak_score": 0.18121793961543126
         },
         {
           "route_id": "A",
-          "peak_score": 0.17756476819264116
+          "peak_score": 0.18065548274382587
         }
       ],
       "top_stops": [
@@ -3420,8 +3421,8 @@
           "stop_id": "F09N",
           "stop_name": "Jay St - MetroTech",
           "headway_sec": 322.8,
-          "predicted_headway_sec": 135.45365793625226,
-          "online_model_score": 0.18964684920288813,
+          "predicted_headway_sec": 137.77615185787874,
+          "online_model_score": 0.1883138501024604,
           "baseline_zscore": 0.1,
           "baseline_ewma": 0.0,
           "baseline_threshold": 0.0,
@@ -3435,8 +3436,8 @@
           "stop_id": "705N",
           "stop_name": "74 St - Broadway",
           "headway_sec": 299.2,
-          "predicted_headway_sec": 125.98208389476792,
-          "online_model_score": 0.1784709849345965,
+          "predicted_headway_sec": 125.38400911896247,
+          "online_model_score": 0.18121793961543126,
           "baseline_zscore": 0.1,
           "baseline_ewma": 0.0,
           "baseline_threshold": 0.0,
@@ -3450,8 +3451,8 @@
           "stop_id": "A27N",
           "stop_name": "59 St - Columbus Circle",
           "headway_sec": 263.8,
-          "predicted_headway_sec": 100.71235631319297,
-          "online_model_score": 0.17756476819264116,
+          "predicted_headway_sec": 99.90185938922849,
+          "online_model_score": 0.18065548274382587,
           "baseline_zscore": 0.09999999999999977,
           "baseline_ewma": 0.0,
           "baseline_threshold": 0.0,
@@ -3465,8 +3466,8 @@
           "stop_id": "F20N",
           "stop_name": "Bergen St",
           "headway_sec": 370.0,
-          "predicted_headway_sec": 177.1805120773982,
-          "online_model_score": 0.172656326029273,
+          "predicted_headway_sec": 178.9216690512981,
+          "online_model_score": 0.172367058340248,
           "baseline_zscore": 0.1,
           "baseline_ewma": 0.0,
           "baseline_threshold": 0.0,
@@ -3480,8 +3481,8 @@
           "stop_id": "A15N",
           "stop_name": "125 St",
           "headway_sec": 299.2,
-          "predicted_headway_sec": 118.62851681040512,
-          "online_model_score": 0.16679004776638345,
+          "predicted_headway_sec": 119.24570257975495,
+          "online_model_score": 0.1677393338196914,
           "baseline_zscore": 0.1,
           "baseline_ewma": 0.0,
           "baseline_threshold": 0.0,
@@ -3521,7 +3522,7 @@
           "stop_id": "F09N",
           "stop_name": "Jay St - MetroTech",
           "headway_sec": 330.8,
-          "predicted_headway_sec": 142.32101854340303,
+          "predicted_headway_sec": 144.68244882327386,
           "online_model_score": 0.2539105339105339,
           "baseline_zscore": 0.16666666666666666,
           "baseline_ewma": 0.0,
@@ -3536,7 +3537,7 @@
           "stop_id": "705N",
           "stop_name": "74 St - Broadway",
           "headway_sec": 307.2,
-          "predicted_headway_sec": 129.8420906290437,
+          "predicted_headway_sec": 129.29066510220395,
           "online_model_score": 0.2539105339105339,
           "baseline_zscore": 0.16666666666666666,
           "baseline_ewma": 0.0,
@@ -3551,7 +3552,7 @@
           "stop_id": "A27N",
           "stop_name": "59 St - Columbus Circle",
           "headway_sec": 271.8,
-          "predicted_headway_sec": 107.58515624211621,
+          "predicted_headway_sec": 106.70637459656601,
           "online_model_score": 0.2539105339105339,
           "baseline_zscore": 0.16666666666666644,
           "baseline_ewma": 0.0,
@@ -3566,8 +3567,8 @@
           "stop_id": "A15N",
           "stop_name": "125 St",
           "headway_sec": 307.2,
-          "predicted_headway_sec": 124.39340715025968,
-          "online_model_score": 0.191071348273171,
+          "predicted_headway_sec": 124.94884852999542,
+          "online_model_score": 0.19237319964391905,
           "baseline_zscore": 0.16666666666666666,
           "baseline_ewma": 0.0,
           "baseline_threshold": 0.0,
@@ -3581,8 +3582,8 @@
           "stop_id": "F20N",
           "stop_name": "Bergen St",
           "headway_sec": 378.0,
-          "predicted_headway_sec": 181.0261356659917,
-          "online_model_score": 0.1910441108687211,
+          "predicted_headway_sec": 182.79468647137227,
+          "online_model_score": 0.18981996696691103,
           "baseline_zscore": 0.16666666666666666,
           "baseline_ewma": 0.0,
           "baseline_threshold": 0.0,

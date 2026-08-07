@@ -1,245 +1,180 @@
-<div align="center">
+# MTA-Scan — unsupervised anomaly detection on live NYC Subway feeds
+
+Polls 8 MTA GTFS-Realtime protobuf feeds every ~30 s, computes per-stop headway
+residuals, and scores anomalies with an online model that retrains in place and needs
+**zero labels**. Includes a replay harness that scores the same pipeline against three
+heuristic baselines.
 
 [![CI](https://github.com/stelioszach03/NYC-Subway-Anomaly-Detection/actions/workflows/ci.yml/badge.svg)](https://github.com/stelioszach03/NYC-Subway-Anomaly-Detection/actions)
-
-# MTA-Scan · NYC Subway Anomaly Detection
-
-**Real-time anomaly detection for the NYC Subway, powered by live GTFS-RT, online ML, and a production-grade command center.**
-
-[![Python](https://img.shields.io/badge/Python-3.11-3776AB?style=flat-square&logo=python&logoColor=white)](https://www.python.org/)
-[![FastAPI](https://img.shields.io/badge/FastAPI-0.115-009688?style=flat-square&logo=fastapi&logoColor=white)](https://fastapi.tiangolo.com/)
-[![River](https://img.shields.io/badge/River-online%20ML-1f6feb?style=flat-square)](https://riverml.xyz/)
-[![PyTorch](https://img.shields.io/badge/PyTorch-Shadow%20SSL-EE4C2C?style=flat-square&logo=pytorch&logoColor=white)](https://pytorch.org/)
-[![Next.js](https://img.shields.io/badge/Next.js-14-000000?style=flat-square&logo=nextdotjs&logoColor=white)](https://nextjs.org/)
-[![TimescaleDB](https://img.shields.io/badge/TimescaleDB-PG16-FDB515?style=flat-square)](https://www.timescale.com/)
-[![Mapbox](https://img.shields.io/badge/MapLibre-GL-396CB5?style=flat-square)](https://maplibre.org/)
-[![Docker](https://img.shields.io/badge/Docker-Compose-2496ED?style=flat-square&logo=docker&logoColor=white)](https://www.docker.com/)
 [![License: MIT](https://img.shields.io/badge/License-MIT-f59e0b?style=flat-square)](LICENSE)
-
-**[Landing](https://stelioszach.com/nyc-subway-anomaly/)**  ·  **[Live Command Center](https://stelioszach.com/nyc-subway-anomaly/live)**  ·  **[Next.js Ops UI](https://stelioszach.com/nyc-subway-anomaly/map)**  ·  **[API Health](https://stelioszach.com/nyc-subway-anomaly/api/health/deep)**
-
-</div>
+[![Python 3.11](https://img.shields.io/badge/Python-3.11-3776AB?style=flat-square)](https://www.python.org/)
 
 ---
+
+## Results — replay evaluation vs 3 baselines
+
+The point of this table is the **trade-off**, not a win: the online model detects all three
+incidents with the longest lead time, and pays for it with the highest false-alarm rate.
+
+| Method | False-alarm rate | MRR | p@5 | p@20 | r@20 | Incidents found | Avg lead time | Avg time-to-detect |
+|---|---:|---:|---:|---:|---:|---:|---:|---:|
+| **Online model** (River) | 0.030 | 0.199 | 1.00 | **0.80** | **1.000** | **3 / 3** | **6.67 min** | **0.0 min** |
+| z-score baseline | 0.010 | 0.128 | 0.80 | 0.50 | 0.625 | 3 / 3 | 5.00 min | 5.0 min |
+| EWMA baseline | 0.005 | 0.181 | 0.80 | 0.50 | 0.625 | 3 / 3 | 2.50 min | 5.0 min |
+| Fixed-threshold baseline | **0.000** | 0.184 | 1.00 | 0.50 | 0.625 | 1 / 3 | 0.00 min | 5.0 min |
+
+Evidence: [`docs/generated/replay/metrics.json`](docs/generated/replay/metrics.json) ·
+dataset card in [`docs/generated/replay/summary.json`](docs/generated/replay/summary.json) ·
+method notes in [`docs/EVALUATION.md`](docs/EVALUATION.md).
+
+**Read the dataset size before the numbers.** The replay set is
+[`evaluation/data/sample_subway_headways.csv`](evaluation/data/sample_subway_headways.csv):
+**216 rows, 16 positive rows, 3 routes, 6 stops, 3 hand-labelled incidents**, threshold 0.6.
+That is a sanity evaluation, not a benchmark — 16 positives cannot separate these methods
+with any confidence, and the incidents are representative scenarios rather than official MTA
+incident annotations. The interesting part is that the fixed-threshold rule has a *perfect*
+false-alarm rate and still misses two of three incidents.
+
+Reproduce it in about a second:
+
+```bash
+PYTHONPATH=. python scripts/run_replay_eval.py \
+  --input evaluation/data/sample_subway_headways.csv \
+  --out-dir docs/generated/replay
+```
+
+The output is byte-identical to what is committed. It was not, until the categorical hash
+features were switched off Python's `hash()` — see *Reproducibility* below.
 
 ## What it does
 
-MTA-Scan ingests **seven live MTA GTFS-Realtime protobuf feeds** every 30 seconds, persists each stop event into TimescaleDB, computes per-stop headway residuals, and scores anomalies in real time with a **hybrid online ML pipeline** (River + PyTorch shadow model). Operators triage incidents on a live map — every station ranked, color-coded, and contextualized with the model's prediction.
-
-> Not a toy. **849 stations, 1 261 active trains, 8 192 scored rows, 741 critical anomalies** live at the time of this writing — all from real MTA feeds with zero fabrication.
-
-## Highlights
-
-- **Streaming GTFS-RT ingestion** — worker polls 7 MTA line-family feeds, deduplicates updates, and emits normalized stop events on a ~30s cadence.
-- **Timescale hypertables** — minute-resolution stop events with fast range queries over observed vs predicted headway.
-- **Online ML that retrains in place** — River `PARegressor` for headway prediction, `HalfSpaceTrees` for anomaly signal, ADWIN drift detector for model reset.
-- **Self-supervised residual calibration** — rolling quantile scoring means the model needs **zero labels**.
-- **PyTorch shadow model** — a denoising autoencoder trained on a sliding window, run in parallel as an A/B quality check and drift tracker.
-- **Operator-grade observability** — `/api/health/deep` returns DB freshness, GTFS availability, model telemetry artifacts, and data age.
-- **Two frontends**:
-  - **Next.js 14 dashboard** (`/map`) — feature-rich operator console with KPIs, routes under pressure, severity distribution, incident ranking, and model telemetry panels.
-  - **MapLibre GL command center** (`/live`) — new zero-dependency dark map with glass panels, heatmap layer, click-to-fly, and auto-refreshing incident stream.
-- **Recruiter-ready landing page** (`/`) — live KPIs, pipeline explainer, 26-route grid, auto-refreshing anomaly feed.
-- **Disk-safe model persistence** — retention-aware checkpoint saver that keeps only the N most recent bundles (default 5), fixed after a 37 GB memory leak from unbounded saves.
-- **Full test suite** — unit + integration tests for health, scoring, collector, online ML, and telemetry.
-
-## Architecture
-
 ```mermaid
 flowchart LR
-    A["MTA GTFS-RT<br/>7 line-family feeds"] --> B["Collector<br/>worker"]
+    A["MTA GTFS-RT<br/>8 line-family feeds"] --> B["Collector worker<br/>~30 s cadence, dedupe"]
     B --> C["TimescaleDB<br/>hypertables"]
-    C --> D["Online Trainer<br/>River + ADWIN"]
+    C --> D["Online trainer<br/>River PARegressor + HalfSpaceTrees + ADWIN"]
     D --> C
-    C --> E["SSL Shadow<br/>PyTorch DAE"]
-    E --> F["Shadow Telemetry<br/>JSON"]
-    C --> G["FastAPI"]
-    G --> H["Next.js UI<br/>/map"]
-    G --> I["MapLibre UI<br/>/live"]
-    G --> J["Landing<br/>/"]
+    C --> E["PyTorch DAE<br/>shadow model, A/B"]
+    E --> F["Shadow telemetry JSON"]
+    C --> G["FastAPI read API"]
+    G --> H["Next.js 14 ops UI"]
+    G --> I["MapLibre GL command center"]
 ```
 
-## Scoring logic
+- **Online learning, no labels.** `PARegressor` predicts the next headway; the residual is
+  the anomaly signal, calibrated against a rolling quantile so no ground truth is needed.
+  `HalfSpaceTrees` adds an unsupervised second opinion. `ADWIN` resets the model on drift.
+- **Shadow model.** A PyTorch denoising autoencoder trains on a sliding window and runs in
+  parallel purely as a drift/quality cross-check — it does not feed the served score.
+- **Score composition** (`worker/ml_online.py`):
 
-For each scored event the pipeline computes:
+  | Component | Weight |
+  |---|---:|
+  | Rolling-quantile-calibrated residual | 0.50 |
+  | HalfSpaceTrees anomaly score | 0.30 |
+  | Relative error `\|obs − pred\| / max(pred, 60 s)` | 0.20 |
 
-| Component | Weight | Description |
-|-----------|:------:|-------------|
-| SSL residual score | **0.50** | Rolling-quantile-calibrated residual of the `PARegressor` prediction |
-| HalfSpaceTrees anomaly | **0.30** | Tree-based unsupervised anomaly score |
-| Relative error | **0.20** | Absolute `|observed − predicted| / max(predicted, 60s)` |
+  `score ≥ 0.60` → anomaly, `score ≥ 0.85` → critical.
+- **31 numeric features** (`NUMERIC_FEATURE_COLUMNS` in `worker/features.py`), of which 16
+  carry a written rationale — hour, day-of-week, peak/weekend flags, two headway lags,
+  rolling mean/std/q10/q90, station-local MAD-scaled deviation, feed staleness, direction,
+  plus optional weather and service-alert hooks. Listed in
+  [`docs/generated/replay/summary.json`](docs/generated/replay/summary.json).
+- **Retention-aware checkpointing** — keeps the N most recent bundles (default 5). Added
+  after unbounded saves filled **37 GB** of disk.
 
-Final:
+## Quickstart — verified on macOS 15 / Python 3.11
 
-```python
-score = clip01(0.50 * ssl_residual + 0.30 * hst_score + 0.20 * relative_error)
+Tests and the replay evaluation need no database, no Docker and no network:
+
+```bash
+python3.11 -m venv .venv && source .venv/bin/activate
+pip install -r requirements.txt -r requirements-dev.txt
+
+PYTHONPATH=. pytest -q          # 11 passed, 4 skipped (integration) in ~2 s
+ruff check .                    # clean
+PYTHONPATH=. python scripts/run_replay_eval.py \
+  --input evaluation/data/sample_subway_headways.csv --out-dir /tmp/replay
 ```
 
-Operational thresholds:
+The full stack needs Docker:
 
-- `score ≥ 0.60` → **anomaly**
-- `score ≥ 0.85` → **critical**
+```bash
+cp infra/.env.example infra/.env
+docker compose up -d --build db api worker trainer dl_shadow ui
+# UI      http://localhost:3000/map
+# health  http://localhost:8000/api/health/deep
+```
+
+Six services: `db` (TimescaleDB PG16), `worker` (collector, 30 s), `trainer` (River, 5 s tick),
+`dl_shadow` (PyTorch DAE, 120 s tick), `api` (FastAPI), `ui` (Next.js 14 standalone).
+
+## Reproducibility
+
+`worker/features.py` hashes `route_id`, `stop_id` and route-direction into numeric features.
+It used Python's builtin `hash()`, which CPython **randomizes per process** via
+`PYTHONHASHSEED`. Consequences, both real:
+
+1. the replay evaluation produced different `p@k` and MRR on every run;
+2. more seriously, a model checkpoint reloaded after a restart was scoring a *different*
+   feature space than the one it was trained on.
+
+It now uses `blake2b`. `tests/test_feature_hash_stability_unit.py` pins the values and
+re-runs them in subprocesses under three different `PYTHONHASHSEED` settings. The committed
+replay artifacts were regenerated after the fix, so the numbers in the table above are the
+numbers you get.
 
 ## API
 
-### Endpoints
-
 | Method | Path | Description |
-|--------|------|-------------|
-| `GET` | `/api/health` | Liveness |
-| `GET` | `/api/health/deep` | DB freshness + GTFS + model telemetry |
-| `GET` | `/api/summary?window=15m` | KPI card: stations, active trains, anomaly count/rate, timestamps |
-| `GET` | `/api/anomalies?window=15m&route_id=All&limit=400` | Event-level anomaly rows with observed/event timestamp packs |
-| `GET` | `/api/heatmap?ts=now&window=60m&route_id=All` | GeoJSON features (top-scoring event per stop in window) |
-| `GET` | `/api/routes` | Distinct routes seen in last 24h |
-| `GET` | `/api/stops` | Static GTFS stops with lat/lon |
-| `GET` | `/api/model/telemetry` | River trainer telemetry |
-| `GET` | `/api/model/telemetry/dl-shadow` | PyTorch shadow telemetry |
+|---|---|---|
+| `GET` | `/api/health` | liveness |
+| `GET` | `/api/health/deep` | DB freshness, GTFS availability, model telemetry, data age |
+| `GET` | `/api/summary?window=15m` | station/train counts, anomaly count and rate |
+| `GET` | `/api/anomalies?window=15m&route_id=All&limit=400` | event-level anomaly rows |
+| `GET` | `/api/heatmap?ts=now&window=60m&route_id=All` | GeoJSON, top-scoring event per stop |
+| `GET` | `/api/routes` · `/api/stops` | routes seen in 24 h · static GTFS stops |
+| `GET` | `/api/model/telemetry` · `/api/model/telemetry/dl-shadow` | River and DAE telemetry |
 
-### Example
+## What this does not do
 
-```bash
-curl -s 'https://stelioszach.com/nyc-subway-anomaly/api/summary?window=15m' | jq
-```
+- **The evaluation is 216 rows and 3 incidents.** No claim about detection quality at scale
+  is supported by anything in this repository. Point estimates on 16 positives are noisy;
+  no confidence intervals are computed.
+- **Labels are hand-made.** The three replay incidents are representative scenarios, not
+  official MTA incident annotations. There is no labelled historical archive here.
+- **The online model is not tuned for offline accuracy.** It is tuned for responsiveness on
+  a streaming feed, and the table shows it carries the highest false-alarm rate of the four
+  methods.
+- **A headway anomaly is not a root cause.** The reason strings are factor attributions, not
+  causal explanations.
+- **No static GTFS data is committed** (`gtfs_subway/` holds only a `.gitkeep`), so
+  `/api/stops` and the map layers are empty until the static feed is downloaded.
+- **PyTorch is not in `requirements.txt`** — it is installed only inside
+  `docker/Dockerfile.worker`. The DAE shadow model does not run in a plain local venv.
+- **Integration tests are skipped by default**; they need a live Postgres and outbound
+  network to the MTA endpoints (`TEST_ALLOW_NETWORK=1`).
+- Cold-start scoring is noisy, and schedule changes or feed resets can produce false
+  positives. More in [`docs/LIMITATIONS.md`](docs/LIMITATIONS.md).
 
-```json
-{
-  "window": "15m",
-  "stations_total": 849,
-  "trains_active": 1261,
-  "anomalies_count": 999,
-  "anomalies_high": 741,
-  "anomaly_rate_perc": 12.19,
-  "scored_rows": 8192,
-  "last_updated_utc": "2026-04-15T17:34:58Z",
-  "last_updated_ny": "2026-04-15T13:34:58-04:00"
-}
-```
-
-## Quick Start
-
-### Local Docker
-
-```bash
-git clone https://github.com/stelioszach03/NYC-Subway-Anomaly-Detection.git
-cd NYC-Subway-Anomaly-Detection
-cp infra/.env.example infra/.env
-
-# Optional but recommended
-echo "MAPBOX_TOKEN=pk.xxx" >> infra/.env
-
-docker compose up -d --build db api worker trainer dl_shadow ui
-```
-
-Open:
-
-- **Map UI**: http://localhost:3000/map
-- **API Health**: http://localhost:8000/api/health/deep
-- **Summary**: http://localhost:8000/api/summary?window=15m
-
-### VPS / subpath deployment
-
-```bash
-docker compose -f docker-compose.vps.yml up -d --build
-```
-
-Exposed ports in the VPS profile:
-
-| Service | Port | Purpose |
-|---------|:----:|---------|
-| API | `18600` | FastAPI |
-| UI | `18700` | Next.js |
-
-The UI is built with `NEXT_PUBLIC_BASE_PATH=/nyc-subway-anomaly` for reverse-proxy mounting.
-
-## Six-service stack
-
-| Service | Image | Role |
-|---------|-------|------|
-| `db` | `timescale/timescaledb:latest-pg16` | Hypertable event store |
-| `worker` | Python 3.11 | GTFS-RT collector, 30 s cadence |
-| `trainer` | Python 3.11 | River online ML, 5 s tick |
-| `dl_shadow` | Python 3.11 + PyTorch | DAE shadow, 120 s tick |
-| `api` | FastAPI + uvicorn | Read API + telemetry |
-| `ui` | Next.js 14 standalone | Operator dashboard |
-
-## Project Layout
+## Layout
 
 ```text
-api/
-├── app/
-│   ├── main.py                     FastAPI app + CORS
-│   ├── routers/                    health, summary, anomalies, heatmap, stops, routes, model
-│   ├── models/                     SQLAlchemy Score model
-│   ├── storage/                    Engine + session
-│   └── core/                       Config, logging
-worker/
-├── collector.py                    GTFS-RT protobuf fetchers + dedupe
-├── ml_online.py                    River trainer loop
-├── ssl_shadow.py                   PyTorch DAE shadow loop
-├── drift.py                        ADWIN + atomic retention-aware save_model
-├── features.py                     Feature engineering
-└── util.py                         Loguru
-ui/
-├── pages/                          Next.js pages (_app, map, index)
-├── components/                     Map, KPIs, AnomalyTable, telemetry panels
-└── lib/                            hooks, time, utils
-landing/
-├── index.html                      Public landing page (transit-ops editorial)
-└── live.html                       MapLibre command center
-tests/                              unit + integration suite
-scripts/                            smoke + healthtest helpers
-db/migrations/                      Postgres migrations
-monitoring/                         (reserved)
+api/app/         FastAPI: routers, SQLAlchemy models, storage, config
+worker/          collector.py (GTFS-RT + dedupe), ml_online.py (River),
+                 ssl_shadow.py (PyTorch DAE), drift.py (ADWIN + retention saver),
+                 features.py (feature engineering)
+evaluation/      replay.py, baselines.py, metrics.py, artifacts.py + sample dataset
+ui/              Next.js 14 operator dashboard
+landing/         static landing page + MapLibre GL command center
+docs/            DATA_CARD, MODEL_CARD, EVALUATION, LIMITATIONS + generated replay artifacts
+db/migrations/   Postgres/Timescale migrations
+tests/           11 unit + 4 integration tests
 ```
 
-## Configuration
+4,074 lines of Python, 2,139 lines of TypeScript/TSX. CI runs ruff, the unit suite, and
+builds all three Docker images on every push.
 
-All runtime settings come from `infra/.env` (copy from `infra/.env.example`):
+## License
 
-| Variable | Purpose |
-|----------|---------|
-| `DB_URL` | Postgres DSN for TimescaleDB |
-| `MODELS_DIR` | Model checkpoint directory (default `/data/gtfs/models`) |
-| `MODEL_RETENTION` | Max checkpoints kept per prefix (default `5`) |
-| `MODEL_TELEMETRY_PATH` | JSON for online trainer stats |
-| `MODEL_DL_TELEMETRY_PATH` | JSON for shadow DAE stats |
-| `MAPBOX_TOKEN` | Optional, enables Mapbox streets basemap in `/map` |
-| `APP_VERSION` | Reported in `/api/health` |
-
-## Observability
-
-- **`/api/health/deep`** returns:
-  - DB connectivity + score row counts + last observed timestamp + freshness flag
-  - GTFS static file status + stop count
-  - Online trainer telemetry (rows seen/updated, drift events, MAE EMA, residual quantiles, backlog)
-  - DL shadow telemetry (reconstruction error p90/p99, correlation with online score)
-- **Retention logging** — every stale checkpoint deletion is logged with prefix and count
-- **Deep-health test script** — `scripts/healthtest.sh` for CI / operators
-
-## Testing
-
-```bash
-make setup-dev
-make test                                   # unit
-DB_URL=postgresql://postgres:postgres@localhost:5432/mta \
-TEST_ALLOW_NETWORK=1 make itest-host        # integration (requires local DB)
-./scripts/healthtest.sh http://localhost:8000
-```
-
-## Roadmap
-
-- [ ] Kafka streaming backbone for cross-data-source event fusion
-- [ ] Temporal GNN for stop-topology-aware anomaly propagation
-- [ ] Incident playback for forensic replay
-- [ ] Multi-agency expansion (LIRR, Metro-North, NJ Transit)
-
----
-
-<div align="center">
-
-Built by **[Stelios Zacharioudakis](https://stelioszach.com)** · ML Engineer & Researcher · Athens → Toronto
-
-[Portfolio](https://stelioszach.com) · [GitHub](https://github.com/stelioszach03) · [LinkedIn](https://www.linkedin.com/in/stylianos-georgios-zacharioudakis-47024428a)
-
-</div>
+MIT — see [`LICENSE`](LICENSE).
