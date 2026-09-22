@@ -1,5 +1,9 @@
 # MTA-Scan
 
+**[Live demo — Explore the subway monitor](https://stelioszach.com/demos/mta-scan/)** · [Deployed adapter and UI source](https://github.com/stelioszach03/stelioszach-portfolio/tree/main/demo-services/mta-scan)
+
+The live portfolio workspace uses a separately maintained CPU adapter for public MTA feed observations and a clearly separated frozen replay. This repository contains the broader experimental stack and replay tooling, not the exact deployed service. Neither the live scores nor the small constructed replay establish validated transit-incident detection.
+
 A streaming-data prototype for NYC Subway headway anomaly detection. It includes GTFS-Realtime collection, online feature/model updates, a FastAPI service, a dashboard and a small offline replay evaluation.
 
 **Status:** engineering prototype. The repository supports local replay and a deployable stack; it does not establish an operated production service or validated transit incident detection.
