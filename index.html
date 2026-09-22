@@ -4,10 +4,10 @@
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width,initial-scale=1" />
 <title>MTA-Scan · NYC Subway Anomaly Detection</title>
-<meta name="description" content="Real-time anomaly detection for the NYC Subway. Streaming GTFS-RT ingestion, online ML with River, live Mapbox command center. Built by Stelios Zacharioudakis." />
+<meta name="description" content="A streaming-data prototype for subway headway analysis, with GTFS-RT ingestion, River models and a dashboard. Offline replay uses representative scenarios." />
 <meta name="theme-color" content="#0a0e1a" />
 <meta property="og:title" content="MTA-Scan · NYC Subway Anomaly Detection" />
-<meta property="og:description" content="Streaming GTFS-RT → TimescaleDB → online ML → Mapbox command center. Live system." />
+<meta property="og:description" content="Experimental GTFS-RT ingestion, online ML and dashboard architecture. A configured API is required." />
 <meta property="og:type" content="website" />
 
 <link rel="preconnect" href="https://fonts.googleapis.com" />
@@ -1132,18 +1132,18 @@ body::after {
     <div>
       <div class="hero-eyebrow">
         <span class="dot"></span>
-        <span>LIVE · Streaming MTA GTFS-RT</span>
+        <span>PROTOTYPE · GTFS-Realtime pipeline</span>
       </div>
       <h1>
         Anomaly detection<br>
         for the <em>NYC Subway</em>,<br>
-        <span class="underline">every 30 seconds.</span>
+        <span class="underline">a streaming prototype.</span>
       </h1>
       <p class="hero-lead">
         A streaming system that ingests <strong>live GTFS-Realtime feeds</strong> from the MTA, computes
         per-stop headway features, and scores anomalies with an <strong>online ML pipeline</strong>
-        that retrains continuously. Operators triage incidents on a live Mapbox command center — ranked,
-        contextualized, and color-coded by severity.
+        that updates from observations. The dashboard explores ranked scores and context;
+        it is not a validated incident-management system.
       </p>
       <div class="hero-cta">
         <a class="btn primary" href="/nyc-subway-anomaly/live">
@@ -1154,7 +1154,7 @@ body::after {
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 3v18h18M7 14l4-4 4 4 5-5"/></svg>
           Live Summary
         </a>
-        <span class="hero-note"><span class="pulse"></span>API online · 1 488 stops · 26 routes</span>
+        <span class="hero-note"><span class="pulse"></span>Local API required · availability not assumed</span>
       </div>
     </div>
 
@@ -1162,39 +1162,10 @@ body::after {
     <div class="board">
       <div class="board-head">
         <span class="board-title">Incident Board · Top 5</span>
-        <span class="board-live"><span class="tick"></span>LIVE · 15m</span>
+        <span class="board-live"><span class="tick"></span>15m query window</span>
       </div>
       <div id="board-rows">
-        <div class="board-row">
-          <span class="route-bullet route-L">L</span>
-          <span class="board-station">14 St – Union Sq</span>
-          <span class="board-gap" title="observed vs predicted headway">512s / 302s</span>
-          <span class="board-score critical">0.91</span>
-        </div>
-        <div class="board-row">
-          <span class="route-bullet route-N">N</span>
-          <span class="board-station">57 St – 7 Av</span>
-          <span class="board-gap">476s / 319s</span>
-          <span class="board-score critical">0.87</span>
-        </div>
-        <div class="board-row">
-          <span class="route-bullet route-A">A</span>
-          <span class="board-station">Fulton St</span>
-          <span class="board-gap">428s / 343s</span>
-          <span class="board-score high">0.74</span>
-        </div>
-        <div class="board-row">
-          <span class="route-bullet route-F">F</span>
-          <span class="board-station">Jay St – MetroTech</span>
-          <span class="board-gap">382s / 296s</span>
-          <span class="board-score high">0.69</span>
-        </div>
-        <div class="board-row">
-          <span class="route-bullet route-Q">Q</span>
-          <span class="board-station">Kings Highway</span>
-          <span class="board-gap">334s / 288s</span>
-          <span class="board-score watch">0.58</span>
-        </div>
+        <p class="feed-empty">No data loaded. Connect the local API to view observations.</p>
       </div>
       <div class="board-foot">
         <span id="board-updated">updated —</span>
@@ -1280,14 +1251,14 @@ body::after {
   <!-- ──────── LIVE FEED + ROUTES ──────── -->
   <div class="section-head reveal reveal-d5">
     <span class="section-num">02 / Live</span>
-    <h2 class="section-title">Real-time <em>anomaly stream</em></h2>
+    <h2 class="section-title">Recent <em>anomaly scores</em></h2>
     <span class="section-sub">Auto-refresh · 15m window</span>
   </div>
   <div class="ticker-panel reveal reveal-d5">
     <div class="panel">
       <div class="panel-head">
         <span><strong>Anomaly feed</strong> · top scores</span>
-        <span class="board-live"><span class="tick"></span>LIVE</span>
+        <span class="board-live"><span class="tick"></span>API DATA</span>
       </div>
       <ul class="feed-list" id="feed-list">
         <li class="feed-empty">awaiting next worker cycle · feed refreshes every 10s</li>
@@ -1343,10 +1314,10 @@ body::after {
   <!-- ──────── CTA STRIP ──────── -->
   <section class="cta-strip reveal reveal-d7">
     <div>
-      <h2>Open the <em>live command center.</em></h2>
+      <h2>Explore the <em>dashboard prototype.</em></h2>
       <p>
-        Real map of New York City. Real MTA feeds. Real anomalies as they happen —
-        ranked, scored, and visualized for operator triage.
+        The dashboard requires a configured API and data collector. Scores describe
+        model behavior; they are not confirmed transit incidents or operational guidance.
       </p>
     </div>
     <a class="btn primary" href="/nyc-subway-anomaly/live" style="font-size: 0.85rem; padding: 18px 32px;">
@@ -1361,7 +1332,7 @@ body::after {
   <footer class="footer reveal reveal-d7">
     <div class="footer-sig">
       <span class="name">Stelios Zacharioudakis</span>
-      <span class="role">ML Engineer & Researcher · Athens → Toronto</span>
+      <span class="role">Machine learning projects · Stelios Zacharioudakis</span>
     </div>
     <div class="footer-links">
       <a href="https://stelioszach.com" target="_blank" rel="noopener">Portfolio</a>
@@ -1481,10 +1452,15 @@ body::after {
   /* ─── Anomaly feed ─── */
   async function loadFeed() {
     const rows = await api("/anomalies?window=15m&route_id=" + encodeURIComponent(selectedRoute) + "&limit=20");
-    if (!rows) return;
     const list = $("feed-list");
+    if (!Array.isArray(rows)) {
+      list.innerHTML = '<li class="feed-empty">Data unavailable. Check the API connection.</li>';
+      $("board-rows").innerHTML = '<p class="feed-empty">Data unavailable.</p>';
+      return;
+    }
     if (!Array.isArray(rows) || !rows.length) {
-      list.innerHTML = '<li class="feed-empty">no anomalies in the last 15m · worker still warming up</li>';
+      list.innerHTML = '<li class="feed-empty">No anomalies returned for this query.</li>';
+      $("board-rows").innerHTML = '<p class="feed-empty">No anomalies returned for this query.</p>';
       return;
     }
     list.innerHTML = rows.slice(0, 12).map(r => {

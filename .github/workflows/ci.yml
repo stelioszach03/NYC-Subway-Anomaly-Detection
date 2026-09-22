@@ -27,6 +27,13 @@ jobs:
       - name: Run unit tests only
         run: PYTHONPATH=. pytest -q -m "not integration"
 
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+
+      - name: Check landing data states
+        run: node --test tests/landing_feed.test.mjs
+
   docker-build:
     runs-on: ubuntu-latest
     steps:

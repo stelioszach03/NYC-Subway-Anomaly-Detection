@@ -1,3 +1,5 @@
+> Constructed replay scenario for demonstration; not a verified historical MTA incident.
+
 # Case Study 02: Brooklyn Merge Conflict Triggers Bunching At Bergen St
 
 ## What Happened

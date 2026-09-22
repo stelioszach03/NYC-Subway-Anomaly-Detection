@@ -1,3 +1,5 @@
+> Constructed replay scenario for demonstration; not a verified historical MTA incident.
+
 # Case Study 03: Rain-Impacted Dwell Times Cascade On The Queens Corridor
 
 ## What Happened

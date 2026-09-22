@@ -1,3 +1,5 @@
+> Constructed replay scenario for demonstration; not a verified historical MTA incident.
+
 # Case Study 01: Signal Delay Cascades Into a Midtown Headway Gap
 
 ## What Happened
