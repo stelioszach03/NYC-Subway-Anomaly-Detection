@@ -1,0 +1,397 @@
+{
+  "all_runtime_files_match_committed_sources": true,
+  "checked_at_utc": "2026-09-24T21:57:01+00:00",
+  "ci": {
+    "url": "https://github.com/stelioszach03/NYC-Subway-Anomaly-Detection/actions/runs/36062813681",
+    "worker_commit_conclusion": "success"
+  },
+  "completed_day_export_status": {
+    "completed_day_exports": 0,
+    "export_manifests": [],
+    "interpretation": "No completed UTC-day export exists at this first-day cutoff; last export service success does not prove a daily Parquet file was produced."
+  },
+  "earlier_public_audits_reconciled": [
+    {
+      "actual_polls": 896,
+      "canonical_hash_matches": true,
+      "cutoff_utc": "2026-09-24T02:15:38+00:00",
+      "expected_polls": 896
+    },
+    {
+      "actual_polls": 5408,
+      "canonical_hash_matches": true,
+      "cutoff_utc": "2026-09-24T11:39:28+00:00",
+      "expected_polls": 5408
+    }
+  ],
+  "latest_evaluation_source_manifest_matches_runtime": true,
+  "limits": [
+    "Dated deployment and access-control receipt, not an uptime/SLA or incident-detection guarantee.",
+    "The observed 21-hour feature window is early feasibility only, not longitudinal forecast validation.",
+    "Legacy timestamps denote request start; new marked rows denote response availability. Old source rows and payloads are unchanged.",
+    "Feed predictions are not observed train passages or passenger waiting time.",
+    "This receipt omits raw protobuf, database contents, individual trip/platform identifiers, host addresses, OS identities and server filesystem paths.",
+    "Verification made no restart, configuration change, extra model evaluation or paid API call."
+  ],
+  "namespace_isolation": {
+    "method": "Access checks under the live public-service identity and mount namespace; no file contents read and no write/truncate performed",
+    "private_history_read_denied": true,
+    "private_temporal_database_read_denied": true,
+    "public_bind_is_read_only": true,
+    "public_summary_readable": true,
+    "public_summary_write_open_denied": true
+  },
+  "public_api": {
+    "coverage": {
+      "complete_fresh_window_fraction": 1.0,
+      "expected_window_slots": 256,
+      "first_window_ts": 1790209500,
+      "last_window_ts": 1790286000,
+      "retained_windows": 256,
+      "span_seconds": 76500,
+      "stable_groups_evaluated": 39
+    },
+    "evaluation_cutoff_ts": 1790286000,
+    "feature_cutoff_ts": 1790286900,
+    "feeds": [
+      {
+        "feed": "1234567",
+        "last_receipt_ts": 1790286942,
+        "latest_poll_status": "ok",
+        "receipt_age_seconds": 1.0,
+        "source_age_seconds": 5.0
+      },
+      {
+        "feed": "ACE",
+        "last_receipt_ts": 1790286942,
+        "latest_poll_status": "ok",
+        "receipt_age_seconds": 1.0,
+        "source_age_seconds": 10.0
+      },
+      {
+        "feed": "BDFM",
+        "last_receipt_ts": 1790286942,
+        "latest_poll_status": "ok",
+        "receipt_age_seconds": 1.0,
+        "source_age_seconds": 2.0
+      },
+      {
+        "feed": "G",
+        "last_receipt_ts": 1790286942,
+        "latest_poll_status": "ok",
+        "receipt_age_seconds": 1.0,
+        "source_age_seconds": 2.0
+      },
+      {
+        "feed": "JZ",
+        "last_receipt_ts": 1790286942,
+        "latest_poll_status": "ok",
+        "receipt_age_seconds": 1.0,
+        "source_age_seconds": 2.0
+      },
+      {
+        "feed": "NQRW",
+        "last_receipt_ts": 1790286882,
+        "latest_poll_status": "ok",
+        "receipt_age_seconds": 61.0,
+        "source_age_seconds": 62.0
+      },
+      {
+        "feed": "L",
+        "last_receipt_ts": 1790286883,
+        "latest_poll_status": "ok",
+        "receipt_age_seconds": 60.0,
+        "source_age_seconds": 61.0
+      },
+      {
+        "feed": "SI",
+        "last_receipt_ts": 1790286883,
+        "latest_poll_status": "ok",
+        "receipt_age_seconds": 60.0,
+        "source_age_seconds": 63.0
+      }
+    ],
+    "forecasts_published": 0,
+    "generated_at_utc": "2026-09-24T21:55:43+00:00",
+    "generated_ts": 1790286943,
+    "http_status": 200,
+    "incident_evaluation_available": false,
+    "metrics": [
+      {
+        "horizon_seconds": 900,
+        "models": {
+          "online_linear": {
+            "bias_seconds": -40.62208157535379,
+            "coverage_fraction": 1.0,
+            "eligible_pairs": 1631,
+            "mae_seconds": 142.6425221342515,
+            "n": 1631,
+            "rmse_seconds": 200.69613209931154
+          },
+          "persistence": {
+            "bias_seconds": -3.091354996934396,
+            "coverage_fraction": 1.0,
+            "eligible_pairs": 1631,
+            "mae_seconds": 155.84917228694053,
+            "n": 1631,
+            "rmse_seconds": 227.1601638421386
+          },
+          "seasonal_24h": {
+            "bias_seconds": null,
+            "coverage_fraction": 0.0,
+            "eligible_pairs": 1631,
+            "mae_seconds": null,
+            "n": 0,
+            "rmse_seconds": null
+          }
+        },
+        "partition": "validation",
+        "selected_from_validation": {
+          "bias_seconds": -30.532970205740373,
+          "coverage_fraction": 1.0,
+          "eligible_pairs": 1631,
+          "mae_seconds": 140.20936897978723,
+          "n": 1631,
+          "rmse_seconds": 201.08469326410892
+        }
+      },
+      {
+        "horizon_seconds": 900,
+        "models": {
+          "online_linear": {
+            "bias_seconds": -21.22362727378248,
+            "coverage_fraction": 1.0,
+            "eligible_pairs": 1660,
+            "mae_seconds": 147.62359792668124,
+            "n": 1660,
+            "rmse_seconds": 224.11984318582367
+          },
+          "persistence": {
+            "bias_seconds": 2.7409638554216866,
+            "coverage_fraction": 1.0,
+            "eligible_pairs": 1660,
+            "mae_seconds": 169.49277108433736,
+            "n": 1660,
+            "rmse_seconds": 266.3910116432935
+          },
+          "seasonal_24h": {
+            "bias_seconds": null,
+            "coverage_fraction": 0.0,
+            "eligible_pairs": 1660,
+            "mae_seconds": null,
+            "n": 0,
+            "rmse_seconds": null
+          }
+        },
+        "partition": "test",
+        "selected_from_validation": {
+          "bias_seconds": -18.205634152922464,
+          "coverage_fraction": 1.0,
+          "eligible_pairs": 1660,
+          "mae_seconds": 151.8681509858527,
+          "n": 1660,
+          "rmse_seconds": 229.2523691842957
+        }
+      },
+      {
+        "horizon_seconds": 1800,
+        "models": {
+          "online_linear": {
+            "bias_seconds": -56.79221419986938,
+            "coverage_fraction": 1.0,
+            "eligible_pairs": 1516,
+            "mae_seconds": 149.8742602461341,
+            "n": 1516,
+            "rmse_seconds": 209.30362303402634
+          },
+          "persistence": {
+            "bias_seconds": -6.019129287598944,
+            "coverage_fraction": 1.0,
+            "eligible_pairs": 1516,
+            "mae_seconds": 156.02572559366754,
+            "n": 1516,
+            "rmse_seconds": 226.83040431542622
+          },
+          "seasonal_24h": {
+            "bias_seconds": null,
+            "coverage_fraction": 0.0,
+            "eligible_pairs": 1516,
+            "mae_seconds": null,
+            "n": 0,
+            "rmse_seconds": null
+          }
+        },
+        "partition": "validation",
+        "selected_from_validation": {
+          "bias_seconds": -31.548631635035935,
+          "coverage_fraction": 1.0,
+          "eligible_pairs": 1516,
+          "mae_seconds": 140.2821196152381,
+          "n": 1516,
+          "rmse_seconds": 202.5943444672609
+        }
+      },
+      {
+        "horizon_seconds": 1800,
+        "models": {
+          "online_linear": {
+            "bias_seconds": -17.699784603639337,
+            "coverage_fraction": 1.0,
+            "eligible_pairs": 1543,
+            "mae_seconds": 144.58282390566907,
+            "n": 1543,
+            "rmse_seconds": 212.94948813160318
+          },
+          "persistence": {
+            "bias_seconds": 10.629293583927414,
+            "coverage_fraction": 1.0,
+            "eligible_pairs": 1543,
+            "mae_seconds": 169.76344782890473,
+            "n": 1543,
+            "rmse_seconds": 248.8700569564646
+          },
+          "seasonal_24h": {
+            "bias_seconds": null,
+            "coverage_fraction": 0.0,
+            "eligible_pairs": 1543,
+            "mae_seconds": null,
+            "n": 0,
+            "rmse_seconds": null
+          }
+        },
+        "partition": "test",
+        "selected_from_validation": {
+          "bias_seconds": -7.568149396721488,
+          "coverage_fraction": 1.0,
+          "eligible_pairs": 1543,
+          "mae_seconds": 154.57524678232008,
+          "n": 1543,
+          "rmse_seconds": 224.79257305923144
+        }
+      }
+    ],
+    "readiness": {
+      "public_forecasts_ready": false,
+      "reasons": [
+        "Less than 14 days of retained temporal coverage; no longitudinal claim or public forecast"
+      ],
+      "status": "short_window_feasibility"
+    },
+    "schema": "mta-temporal-evaluation-v1",
+    "target_name": "future feed-predicted arrival-spacing proxy",
+    "url": "https://stelioszach.com/demos/mta-scan/api/temporal",
+    "valid_until_ts": 1790287500
+  },
+  "public_view_runtime_hashes": {
+    "service.py": "207fd9e335f864a0d5f4cd623978c0815eaa6f88b5293d7c20b74b9391424fac",
+    "static/index.html": "86d209239841a9fa5f76569b4e750a18b589794d6242167eeb58167ef4f32264",
+    "static/temporal-view.js": "fff3c08d580af78e49d7391dd26dc5c74b954a69d21dbfc161bb619b1f9fb040",
+    "temporal_view.py": "7e3385334d3fe36b6ac220d47cb23bb0e9558f8f7dac9d31c9dadb666317931f"
+  },
+  "public_view_source_commit": "dff430dc4aef55776281db04107ec78d9fc282c2",
+  "retained_collection_aggregate": {
+    "first_poll_ts": 1790209450,
+    "last_poll_ts": 1790287004,
+    "polls": 10352,
+    "statuses": [
+      {
+        "count": 1,
+        "freshness": "unknown",
+        "status": "decode_error"
+      },
+      {
+        "count": 10351,
+        "freshness": "fresh",
+        "status": "ok"
+      }
+    ],
+    "timestamp_semantics": [
+      {
+        "count": 10224,
+        "semantics": "legacy_request_start"
+      },
+      {
+        "count": 128,
+        "semantics": "response_available_v2"
+      }
+    ],
+    "v2_marker_timestamp_mismatches": 0
+  },
+  "runtime_source_hashes": {
+    "evaluation/temporal.py": "a91dfdebeeb6f3518d0e68b991954ca5e886c2d79cf5a6342e1c60d0de1ff2b7",
+    "worker/history.py": "5a87c5093baf0a4e9fabe27714e0bb0955e31dbd00d37716aef510df8fb755b8",
+    "worker/history_export.py": "96ea023b649485c497be6dd7f61130fc918ec374dd6c08a990f741a1825f32f2",
+    "worker/history_time.py": "294eef5ea20c5d8030954a89b2592a1232efd83cbbca8e2248eaf454565fd693",
+    "worker/temporal_evaluation.py": "d39622d6e7e5417b605eae0158f82d757ee2fb733556c3091136239e0416819f",
+    "worker/temporal_features.py": "c9987de860d2d92160df2890711cc4761fdbdf0231df745fd19b377baf34e926"
+  },
+  "schema": "mta-temporal-deployment-receipt-v1",
+  "services": {
+    "demo-mta-scan.service": {
+      "ActiveState": "active",
+      "ExecMainExitTimestamp": "",
+      "ExecMainStartTimestamp": "Thu 2026-09-24 21:45:23 UTC",
+      "ExecMainStatus": "0",
+      "NRestarts": "0",
+      "Result": "success",
+      "SubState": "running"
+    },
+    "mta-history-export.service": {
+      "ActiveState": "inactive",
+      "ExecMainExitTimestamp": "Thu 2026-09-24 00:24:10 UTC",
+      "ExecMainStartTimestamp": "Thu 2026-09-24 00:24:09 UTC",
+      "ExecMainStatus": "0",
+      "NRestarts": "0",
+      "Result": "success",
+      "SubState": "dead"
+    },
+    "mta-history.service": {
+      "ActiveState": "active",
+      "ExecMainExitTimestamp": "",
+      "ExecMainStartTimestamp": "Thu 2026-09-24 21:41:39 UTC",
+      "ExecMainStatus": "0",
+      "NRestarts": "0",
+      "Result": "success",
+      "SubState": "running"
+    },
+    "mta-temporal-evaluation.service": {
+      "ActiveState": "inactive",
+      "ExecMainExitTimestamp": "Thu 2026-09-24 21:55:43 UTC",
+      "ExecMainStartTimestamp": "Thu 2026-09-24 21:55:41 UTC",
+      "ExecMainStatus": "0",
+      "NRestarts": "0",
+      "Result": "success",
+      "SubState": "dead"
+    }
+  },
+  "source_preservation": {
+    "baseline_polls": 10224,
+    "baseline_snapshots": 10224,
+    "old_poll_rows_missing_or_changed": 0,
+    "old_snapshot_payloads_missing_or_changed": 0
+  },
+  "timers": {
+    "mta-history-export-retry.timer": {
+      "ActiveState": "active",
+      "LastTriggerUSec": "",
+      "NextElapseUSecRealtime": "Thu 2026-09-24 22:25:12 UTC",
+      "SubState": "waiting",
+      "UnitFileState": "enabled"
+    },
+    "mta-history-export.timer": {
+      "ActiveState": "active",
+      "LastTriggerUSec": "",
+      "NextElapseUSecRealtime": "Fri 2026-09-25 00:15:25 UTC",
+      "SubState": "waiting",
+      "UnitFileState": "enabled"
+    },
+    "mta-temporal-evaluation.timer": {
+      "ActiveState": "active",
+      "LastTriggerUSec": "Thu 2026-09-24 21:55:41 UTC",
+      "NextElapseUSecRealtime": "Thu 2026-09-24 22:00:22 UTC",
+      "SubState": "waiting",
+      "UnitFileState": "enabled"
+    }
+  },
+  "worker_source_commit": "99260d8ddf289a20c3436746faf4ed3004879bf2"
+}

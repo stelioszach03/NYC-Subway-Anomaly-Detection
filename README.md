@@ -43,8 +43,12 @@ Unknown metrics remain null and no incident labels are invented. The versioned
 card without exposing the raw archive or starting computation on an HTTP request.
 
 Systemd worker/timers, restart-safe checkpoints, explicit disk/CPU/time bounds
-and offline tests are provided. Deployment and current data readiness must be
-verified separately; implementing a timer is not proof of months of operation.
+and offline tests are provided. The worker and [public history pane](https://stelioszach.com/demos/mta-scan/#temporalPanel)
+are deployed; the [September 24 deployment receipt](docs/TEMPORAL_DEPLOYMENT_2026-09-24.md)
+verifies actual operation, namespace isolation and preservation of earlier raw
+records. The dated snapshot contains 21h 15m of evaluated feature coverage and
+no public forecasts: early feasibility and a running timer are not proof of
+longitudinal performance or months of operation.
 
 ## Recorded replay evidence
 
