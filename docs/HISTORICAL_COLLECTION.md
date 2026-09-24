@@ -9,6 +9,15 @@ backfill prior months, create incident labels or train forecasts,
 or establish that an ETA change is a train passage. The public live map remains
 a separate service.
 
+## Initial deployment check
+
+Collection was enabled on the portfolio VPS on **2026-09-24 UTC**. Its first
+completed cycle recorded eight HTTP-200 snapshots, one from each configured feed,
+with fresh source timestamps. The process and daily timer were enabled, and all
+29 offline collection/export tests passed on that server. The first manual export
+returned `[]`, correctly: no completed UTC day existed yet. This is a startup
+receipt, not a claim of uninterrupted operation or months of retained data.
+
 ## What is recorded
 
 Every attempted poll records receipt time, feed name, HTTP result, latency,
