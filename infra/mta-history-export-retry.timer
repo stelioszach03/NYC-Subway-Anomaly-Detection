@@ -1,0 +1,11 @@
+[Unit]
+Description=Retry completed-day MTA export hourly after daily schedule
+
+[Timer]
+OnCalendar=*-*-* *:25:00 UTC
+RandomizedDelaySec=2min
+Persistent=yes
+Unit=mta-history-export.service
+
+[Install]
+WantedBy=timers.target

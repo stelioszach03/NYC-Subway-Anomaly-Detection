@@ -1,0 +1,33 @@
+[Unit]
+Description=MTA offline temporal proxy evaluation and readiness
+After=mta-history.service
+
+[Service]
+Type=oneshot
+DynamicUser=yes
+User=mta-history
+StateDirectory=mta-temporal
+StateDirectoryMode=0700
+WorkingDirectory=/srv/mta-history
+ExecStart=/srv/mta-history/.venv/bin/python -m worker.temporal_evaluation --history-dir /run/mta-temporal-source --state-dir /var/lib/mta-temporal
+UMask=0077
+MemoryHigh=384M
+MemoryMax=512M
+CPUQuota=25%
+TasksMax=32
+Nice=15
+TimeoutStartSec=21min
+NoNewPrivileges=yes
+PrivateTmp=yes
+PrivateDevices=yes
+PrivateNetwork=yes
+ProtectSystem=strict
+BindReadOnlyPaths=/var/lib/private/mta-history:/run/mta-temporal-source
+ProtectHome=yes
+ProtectKernelTunables=yes
+ProtectKernelModules=yes
+ProtectControlGroups=yes
+RestrictSUIDSGID=yes
+RestrictAddressFamilies=AF_UNIX
+CapabilityBoundingSet=
+SystemCallArchitectures=native

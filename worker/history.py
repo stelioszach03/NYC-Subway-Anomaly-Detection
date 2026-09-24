@@ -3,6 +3,7 @@
 Original protobuf bytes are retained, including unknown MTA extension fields.
 Feed estimates are not labelled as observed train arrivals or incident truth.
 """
+
 from __future__ import annotations
 
 import argparse
@@ -29,11 +30,19 @@ from google.transit import gtfs_realtime_pb2
 
 LOG = logging.getLogger("mta.history")
 BASE = "https://api-endpoint.mta.info/Dataservice/mtagtfsfeeds/nyct%2F"
-FEEDS = {name: BASE + suffix for name, suffix in (
-    ("1234567", "gtfs"), ("ACE", "gtfs-ace"), ("BDFM", "gtfs-bdfm"),
-    ("G", "gtfs-g"), ("JZ", "gtfs-jz"), ("NQRW", "gtfs-nqrw"),
-    ("L", "gtfs-l"), ("SI", "gtfs-si"),
-)}
+FEEDS = {
+    name: BASE + suffix
+    for name, suffix in (
+        ("1234567", "gtfs"),
+        ("ACE", "gtfs-ace"),
+        ("BDFM", "gtfs-bdfm"),
+        ("G", "gtfs-g"),
+        ("JZ", "gtfs-jz"),
+        ("NQRW", "gtfs-nqrw"),
+        ("L", "gtfs-l"),
+        ("SI", "gtfs-si"),
+    )
+}
 
 
 @dataclass(frozen=True)
@@ -61,7 +70,9 @@ def payload_metadata(payload: bytes, observed: int, stale_after: int) -> dict:
     age = observed - source if source is not None else None
     freshness = "unknown" if age is None else "future" if age < -60 else "stale" if age > stale_after else "fresh"
     return {
-        "source_ts": source, "age_seconds": age, "freshness": freshness,
+        "source_ts": source,
+        "age_seconds": age,
+        "freshness": freshness,
         "entities": len(feed.entity),
         "trip_updates": sum(e.HasField("trip_update") for e in feed.entity),
         "vehicle_positions": sum(e.HasField("vehicle") for e in feed.entity),
@@ -159,26 +170,42 @@ class HistoryArchive:
         return not self.db.execute("PRAGMA wal_checkpoint(TRUNCATE)").fetchone()[0]
 
     def _delete_orphans(self):
-        self.db.execute("DELETE FROM snapshots WHERE NOT EXISTS (SELECT 1 FROM polls WHERE polls.sha256=snapshots.sha256)")
+        self.db.execute(
+            "DELETE FROM snapshots WHERE NOT EXISTS (SELECT 1 FROM polls WHERE polls.sha256=snapshots.sha256)"
+        )
 
     def prune(self, now: int, headroom: int = 0):
         with self.db:
             self.db.execute("DELETE FROM polls WHERE observed_ts < ?", (now - self.limits.retention_seconds,))
-            self.db.execute("DELETE FROM polls WHERE id NOT IN (SELECT id FROM polls ORDER BY id DESC LIMIT ?)", (self.limits.max_polls,))
+            self.db.execute(
+                "DELETE FROM polls WHERE id NOT IN (SELECT id FROM polls ORDER BY id DESC LIMIT ?)",
+                (self.limits.max_polls,),
+            )
             self._delete_orphans()
         compacted = self._compact()
         while self.disk_bytes() + headroom > self.limits.max_bytes:
             if not compacted:
                 raise OSError("Archive cap reached while a reader prevents WAL reclamation")
             with self.db:
-                deleted = self.db.execute("DELETE FROM polls WHERE id IN (SELECT id FROM polls ORDER BY id LIMIT 128)").rowcount
+                deleted = self.db.execute(
+                    "DELETE FROM polls WHERE id IN (SELECT id FROM polls ORDER BY id LIMIT 128)"
+                ).rowcount
                 self._delete_orphans()
             compacted = self._compact()
             if not deleted:
                 raise OSError("Archive cap cannot accommodate this response")
 
-    def record(self, *, feed: str, observed: int, status: str, http_status: int | None,
-               latency_ms: float, payload: bytes | None = None, metadata: dict | None = None):
+    def record(
+        self,
+        *,
+        feed: str,
+        observed: int,
+        status: str,
+        http_status: int | None,
+        latency_ms: float,
+        payload: bytes | None = None,
+        metadata: dict | None = None,
+    ):
         if feed not in FEEDS:
             raise ValueError("Unknown feed")
         if payload is not None and len(payload) > self.limits.max_response_bytes:
@@ -194,13 +221,22 @@ class HistoryArchive:
         with self.db:
             if digest is not None:
                 self.db.execute("INSERT OR IGNORE INTO snapshots VALUES (?, ?, ?)", (digest, zipped, len(payload)))
-            self.db.execute("""INSERT INTO polls
+            self.db.execute(
+                """INSERT INTO polls
                 (observed_ts,feed,http_status,status,latency_ms,sha256,source_ts,freshness,metadata_json)
-                VALUES (?,?,?,?,?,?,?,?,?)""", (
-                observed, feed, http_status, status, latency_ms, digest,
-                details.get("source_ts"), details.get("freshness", "unknown"),
-                json.dumps(details, separators=(",", ":")),
-            ))
+                VALUES (?,?,?,?,?,?,?,?,?)""",
+                (
+                    observed,
+                    feed,
+                    http_status,
+                    status,
+                    latency_ms,
+                    digest,
+                    details.get("source_ts"),
+                    details.get("freshness", "unknown"),
+                    json.dumps(details, separators=(",", ":")),
+                ),
+            )
 
 
 def archive_status(directory: Path, now: int | None = None) -> dict:
@@ -209,17 +245,32 @@ def archive_status(directory: Path, now: int | None = None) -> dict:
     path = directory / "history.sqlite3"
     with closing(sqlite3.connect(path.resolve().as_uri() + "?mode=ro", uri=True)) as db:
         db.row_factory = sqlite3.Row
-        totals = dict(db.execute("SELECT COUNT(*) polls, MIN(observed_ts) first_poll, MAX(observed_ts) last_poll FROM polls").fetchone())
+        totals = dict(
+            db.execute(
+                "SELECT COUNT(*) polls, MIN(observed_ts) first_poll, MAX(observed_ts) last_poll FROM polls"
+            ).fetchone()
+        )
         totals["snapshots"] = db.execute("SELECT COUNT(*) FROM snapshots").fetchone()[0]
         feeds = []
         for feed in FEEDS:
-            row = db.execute("SELECT observed_ts,source_ts,status,freshness,http_status FROM polls WHERE feed=? ORDER BY id DESC LIMIT 1", (feed,)).fetchone()
+            row = db.execute(
+                "SELECT observed_ts,source_ts,status,freshness,http_status FROM polls WHERE feed=? ORDER BY id DESC LIMIT 1",
+                (feed,),
+            ).fetchone()
             item = dict(row) if row else {}
-            item.update(feed=feed, last_poll_age_seconds=now - row["observed_ts"] if row else None,
-                        current_feed_age_seconds=now - row["source_ts"] if row and row["source_ts"] is not None else None)
+            item.update(
+                feed=feed,
+                last_poll_age_seconds=now - row["observed_ts"] if row else None,
+                current_feed_age_seconds=now - row["source_ts"] if row and row["source_ts"] is not None else None,
+            )
             feeds.append(item)
-        return {"schema_version": 1, "archive_bytes": sum(p.stat().st_size for p in directory.glob("history.sqlite3*") if p.is_file()),
-                "free_bytes": shutil.disk_usage(directory).free, **totals, "feeds": feeds}
+        return {
+            "schema_version": 1,
+            "archive_bytes": sum(p.stat().st_size for p in directory.glob("history.sqlite3*") if p.is_file()),
+            "free_bytes": shutil.disk_usage(directory).free,
+            **totals,
+            "feeds": feeds,
+        }
 
 
 class HistoryCollector:
@@ -265,9 +316,31 @@ class HistoryCollector:
                 status = "response_too_large" if str(exc) == "response_too_large" else "read_error"
             except httpx.HTTPError as exc:
                 details["error_type"] = type(exc).__name__
-            self.archive.record(feed=feed, observed=observed, status=status, http_status=code,
-                                latency_ms=round((time.monotonic() - started) * 1000, 1),
-                                payload=payload, metadata=details)
+            response_available = int(time.time())
+            details.update(
+                poll_started_ts=observed,
+                response_available_ts=response_available,
+                timestamp_semantics="response_available_v2",
+            )
+            if details.get("source_ts") is not None:
+                age = response_available - details["source_ts"]
+                details.update(
+                    age_seconds=age,
+                    freshness="future"
+                    if age < -60
+                    else "stale"
+                    if age > self.archive.limits.stale_after_seconds
+                    else "fresh",
+                )
+            self.archive.record(
+                feed=feed,
+                observed=response_available,
+                status=status,
+                http_status=code,
+                latency_ms=round((time.monotonic() - started) * 1000, 1),
+                payload=payload,
+                metadata=details,
+            )
             LOG.info("feed=%s status=%s freshness=%s", feed, status, details.get("freshness", "unknown"))
         self.archive.prune(int(time.time()))
 
@@ -287,16 +360,21 @@ def main():
         return
     if args.poll_seconds < 30:
         parser.error("Poll interval must be at least 30 seconds")
-    limits = Limits(retention_seconds=args.retention_days * 86400, max_bytes=args.max_bytes,
-                    min_free_bytes=args.min_free_bytes)
+    limits = Limits(
+        retention_seconds=args.retention_days * 86400, max_bytes=args.max_bytes, min_free_bytes=args.min_free_bytes
+    )
     logging.basicConfig(level=logging.INFO, format="%(asctime)s %(levelname)s %(message)s")
     stop = threading.Event()
     for signum in (signal.SIGTERM, signal.SIGINT):
         signal.signal(signum, lambda *_: stop.set())
-    with HistoryArchive(args.state_dir, limits) as archive, httpx.Client(
-        timeout=httpx.Timeout(10, connect=5), follow_redirects=False,
-        headers={"User-Agent": "MTA-Scan/history-1.0 (+https://stelioszach.com/demos/mta-scan/)"},
-    ) as client:
+    with (
+        HistoryArchive(args.state_dir, limits) as archive,
+        httpx.Client(
+            timeout=httpx.Timeout(10, connect=5),
+            follow_redirects=False,
+            headers={"User-Agent": "MTA-Scan/history-1.0 (+https://stelioszach.com/demos/mta-scan/)"},
+        ) as client,
+    ):
         collector = HistoryCollector(archive)
         while not stop.is_set():
             started = time.monotonic()

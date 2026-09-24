@@ -42,3 +42,5 @@ gtfs_subway/*.zip
 *.pickle
 .cache/
 var/history/
+var/temporal/
+var/temporal-source/

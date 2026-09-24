@@ -3,6 +3,12 @@
 These are dated, read-only audits of the collection archive, not forecasting or
 incident-detection results. Earlier snapshots are preserved unchanged.
 
+Timestamp clarification: those legacy audits used `observed_ts`, which the
+original collector recorded at request start. Their numerical values and
+artifacts are preserved; older references to receipt time should be read with
+that limitation. The corrected collector and [availability-aware temporal
+protocol](TEMPORAL_EVALUATION.md) distinguish response availability explicitly.
+
 ## Latest check — 24 September 2026, 11:39:28 UTC
 
 The [continuation report](../artifacts/collection/continuation-2026-09-24T113928Z.json)

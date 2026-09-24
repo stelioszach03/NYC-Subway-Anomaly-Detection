@@ -1,4 +1,5 @@
 """Optional PyArrow export coverage; base history tests need no PyArrow."""
+
 import gzip
 import hashlib
 import json
@@ -44,11 +45,25 @@ def prepare(directory):
     stamp = now - now % 86400 - 120
     with HistoryArchive(directory, Limits(min_free_bytes=0)) as archive:
         payload = example(stamp)
-        archive.record(feed="ACE", observed=stamp, status="ok", http_status=200, latency_ms=1,
-                       payload=payload, metadata=payload_metadata(payload, stamp, 180))
+        archive.record(
+            feed="ACE",
+            observed=stamp,
+            status="ok",
+            http_status=200,
+            latency_ms=1,
+            payload=payload,
+            metadata=payload_metadata(payload, stamp, 180),
+        )
         archive.record(feed="G", observed=stamp, status="http_error", http_status=503, latency_ms=2)
-        archive.record(feed="L", observed=now, status="ok", http_status=200, latency_ms=1,
-                       payload=example(now), metadata=payload_metadata(example(now), now, 180))
+        archive.record(
+            feed="L",
+            observed=now,
+            status="ok",
+            http_status=200,
+            latency_ms=1,
+            payload=example(now),
+            metadata=payload_metadata(example(now), now, 180),
+        )
     return now, stamp
 
 
@@ -135,8 +150,16 @@ def test_corrupt_raw_snapshot_blocks_publication(tmp_path):
 
 
 def test_decode_error_preserves_poll_but_does_not_invent_entity():
-    poll = {"id": 1, "observed_ts": 1000, "feed": "G", "status": "decode_error",
-            "http_status": 200, "source_ts": None, "freshness": "unknown", "sha256": "abc"}
+    poll = {
+        "id": 1,
+        "observed_ts": 1000,
+        "feed": "G",
+        "status": "decode_error",
+        "http_status": 200,
+        "source_ts": None,
+        "freshness": "unknown",
+        "sha256": "abc",
+    }
     rows = list(normalized_rows(poll, b"invalid"))
     assert len(rows) == 1
     assert rows[0]["record_type"] == "poll"
@@ -179,3 +202,31 @@ def test_current_staging_larger_than_cap_fails_without_publishing(tmp_path):
     with pytest.raises(OSError, match="cap reached"):
         enforce_exports(tmp_path, now=int(time.time()), retention_days=90, max_bytes=128 * 1024)
     assert stage.exists()
+
+
+def test_v2_availability_columns_and_v1_immutable_export_compatibility(tmp_path):
+    now, stamp = prepare(tmp_path)
+    current = export_completed(tmp_path, now=now, min_free_bytes=0)[0]
+    assert current["schema_version"] == 2
+    directory = tmp_path / "parquet" / current["day_utc"]
+    path = directory / "observations.parquet"
+    table = pq.read_table(path)
+    poll = next(row for row in table.to_pylist() if row["record_type"] == "poll" and row["status"] == "ok")
+    assert poll["poll_latency_ms"] == 1
+    assert poll["available_ts"] == stamp + 3
+    assert poll["availability_semantics"] == "legacy_start_plus_latency_and_two_second_guard"
+    # A fixture emulates a previously published schema-1 export: the exporter
+    # validates and preserves it, while temporal inference refuses invented time.
+    table = table.drop(["poll_latency_ms", "available_ts", "availability_semantics"])
+    pq.write_table(table, path)
+    old = dict(
+        current, schema_version=1, sha256=hashlib.sha256(path.read_bytes()).hexdigest(), bytes=path.stat().st_size
+    )
+    (directory / "manifest.json").write_text(json.dumps(old))
+    before = path.read_bytes()
+    assert export_completed(tmp_path, now=now, min_free_bytes=0)[0] == old
+    assert path.read_bytes() == before
+    from worker.temporal_features import LegacyAvailabilityUnavailable, parquet_windows
+
+    with pytest.raises(LegacyAvailabilityUnavailable):
+        list(parquet_windows(directory))

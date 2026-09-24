@@ -1,0 +1,94 @@
+{
+  "fixture_only": true,
+  "not_production_evidence": true,
+  "summary": {
+    "schema": "mta-temporal-evaluation-v1",
+    "generated_at_utc": "1970-01-01T00:00:00+00:00",
+    "generated_ts": 0,
+    "valid_until_ts": 600,
+    "feature_cutoff_ts": 0,
+    "evaluation_cutoff_ts": null,
+    "target_name": "future feed-predicted arrival-spacing proxy",
+    "target_definition": "Future median of feed-predicted arrival spacings in a fixed, train-selected platform cohort",
+    "is_observed_train_headway": false,
+    "incident_evaluation_available": false,
+    "readiness": {
+      "status": "collecting",
+      "public_forecasts_ready": false,
+      "reasons": [
+        "Synthetic fixture: no completed temporal history available",
+        "Collector feeds are missing, stale, future-dated or unsuccessful"
+      ]
+    },
+    "coverage": null,
+    "feeds": [
+      {
+        "feed": "1234567",
+        "latest_poll_status": null,
+        "last_receipt_ts": null,
+        "receipt_age_seconds": null,
+        "source_age_seconds": null
+      },
+      {
+        "feed": "ACE",
+        "latest_poll_status": null,
+        "last_receipt_ts": null,
+        "receipt_age_seconds": null,
+        "source_age_seconds": null
+      },
+      {
+        "feed": "BDFM",
+        "latest_poll_status": null,
+        "last_receipt_ts": null,
+        "receipt_age_seconds": null,
+        "source_age_seconds": null
+      },
+      {
+        "feed": "G",
+        "latest_poll_status": null,
+        "last_receipt_ts": null,
+        "receipt_age_seconds": null,
+        "source_age_seconds": null
+      },
+      {
+        "feed": "JZ",
+        "latest_poll_status": null,
+        "last_receipt_ts": null,
+        "receipt_age_seconds": null,
+        "source_age_seconds": null
+      },
+      {
+        "feed": "NQRW",
+        "latest_poll_status": null,
+        "last_receipt_ts": null,
+        "receipt_age_seconds": null,
+        "source_age_seconds": null
+      },
+      {
+        "feed": "L",
+        "latest_poll_status": null,
+        "last_receipt_ts": null,
+        "receipt_age_seconds": null,
+        "source_age_seconds": null
+      },
+      {
+        "feed": "SI",
+        "latest_poll_status": null,
+        "last_receipt_ts": null,
+        "receipt_age_seconds": null,
+        "source_age_seconds": null
+      }
+    ],
+    "metrics": [],
+    "forecasts": [],
+    "pipeline": {
+      "pending_export_days": 0,
+      "ingested_export_days": 0,
+      "feature_bytes": 0
+    },
+    "artifact_id": null,
+    "limitations": [
+      "Collection/readiness status is not a forecasting-performance result."
+    ]
+  }
+}

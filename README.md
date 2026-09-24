@@ -25,6 +25,27 @@ The first [real collection-coverage audit](docs/COLLECTION_COVERAGE.md) records
 parseable in that initial interval; this is collection evidence, not a model
 accuracy result or a longitudinal dataset claim.
 
+## Autonomous temporal evaluation
+
+The [offline temporal worker](docs/TEMPORAL_EVALUATION.md) ingests retained raw
+snapshots and completed-day Parquet, maintains bounded feature history, and
+compares persistence, a 24-hour seasonal baseline and a small incremental linear
+model at 15/30 minutes. Train-only platform cohorts, response-availability
+timestamps, chronological holdouts and 30-minute boundary purges prevent several
+common forms of leakage. Validation selects the algorithm; test data never fit it.
+
+Its target is **future feed-predicted arrival-spacing proxy**, separately by
+route and platform direction. It is not observed headway or passenger waiting
+time. Short-window feasibility is distinct from longitudinal evidence; public
+forecasts require at least 14 days plus freshness and comparable-coverage gates.
+Unknown metrics remain null and no incident labels are invented. The versioned
+[safe summary interface](docs/TEMPORAL_INTERFACE.md) supports a read-only status
+card without exposing the raw archive or starting computation on an HTTP request.
+
+Systemd worker/timers, restart-safe checkpoints, explicit disk/CPU/time bounds
+and offline tests are provided. Deployment and current data readiness must be
+verified separately; implementing a timer is not proof of months of operation.
+
 ## Recorded replay evidence
 
 The [sample CSV](evaluation/data/sample_subway_headways.csv) contains 216 representative scenario rows, 16 positive labels and three constructed incident scenarios. It is a demonstration fixture, **not an official MTA-labeled benchmark**. See the [data card](docs/DATA_CARD.md).

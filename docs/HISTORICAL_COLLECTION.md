@@ -1,4 +1,12 @@
-# Raw historical collection, schema 1
+# Raw historical collection and versioned exports
+
+The SQLite layout remains schema 1. New Parquet exports are schema 2 and include
+explicit input-availability fields; existing schema-1 exports remain immutable.
+An audit identified that legacy `observed_ts` values recorded request start,
+not response receipt. Old rows/audits are preserved. New collector rows mark
+`response_available_v2` and retain both start and completion times in metadata.
+The [temporal protocol](TEMPORAL_EVALUATION.md) describes conservative treatment
+of legacy timings and the resulting forecasting-availability limits.
 
 `worker.history` is a separate, bounded archive worker for the eight public
 subway GTFS-Realtime feeds. It requires neither the experimental Postgres stack
@@ -20,7 +28,7 @@ receipt, not a claim of uninterrupted operation or months of retained data.
 
 ## What is recorded
 
-Every attempted poll records receipt time, feed name, HTTP result, latency,
+Every attempted poll records its timestamp semantics, feed name, HTTP result, latency,
 parse status, source header timestamp (nullable), feed age at receipt and
 freshness (`fresh`, `stale`, `future`, `unknown`). HTTP success alone does not
 mean fresh data. A source timestamp more than 180 seconds old is stale; more
@@ -203,7 +211,8 @@ after write failure, disk refusal and independent raw retention.
 CI runs these in a separate five-minute job with the optional PyArrow package;
 the general API job does not need to install it.
 
-Next work is GTFS static/extension provenance, a separate alerts stream,
-trip-identity-aware derivation and observed coverage reporting. Only then should temporal holdouts, weak labels,
-event metrics, forecasting and graph models be compared. Raw data must remain
-separate from the 216-row constructed evaluation fixture.
+The [offline temporal pipeline](TEMPORAL_EVALUATION.md) now implements
+trip/service-date-aware proxy derivation, chronological holdouts, simple baselines
+and explicit readiness gates. Static GTFS/extension provenance, separate incident
+labels and graph-model evaluation remain separate work. Raw data and temporal
+results remain separate from the 216-row constructed evaluation fixture.

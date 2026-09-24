@@ -1,0 +1,11 @@
+[Unit]
+Description=Refresh MTA temporal readiness every five minutes
+
+[Timer]
+OnCalendar=*-*-* *:00/5:20 UTC
+RandomizedDelaySec=10s
+Persistent=yes
+Unit=mta-temporal-evaluation.service
+
+[Install]
+WantedBy=timers.target
