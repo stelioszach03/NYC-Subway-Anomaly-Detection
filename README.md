@@ -20,6 +20,11 @@ verified hashes/counts and independent 90-day/10-GiB retention. This is
 prospective collection infrastructure, not an existing longitudinal benchmark,
 incident label source or forecasting result.
 
+The first [real collection-coverage audit](docs/COLLECTION_COVERAGE.md) records
+896 polls across eight feeds over approximately 111 minutes. All were fresh and
+parseable in that initial interval; this is collection evidence, not a model
+accuracy result or a longitudinal dataset claim.
+
 ## Recorded replay evidence
 
 The [sample CSV](evaluation/data/sample_subway_headways.csv) contains 216 representative scenario rows, 16 positive labels and three constructed incident scenarios. It is a demonstration fixture, **not an official MTA-labeled benchmark**. See the [data card](docs/DATA_CARD.md).

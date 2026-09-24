@@ -1,0 +1,195 @@
+{
+  "schema": "mta-history-quality-v1",
+  "analysis_cutoff_utc": "2026-09-24T02:15:38+00:00",
+  "polls": 896,
+  "expected_feeds": 8,
+  "feeds_with_records": 8,
+  "gap_threshold_seconds": 120,
+  "feeds": [
+    {
+      "feed": "1234567",
+      "polls": 112,
+      "status_counts": {
+        "ok": 112
+      },
+      "receipt_freshness_counts": {
+        "fresh": 112
+      },
+      "fresh_success_fraction_of_all_polls": 1.0,
+      "first_receipt_ts": 1790209450,
+      "last_receipt_ts": 1790216110,
+      "last_receipt_age_s": 28,
+      "recorded_interval_span_s": 6660,
+      "inter_poll_interval_median_s": 60,
+      "inter_poll_interval_max_s": 60,
+      "gaps_over_threshold": 0,
+      "gap_duration_sum_s": 0,
+      "current_trailing_gap_over_threshold": false,
+      "source_age_at_receipt_median_s": 5.0,
+      "source_age_missing_polls": 0
+    },
+    {
+      "feed": "ACE",
+      "polls": 112,
+      "status_counts": {
+        "ok": 112
+      },
+      "receipt_freshness_counts": {
+        "fresh": 112
+      },
+      "fresh_success_fraction_of_all_polls": 1.0,
+      "first_receipt_ts": 1790209450,
+      "last_receipt_ts": 1790216110,
+      "last_receipt_age_s": 28,
+      "recorded_interval_span_s": 6660,
+      "inter_poll_interval_median_s": 60,
+      "inter_poll_interval_max_s": 61,
+      "gaps_over_threshold": 0,
+      "gap_duration_sum_s": 0,
+      "current_trailing_gap_over_threshold": false,
+      "source_age_at_receipt_median_s": 10.0,
+      "source_age_missing_polls": 0
+    },
+    {
+      "feed": "BDFM",
+      "polls": 112,
+      "status_counts": {
+        "ok": 112
+      },
+      "receipt_freshness_counts": {
+        "fresh": 112
+      },
+      "fresh_success_fraction_of_all_polls": 1.0,
+      "first_receipt_ts": 1790209451,
+      "last_receipt_ts": 1790216111,
+      "last_receipt_age_s": 27,
+      "recorded_interval_span_s": 6660,
+      "inter_poll_interval_median_s": 60,
+      "inter_poll_interval_max_s": 61,
+      "gaps_over_threshold": 0,
+      "gap_duration_sum_s": 0,
+      "current_trailing_gap_over_threshold": false,
+      "source_age_at_receipt_median_s": 3.0,
+      "source_age_missing_polls": 0
+    },
+    {
+      "feed": "G",
+      "polls": 112,
+      "status_counts": {
+        "ok": 112
+      },
+      "receipt_freshness_counts": {
+        "fresh": 112
+      },
+      "fresh_success_fraction_of_all_polls": 1.0,
+      "first_receipt_ts": 1790209451,
+      "last_receipt_ts": 1790216111,
+      "last_receipt_age_s": 27,
+      "recorded_interval_span_s": 6660,
+      "inter_poll_interval_median_s": 60,
+      "inter_poll_interval_max_s": 60,
+      "gaps_over_threshold": 0,
+      "gap_duration_sum_s": 0,
+      "current_trailing_gap_over_threshold": false,
+      "source_age_at_receipt_median_s": 4.0,
+      "source_age_missing_polls": 0
+    },
+    {
+      "feed": "JZ",
+      "polls": 112,
+      "status_counts": {
+        "ok": 112
+      },
+      "receipt_freshness_counts": {
+        "fresh": 112
+      },
+      "fresh_success_fraction_of_all_polls": 1.0,
+      "first_receipt_ts": 1790209451,
+      "last_receipt_ts": 1790216111,
+      "last_receipt_age_s": 27,
+      "recorded_interval_span_s": 6660,
+      "inter_poll_interval_median_s": 60,
+      "inter_poll_interval_max_s": 61,
+      "gaps_over_threshold": 0,
+      "gap_duration_sum_s": 0,
+      "current_trailing_gap_over_threshold": false,
+      "source_age_at_receipt_median_s": 4.0,
+      "source_age_missing_polls": 0
+    },
+    {
+      "feed": "NQRW",
+      "polls": 112,
+      "status_counts": {
+        "ok": 112
+      },
+      "receipt_freshness_counts": {
+        "fresh": 112
+      },
+      "fresh_success_fraction_of_all_polls": 1.0,
+      "first_receipt_ts": 1790209452,
+      "last_receipt_ts": 1790216111,
+      "last_receipt_age_s": 27,
+      "recorded_interval_span_s": 6659,
+      "inter_poll_interval_median_s": 60,
+      "inter_poll_interval_max_s": 61,
+      "gaps_over_threshold": 0,
+      "gap_duration_sum_s": 0,
+      "current_trailing_gap_over_threshold": false,
+      "source_age_at_receipt_median_s": 4.0,
+      "source_age_missing_polls": 0
+    },
+    {
+      "feed": "L",
+      "polls": 112,
+      "status_counts": {
+        "ok": 112
+      },
+      "receipt_freshness_counts": {
+        "fresh": 112
+      },
+      "fresh_success_fraction_of_all_polls": 1.0,
+      "first_receipt_ts": 1790209452,
+      "last_receipt_ts": 1790216112,
+      "last_receipt_age_s": 26,
+      "recorded_interval_span_s": 6660,
+      "inter_poll_interval_median_s": 60,
+      "inter_poll_interval_max_s": 62,
+      "gaps_over_threshold": 0,
+      "gap_duration_sum_s": 0,
+      "current_trailing_gap_over_threshold": false,
+      "source_age_at_receipt_median_s": 5.0,
+      "source_age_missing_polls": 0
+    },
+    {
+      "feed": "SI",
+      "polls": 112,
+      "status_counts": {
+        "ok": 112
+      },
+      "receipt_freshness_counts": {
+        "fresh": 112
+      },
+      "fresh_success_fraction_of_all_polls": 1.0,
+      "first_receipt_ts": 1790209452,
+      "last_receipt_ts": 1790216112,
+      "last_receipt_age_s": 26,
+      "recorded_interval_span_s": 6660,
+      "inter_poll_interval_median_s": 60,
+      "inter_poll_interval_max_s": 61,
+      "gaps_over_threshold": 0,
+      "gap_duration_sum_s": 0,
+      "current_trailing_gap_over_threshold": false,
+      "source_age_at_receipt_median_s": 5.0,
+      "source_age_missing_polls": 0
+    }
+  ],
+  "limitations": [
+    "Retained receipt coverage only; not an uninterrupted-uptime or exact sampling guarantee.",
+    "Failed polls stay in freshness denominators. Missing source timestamps remain missing.",
+    "No invented observations before the first retained receipt or after the analysis cutoff.",
+    "Gap durations measure elapsed time between receipts, not proved missing requests.",
+    "Transit incident labels, forecasting accuracy and station/route coverage are not measured here."
+  ],
+  "canonical_input_rows_sha256": "eb62838ca9bcf12315dddcf9d395998c5128d7f8f591c6f9c33778fe44e1d8f4",
+  "analysis_source_sha256": "7bd593ac2a3ccc24ba4fabbeed8c79b6ef26be5bc8d633c2eba4f03e94ee19c7"
+}
