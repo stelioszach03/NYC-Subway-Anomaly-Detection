@@ -1,0 +1,226 @@
+{
+  "analysis_cutoff_utc": "2026-09-24T11:39:28+00:00",
+  "analysis_source_sha256": "7bd593ac2a3ccc24ba4fabbeed8c79b6ef26be5bc8d633c2eba4f03e94ee19c7",
+  "canonical_input_rows_sha256": "c6463c8a28400bb3abdae066d736229b50f20604bacedd1c1c9e9a4a5b6fe41b",
+  "expected_feeds": 8,
+  "feeds": [
+    {
+      "current_trailing_gap_over_threshold": false,
+      "feed": "1234567",
+      "first_receipt_ts": 1790209450,
+      "fresh_success_fraction_of_all_polls": 1.0,
+      "gap_duration_sum_s": 0,
+      "gaps_over_threshold": 0,
+      "inter_poll_interval_max_s": 60,
+      "inter_poll_interval_median_s": 60,
+      "last_receipt_age_s": 18,
+      "last_receipt_ts": 1790249950,
+      "polls": 676,
+      "receipt_freshness_counts": {
+        "fresh": 676
+      },
+      "recorded_interval_span_s": 40500,
+      "source_age_at_receipt_median_s": 5.0,
+      "source_age_missing_polls": 0,
+      "status_counts": {
+        "ok": 676
+      }
+    },
+    {
+      "current_trailing_gap_over_threshold": false,
+      "feed": "ACE",
+      "first_receipt_ts": 1790209450,
+      "fresh_success_fraction_of_all_polls": 1.0,
+      "gap_duration_sum_s": 0,
+      "gaps_over_threshold": 0,
+      "inter_poll_interval_max_s": 63,
+      "inter_poll_interval_median_s": 60,
+      "last_receipt_age_s": 18,
+      "last_receipt_ts": 1790249950,
+      "polls": 676,
+      "receipt_freshness_counts": {
+        "fresh": 676
+      },
+      "recorded_interval_span_s": 40500,
+      "source_age_at_receipt_median_s": 4.0,
+      "source_age_missing_polls": 0,
+      "status_counts": {
+        "ok": 676
+      }
+    },
+    {
+      "current_trailing_gap_over_threshold": false,
+      "feed": "BDFM",
+      "first_receipt_ts": 1790209451,
+      "fresh_success_fraction_of_all_polls": 1.0,
+      "gap_duration_sum_s": 0,
+      "gaps_over_threshold": 0,
+      "inter_poll_interval_max_s": 63,
+      "inter_poll_interval_median_s": 60,
+      "last_receipt_age_s": 17,
+      "last_receipt_ts": 1790249951,
+      "polls": 676,
+      "receipt_freshness_counts": {
+        "fresh": 676
+      },
+      "recorded_interval_span_s": 40500,
+      "source_age_at_receipt_median_s": 6.0,
+      "source_age_missing_polls": 0,
+      "status_counts": {
+        "ok": 676
+      }
+    },
+    {
+      "current_trailing_gap_over_threshold": false,
+      "feed": "G",
+      "first_receipt_ts": 1790209451,
+      "fresh_success_fraction_of_all_polls": 1.0,
+      "gap_duration_sum_s": 0,
+      "gaps_over_threshold": 0,
+      "inter_poll_interval_max_s": 62,
+      "inter_poll_interval_median_s": 60,
+      "last_receipt_age_s": 17,
+      "last_receipt_ts": 1790249951,
+      "polls": 676,
+      "receipt_freshness_counts": {
+        "fresh": 676
+      },
+      "recorded_interval_span_s": 40500,
+      "source_age_at_receipt_median_s": 6.0,
+      "source_age_missing_polls": 0,
+      "status_counts": {
+        "ok": 676
+      }
+    },
+    {
+      "current_trailing_gap_over_threshold": false,
+      "feed": "JZ",
+      "first_receipt_ts": 1790209451,
+      "fresh_success_fraction_of_all_polls": 1.0,
+      "gap_duration_sum_s": 0,
+      "gaps_over_threshold": 0,
+      "inter_poll_interval_max_s": 62,
+      "inter_poll_interval_median_s": 60,
+      "last_receipt_age_s": 17,
+      "last_receipt_ts": 1790249951,
+      "polls": 676,
+      "receipt_freshness_counts": {
+        "fresh": 676
+      },
+      "recorded_interval_span_s": 40500,
+      "source_age_at_receipt_median_s": 5.0,
+      "source_age_missing_polls": 0,
+      "status_counts": {
+        "ok": 676
+      }
+    },
+    {
+      "current_trailing_gap_over_threshold": false,
+      "feed": "NQRW",
+      "first_receipt_ts": 1790209452,
+      "fresh_success_fraction_of_all_polls": 1.0,
+      "gap_duration_sum_s": 0,
+      "gaps_over_threshold": 0,
+      "inter_poll_interval_max_s": 63,
+      "inter_poll_interval_median_s": 60,
+      "last_receipt_age_s": 16,
+      "last_receipt_ts": 1790249952,
+      "polls": 676,
+      "receipt_freshness_counts": {
+        "fresh": 676
+      },
+      "recorded_interval_span_s": 40500,
+      "source_age_at_receipt_median_s": 6.0,
+      "source_age_missing_polls": 0,
+      "status_counts": {
+        "ok": 676
+      }
+    },
+    {
+      "current_trailing_gap_over_threshold": false,
+      "feed": "L",
+      "first_receipt_ts": 1790209452,
+      "fresh_success_fraction_of_all_polls": 1.0,
+      "gap_duration_sum_s": 0,
+      "gaps_over_threshold": 0,
+      "inter_poll_interval_max_s": 63,
+      "inter_poll_interval_median_s": 60,
+      "last_receipt_age_s": 16,
+      "last_receipt_ts": 1790249952,
+      "polls": 676,
+      "receipt_freshness_counts": {
+        "fresh": 676
+      },
+      "recorded_interval_span_s": 40500,
+      "source_age_at_receipt_median_s": 5.0,
+      "source_age_missing_polls": 0,
+      "status_counts": {
+        "ok": 676
+      }
+    },
+    {
+      "current_trailing_gap_over_threshold": false,
+      "feed": "SI",
+      "first_receipt_ts": 1790209452,
+      "fresh_success_fraction_of_all_polls": 1.0,
+      "gap_duration_sum_s": 0,
+      "gaps_over_threshold": 0,
+      "inter_poll_interval_max_s": 62,
+      "inter_poll_interval_median_s": 60,
+      "last_receipt_age_s": 16,
+      "last_receipt_ts": 1790249952,
+      "polls": 676,
+      "receipt_freshness_counts": {
+        "fresh": 676
+      },
+      "recorded_interval_span_s": 40500,
+      "source_age_at_receipt_median_s": 6.0,
+      "source_age_missing_polls": 0,
+      "status_counts": {
+        "ok": 676
+      }
+    }
+  ],
+  "feeds_with_records": 8,
+  "gap_threshold_seconds": 120,
+  "limitations": [
+    "Retained receipt coverage only; not an uninterrupted-uptime or exact sampling guarantee.",
+    "Failed polls stay in freshness denominators. Missing source timestamps remain missing.",
+    "No invented observations before the first retained receipt or after the analysis cutoff.",
+    "Gap durations measure elapsed time between receipts, not proved missing requests.",
+    "Transit incident labels, forecasting accuracy and station/route coverage are not measured here."
+  ],
+  "polls": 5408,
+  "schema": "mta-history-quality-v1",
+  "comparison_to_initial": {
+    "additional_recorded_polls": 4512,
+    "hours_since_previous_cutoff": 9.397222222222222,
+    "initial_artifact_sha256": "176b08e8b183d9d6c7d8c2546f9573558c5f507e15c3827194d699b8f0e1a9a9",
+    "per_feed_additional_polls": {
+      "1234567": 564,
+      "ACE": 564,
+      "BDFM": 564,
+      "G": 564,
+      "JZ": 564,
+      "L": 564,
+      "NQRW": 564,
+      "SI": 564
+    },
+    "previous_cutoff_utc": "2026-09-24T02:15:38+00:00",
+    "previous_polls": 896
+  },
+  "operations_observation": {
+    "collector_state": "active/running",
+    "collector_restarts": 0,
+    "export_timer_state": "active/waiting",
+    "next_export_scheduled_utc": "2026-09-25T00:16:24+00:00",
+    "completed_utc_day_parquet_exports": 0,
+    "parquet_bytes": 0,
+    "first_completed_utc_day_export_verified": false,
+    "read_only_check": true,
+    "collector_configuration_or_runtime_changed": false,
+    "interpretation": "Observed service/timer state at this dated check. Collection remains within its first partial UTC day; an active timer is not proof of an export."
+  },
+  "private_operations_receipt_sha256": "f72b648f7c06bf63aca20ccd446bbc4eefb368c270c5fa00da33f7654112b08e",
+  "publication_scope": "Sanitized collection/operations aggregates only; no feed payloads, host addresses, process identities or server paths."
+}
