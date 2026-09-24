@@ -1,0 +1,41 @@
+[Unit]
+Description=MTA-Scan bounded raw GTFS-Realtime archive
+Wants=network-online.target
+After=network-online.target
+StartLimitIntervalSec=300
+StartLimitBurst=5
+
+[Service]
+Type=simple
+DynamicUser=yes
+User=mta-history
+StateDirectory=mta-history
+StateDirectoryMode=0700
+WorkingDirectory=/srv/mta-history
+ExecStart=/srv/mta-history/.venv/bin/python -m worker.history
+Restart=on-failure
+RestartSec=60
+TimeoutStopSec=20
+UMask=0077
+MemoryHigh=192M
+MemoryMax=256M
+CPUQuota=25%
+TasksMax=16
+Nice=10
+NoNewPrivileges=yes
+PrivateTmp=yes
+PrivateDevices=yes
+ProtectSystem=strict
+ProtectHome=yes
+ProtectKernelTunables=yes
+ProtectKernelModules=yes
+ProtectControlGroups=yes
+RestrictSUIDSGID=yes
+RestrictAddressFamilies=AF_INET AF_INET6 AF_UNIX
+CapabilityBoundingSet=
+SystemCallArchitectures=native
+StandardOutput=journal
+StandardError=journal
+
+[Install]
+WantedBy=multi-user.target

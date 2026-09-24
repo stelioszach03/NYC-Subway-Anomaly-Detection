@@ -1,0 +1,32 @@
+[Unit]
+Description=MTA-Scan completed UTC day Parquet export
+After=mta-history.service
+
+[Service]
+Type=oneshot
+DynamicUser=yes
+User=mta-history
+StateDirectory=mta-history
+StateDirectoryMode=0700
+WorkingDirectory=/srv/mta-history
+ExecStart=/srv/mta-history/.venv/bin/python -m worker.history_export
+UMask=0077
+MemoryHigh=384M
+MemoryMax=512M
+CPUQuota=25%
+TasksMax=32
+Nice=15
+TimeoutStartSec=30min
+NoNewPrivileges=yes
+PrivateTmp=yes
+PrivateDevices=yes
+PrivateNetwork=yes
+ProtectSystem=strict
+ProtectHome=yes
+ProtectKernelTunables=yes
+ProtectKernelModules=yes
+ProtectControlGroups=yes
+RestrictSUIDSGID=yes
+RestrictAddressFamilies=AF_UNIX
+CapabilityBoundingSet=
+SystemCallArchitectures=native

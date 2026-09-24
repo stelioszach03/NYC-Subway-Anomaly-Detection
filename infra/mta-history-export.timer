@@ -1,0 +1,11 @@
+[Unit]
+Description=Daily MTA-Scan historical export
+
+[Timer]
+OnCalendar=*-*-* 00:15:00 UTC
+RandomizedDelaySec=5min
+Persistent=yes
+Unit=mta-history-export.service
+
+[Install]
+WantedBy=timers.target

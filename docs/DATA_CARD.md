@@ -41,6 +41,16 @@ Key columns:
 
 ## Replace With Real Historical Data
 
+The [raw collector](HISTORICAL_COLLECTION.md) retains original protobuf bodies
+and a poll manifest with receipt/source timestamps, response hashes, freshness
+and errors. Optional fields stay optional; raw ETA revisions are not observed
+passages. Its bounded archive is separate from this constructed replay fixture.
+The optional daily Parquet export preserves nullable standard trip/stop/vehicle
+fields and alerts, UTC poll/source timestamps, freshness and poll failures.
+Atomic per-day manifests record hashes, counts and actual coverage. Months of
+data have not been created retroactively; an independently evaluated label
+pipeline remains future work.
+
 To swap in retained observations:
 
 1. export route-stop observations to CSV with the same core columns,

@@ -41,3 +41,4 @@ gtfs_subway/*.zip
 *.pkl
 *.pickle
 .cache/
+var/history/

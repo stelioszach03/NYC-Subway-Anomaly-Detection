@@ -12,6 +12,14 @@ A streaming-data prototype for NYC Subway headway anomaly detection. It includes
 
 GTFS-Realtime collector → per-stop headway features → online River model and heuristic baselines → database/API → dashboard. An optional PyTorch denoising-autoencoder shadow component is separate from the default local replay. An anomaly score is not a root-cause diagnosis.
 
+The independent [raw history collector](docs/HISTORICAL_COLLECTION.md) preserves
+original GTFS-RT snapshots and per-feed freshness in a bounded SQLite archive.
+It can run continuously without the experimental stack or a live-model restart.
+An optional daily exporter produces typed Parquet for completed UTC days with
+verified hashes/counts and independent 90-day/10-GiB retention. This is
+prospective collection infrastructure, not an existing longitudinal benchmark,
+incident label source or forecasting result.
+
 ## Recorded replay evidence
 
 The [sample CSV](evaluation/data/sample_subway_headways.csv) contains 216 representative scenario rows, 16 positive labels and three constructed incident scenarios. It is a demonstration fixture, **not an official MTA-labeled benchmark**. See the [data card](docs/DATA_CARD.md).
