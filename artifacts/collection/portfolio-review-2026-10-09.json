@@ -1,0 +1,187 @@
+{
+  "schema": "mta-temporal-evaluation-v1",
+  "generated_at_utc": "2026-10-09T17:45:47+00:00",
+  "generated_ts": 1791567947,
+  "evaluation_cutoff_ts": 1791564900,
+  "target_name": "future feed-predicted arrival-spacing proxy",
+  "target_definition": "For a train-selected fixed platform cohort within each route/direction, median gap between the two earliest distinct-trip arrival predictions at a future retained feed snapshot",
+  "is_observed_train_headway": false,
+  "incident_evaluation_available": false,
+  "readiness": {
+    "status": "ready",
+    "public_forecasts_ready": true,
+    "reasons": []
+  },
+  "coverage": {
+    "first_window_ts": 1790209500,
+    "last_window_ts": 1791564900,
+    "span_seconds": 1355400,
+    "retained_windows": 4519,
+    "expected_window_slots": 4519,
+    "complete_fresh_window_fraction": 0.9993361363133436,
+    "stable_groups_evaluated": 44
+  },
+  "metrics": [
+    {
+      "horizon_seconds": 900,
+      "partition": "validation",
+      "models": {
+        "persistence": {
+          "n": 37665,
+          "eligible_pairs": 37665,
+          "coverage_fraction": 1.0,
+          "mae_seconds": 161.01492101420416,
+          "rmse_seconds": 251.11148079396773,
+          "bias_seconds": 0.8044869242001859
+        },
+        "seasonal_24h": {
+          "n": 37118,
+          "eligible_pairs": 37665,
+          "coverage_fraction": 0.9854772335059073,
+          "mae_seconds": 223.3736462093863,
+          "rmse_seconds": 324.0126325966694,
+          "bias_seconds": 8.062422544318121
+        },
+        "online_linear": {
+          "n": 37665,
+          "eligible_pairs": 37665,
+          "coverage_fraction": 1.0,
+          "mae_seconds": 176.67684917630032,
+          "rmse_seconds": 236.85455123894465,
+          "bias_seconds": -11.265902110820765
+        }
+      },
+      "selected_from_validation": {
+        "n": 37665,
+        "eligible_pairs": 37665,
+        "coverage_fraction": 1.0,
+        "mae_seconds": 153.50990288686197,
+        "rmse_seconds": 233.08910450732807,
+        "bias_seconds": 6.694592790769544
+      }
+    },
+    {
+      "horizon_seconds": 900,
+      "partition": "test",
+      "models": {
+        "persistence": {
+          "n": 37745,
+          "eligible_pairs": 37745,
+          "coverage_fraction": 1.0,
+          "mae_seconds": 159.07182408265996,
+          "rmse_seconds": 238.6658051305515,
+          "bias_seconds": -0.07736123989932442
+        },
+        "seasonal_24h": {
+          "n": 37609,
+          "eligible_pairs": 37745,
+          "coverage_fraction": 0.9963968737581137,
+          "mae_seconds": 142.09213220239837,
+          "rmse_seconds": 229.58291045040636,
+          "bias_seconds": -3.6827621048153367
+        },
+        "online_linear": {
+          "n": 37745,
+          "eligible_pairs": 37745,
+          "coverage_fraction": 1.0,
+          "mae_seconds": 171.10605657301053,
+          "rmse_seconds": 228.09932547743813,
+          "bias_seconds": 29.63130750697673
+        }
+      },
+      "selected_from_validation": {
+        "n": 37745,
+        "eligible_pairs": 37745,
+        "coverage_fraction": 1.0,
+        "mae_seconds": 156.11790067556976,
+        "rmse_seconds": 229.02108476568583,
+        "bias_seconds": 13.494692983872659
+      }
+    },
+    {
+      "horizon_seconds": 1800,
+      "partition": "validation",
+      "models": {
+        "persistence": {
+          "n": 37509,
+          "eligible_pairs": 37509,
+          "coverage_fraction": 1.0,
+          "mae_seconds": 176.17691753979045,
+          "rmse_seconds": 268.11128749272115,
+          "bias_seconds": 1.6161454584233117
+        },
+        "seasonal_24h": {
+          "n": 36973,
+          "eligible_pairs": 37509,
+          "coverage_fraction": 0.9857100962435682,
+          "mae_seconds": 222.9706272144538,
+          "rmse_seconds": 323.60226791335054,
+          "bias_seconds": 8.577259080950965
+        },
+        "online_linear": {
+          "n": 37509,
+          "eligible_pairs": 37509,
+          "coverage_fraction": 1.0,
+          "mae_seconds": 196.22500875645684,
+          "rmse_seconds": 257.8572424971412,
+          "bias_seconds": -15.392607548376047
+        }
+      },
+      "selected_from_validation": {
+        "n": 37509,
+        "eligible_pairs": 37509,
+        "coverage_fraction": 1.0,
+        "mae_seconds": 164.06382708139265,
+        "rmse_seconds": 244.07863923208586,
+        "bias_seconds": 11.82384741204407
+      }
+    },
+    {
+      "horizon_seconds": 1800,
+      "partition": "test",
+      "models": {
+        "persistence": {
+          "n": 37548,
+          "eligible_pairs": 37548,
+          "coverage_fraction": 1.0,
+          "mae_seconds": 175.85935336103122,
+          "rmse_seconds": 259.72609347057835,
+          "bias_seconds": -0.36899435389368274
+        },
+        "seasonal_24h": {
+          "n": 37412,
+          "eligible_pairs": 37548,
+          "coverage_fraction": 0.9963779695323319,
+          "mae_seconds": 142.10640970811505,
+          "rmse_seconds": 229.58281926656502,
+          "bias_seconds": -3.596840585908265
+        },
+        "online_linear": {
+          "n": 37548,
+          "eligible_pairs": 37548,
+          "coverage_fraction": 1.0,
+          "mae_seconds": 190.44719801668023,
+          "rmse_seconds": 249.54567918540212,
+          "bias_seconds": 34.45616135026313
+        }
+      },
+      "selected_from_validation": {
+        "n": 37548,
+        "eligible_pairs": 37548,
+        "coverage_fraction": 1.0,
+        "mae_seconds": 170.57199362484633,
+        "rmse_seconds": 244.99709423915087,
+        "bias_seconds": 22.863152113336398
+      }
+    }
+  ],
+  "source_url": "https://stelioszach.com/demos/mta-scan/api/temporal",
+  "source_response_sha256": "2505a41f9b363e7b32f3450003ad39da71127f02fd8f423aa487907d49c1c17a",
+  "snapshot_only": true,
+  "pipeline": {
+    "pending_export_days": 0,
+    "ingested_export_days": 15,
+    "feature_bytes": 94279416
+  },
+  "artifact_id": "1791564900-cc4733d837ee-b77e1932930d"
+}

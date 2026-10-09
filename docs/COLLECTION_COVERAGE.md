@@ -9,7 +9,34 @@ artifacts are preserved; older references to receipt time should be read with
 that limitation. The corrected collector and [availability-aware temporal
 protocol](TEMPORAL_EVALUATION.md) distinguish response availability explicitly.
 
-## Latest check — 24 September 2026, 11:39:28 UTC
+## Latest public snapshot — 9 October 2026, 17:45:47 UTC
+
+The [archived public aggregate](../artifacts/collection/portfolio-review-2026-10-09.json)
+records 15.69 days of retained evaluated history, 4,519 five-minute windows,
+99.93% complete fresh windows and 44 stable route/direction groups. The live
+history pane also reported 15 completed-day exports ingested, with none pending.
+Public 15/30-minute proxy forecasts were ready at this snapshot; their ongoing
+availability depends on freshness and coverage checks. Check the
+[live history pane](https://stelioszach.com/demos/mta-scan/#temporalPanel)
+for the current state. This dated audit is not an uptime guarantee.
+
+Held-out MAE in seconds at that cutoff:
+
+| Horizon | Persistence | 24-hour seasonal | Online linear | Validation-selected |
+| --- | ---: | ---: | ---: | ---: |
+| 15 min | 159.1 | 142.1 | 171.1 | 156.1 |
+| 30 min | 175.9 | 142.1 | 190.4 | 170.6 |
+
+The seasonal baseline has approximately 99.6% coverage; the other rows have
+100%. These aggregate errors do not all use exactly the same sample. The
+online model did not improve MAE over persistence at either horizon. Selection
+uses validation only; no method was retuned or selected on these test results.
+The target remains a future **feed-predicted arrival-spacing proxy**, not
+observed train passages, waiting time or labelled transit incidents. This is a
+public-summary audit, not an independent reconstruction of the private archive.
+Earlier audits below remain unchanged.
+
+## Earlier check — 24 September 2026, 11:39:28 UTC
 
 The [continuation report](../artifacts/collection/continuation-2026-09-24T113928Z.json)
 contains **5,408 poll records**, **676 per feed** across all eight configured feed

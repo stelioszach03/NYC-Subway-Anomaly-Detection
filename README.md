@@ -6,7 +6,7 @@ The live portfolio workspace uses a separately maintained CPU adapter for public
 
 A streaming-data prototype for NYC Subway headway anomaly detection. It includes GTFS-Realtime collection, online feature/model updates, a FastAPI service, a dashboard and a small offline replay evaluation.
 
-**Status:** engineering prototype. The repository supports local replay and a deployable stack; it does not establish an operated production service or validated transit incident detection.
+**Status:** deployed engineering prototype. Live collection, an interactive map and gated 15/30-minute proxy forecasts are operating. This does not establish a production SLA or validated transit incident detection.
 
 ## Architecture
 
@@ -20,10 +20,10 @@ verified hashes/counts and independent 90-day/10-GiB retention. This is
 prospective collection infrastructure, not an existing longitudinal benchmark,
 incident label source or forecasting result.
 
-The first [real collection-coverage audit](docs/COLLECTION_COVERAGE.md) records
-896 polls across eight feeds over approximately 111 minutes. All were fresh and
-parseable in that initial interval; this is collection evidence, not a model
-accuracy result or a longitudinal dataset claim.
+The latest [dated public coverage audit](docs/COLLECTION_COVERAGE.md), on
+October 9, 2026, records 15.69 days of evaluated history and 4,519 five-minute
+windows. It includes held-out baseline comparisons; model superiority is not
+established. Earlier collection snapshots are preserved in the same document.
 
 ## Autonomous temporal evaluation
 
@@ -47,8 +47,8 @@ and offline tests are provided. The worker and [public history pane](https://ste
 are deployed; the [September 24 deployment receipt](docs/TEMPORAL_DEPLOYMENT_2026-09-24.md)
 verifies actual operation, namespace isolation and preservation of earlier raw
 records. The dated snapshot contains 21h 15m of evaluated feature coverage and
-no public forecasts: early feasibility and a running timer are not proof of
-longitudinal performance or months of operation.
+no public forecasts at that time. The October 9 snapshot records active gated
+forecasts; check the live pane for their current freshness and availability.
 
 ## Recorded replay evidence
 
