@@ -1,0 +1,34 @@
+[Unit]
+Description=MTA official subway service-alert archive and public context
+Wants=network-online.target
+After=network-online.target
+
+[Service]
+Type=oneshot
+DynamicUser=yes
+User=mta-service-alerts
+StateDirectory=mta-service-alerts
+StateDirectoryMode=0700
+WorkingDirectory=/srv/mta-history
+ExecStart=/srv/mta-history/.venv/bin/python -m worker.service_alerts --state-dir /var/lib/mta-service-alerts
+UMask=0077
+Environment=PYTHONDONTWRITEBYTECODE=1
+MemoryHigh=96M
+MemoryMax=128M
+CPUQuota=20%
+TasksMax=16
+Nice=15
+TimeoutStartSec=45
+NoNewPrivileges=yes
+PrivateTmp=yes
+PrivateDevices=yes
+ProtectSystem=strict
+ProtectHome=yes
+ProtectKernelTunables=yes
+ProtectKernelModules=yes
+ProtectControlGroups=yes
+RestrictSUIDSGID=yes
+RestrictAddressFamilies=AF_INET AF_INET6 AF_UNIX
+CapabilityBoundingSet=
+SystemCallArchitectures=native
+

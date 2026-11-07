@@ -26,6 +26,10 @@ evaluation and 8,060 retained five-minute windows. Complete/fresh coverage is
 99.44%; all export hashes and row counts match. It includes held-out baseline
 comparisons; model superiority is not established. Earlier collection snapshots are preserved in the same document.
 
+## Official service-alert context
+
+The independent [service-alert collector](docs/SERVICE_ALERTS.md) archives exact official subway-alert snapshots and revisions with response-availability timestamps. A separate read-only panel shows current official messages and route filtering, with source freshness and expiry checks. Collection begins prospectively; alerts are service context rather than validated incident labels.
+
 ## Autonomous temporal evaluation
 
 The [offline temporal worker](docs/TEMPORAL_EVALUATION.md) ingests retained raw
