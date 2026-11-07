@@ -1,7 +1,8 @@
 # Observed collection coverage
 
-These are dated, read-only audits of the collection archive, not forecasting or
-incident-detection results. Earlier snapshots are preserved unchanged.
+These are dated, read-only audits of collection quality and separately identified
+temporal proxy evaluations. They are not incident-detection results. Earlier
+snapshots are preserved unchanged.
 
 Timestamp clarification: those legacy audits used `observed_ts`, which the
 original collector recorded at request start. Their numerical values and
@@ -9,7 +10,25 @@ artifacts are preserved; older references to receipt time should be read with
 that limitation. The corrected collector and [availability-aware temporal
 protocol](TEMPORAL_EVALUATION.md) distinguish response availability explicitly.
 
-## Latest public snapshot — 9 October 2026, 17:45:47 UTC
+## Current audit — 7 November 2026
+
+The [November 7 audit](../artifacts/collection/audit-2026-11-07.json) records **44 completed UTC-day exports**, from September 24 through November 6. All **44/44** Parquet files passed SHA-256 and metadata row-count checks against their immutable manifests. Together they contain 806,630,656 normalized snapshot rows in 6,403,335,601 bytes. Repeated predictions across snapshots are expected: these are not distinct train passages, people or incident labels.
+
+The deployed temporal pipeline has ingested all 44 exports with zero pending days. Its rolling **28-day** evaluation contains **8,060 retained five-minute windows** out of 8,065 expected slots, **45 stable route/direction groups**, and **99.44% complete/fresh windows**. All eight feed groups were fresh at the snapshot. Readiness was `ready`, with 82 current group/horizon forecasts. Forecast counts and freshness are time-sensitive; the live adapter independently expires stale results.
+
+Held-out test results at the frozen evaluation cutoff:
+
+| Horizon | Paired rows | Persistence MAE | Online linear MAE | Validation-selected MAE |
+| --- | ---: | ---: | ---: | ---: |
+| 15 minutes | 69,331 | 146.33 s | 198.18 s | 146.31 s |
+| 30 minutes | 69,132 | 166.04 s | 227.40 s | 165.46 s |
+
+Persistence and the linear model use the same paired test rows. The 24-hour seasonal baseline has different coverage (97.75% / 97.88%) and must not be interpreted as a fully matched comparison. Validation chooses each group/horizon algorithm; the test data do not train or select it. The linear model is worse in aggregate here; the selected pipeline is close to persistence. No general model superiority is established.
+
+**The collection-time gate has been met for the implemented proxy-forecast pipeline.** Collector, export and temporal evaluation services are operating successfully. This does not complete incident prediction: official event labels, an event-matching protocol and a prospective held-out incident evaluation are still needed for that separate claim. The present target remains future feed-predicted arrival spacing, not realized train headway or passenger waiting time.
+
+
+## Earlier public snapshot — 9 October 2026, 17:45:47 UTC
 
 The [archived public aggregate](../artifacts/collection/portfolio-review-2026-10-09.json)
 records 15.69 days of retained evaluated history, 4,519 five-minute windows,
@@ -93,6 +112,4 @@ retention pruning changes the input hash; the public aggregate alone cannot
 reconstruct the original raw feed bodies. Source data remain subject to MTA terms.
 The synthetic unit tests validate the calculation, not transit-model performance.
 
-The next data gate is a real completed UTC-day Parquet export and its coverage
-manifest. Chronological model evaluation still requires elapsed collection time,
-an explicit label protocol and a frozen temporal split.
+The original completed-day and elapsed-history gates are now met, as shown in the November 7 audit. Additional elapsed time alone does not provide incident ground truth; incident-level validation still needs an explicit label protocol and a frozen prospective split.

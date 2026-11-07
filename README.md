@@ -17,13 +17,14 @@ original GTFS-RT snapshots and per-feed freshness in a bounded SQLite archive.
 It can run continuously without the experimental stack or a live-model restart.
 An optional daily exporter produces typed Parquet for completed UTC days with
 verified hashes/counts and independent 90-day/10-GiB retention. This is
-prospective collection infrastructure, not an existing longitudinal benchmark,
-incident label source or forecasting result.
+collection infrastructure with verified retained history, not an incident-label
+source. Forecasting evidence is reported separately below.
 
 The latest [dated public coverage audit](docs/COLLECTION_COVERAGE.md), on
-October 9, 2026, records 15.69 days of evaluated history and 4,519 five-minute
-windows. It includes held-out baseline comparisons; model superiority is not
-established. Earlier collection snapshots are preserved in the same document.
+November 7, 2026, records 44 verified daily exports, a rolling 28-day
+evaluation and 8,060 retained five-minute windows. Complete/fresh coverage is
+99.44%; all export hashes and row counts match. It includes held-out baseline
+comparisons; model superiority is not established. Earlier collection snapshots are preserved in the same document.
 
 ## Autonomous temporal evaluation
 

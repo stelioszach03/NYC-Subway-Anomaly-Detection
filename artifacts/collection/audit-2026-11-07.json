@@ -1,0 +1,202 @@
+{
+  "schema": "mta-public-audit-v1",
+  "audited_at_utc": "2026-11-07T19:45:31+00:00",
+  "artifact_id": "1794078300-db8aac238b39-b77e1932930d",
+  "coverage": {
+    "complete_fresh_window_fraction": 0.9944203347799132,
+    "expected_window_slots": 8065,
+    "first_window_ts": 1791659100,
+    "last_window_ts": 1794078300,
+    "retained_windows": 8060,
+    "span_seconds": 2419200,
+    "stable_groups_evaluated": 45
+  },
+  "pipeline": {
+    "feature_bytes": 268175144,
+    "ingested_export_days": 44,
+    "pending_export_days": 0
+  },
+  "readiness": {
+    "public_forecasts_ready": true,
+    "reasons": [],
+    "status": "ready"
+  },
+  "fresh_feed_groups": 8,
+  "forecast_count_at_snapshot": 82,
+  "target_name": "future feed-predicted arrival-spacing proxy",
+  "is_observed_train_headway": false,
+  "incident_evaluation_available": false,
+  "metrics": [
+    {
+      "horizon_seconds": 900,
+      "models": {
+        "online_linear": {
+          "bias_seconds": -10.702028348913792,
+          "coverage_fraction": 1.0,
+          "eligible_pairs": 66846,
+          "mae_seconds": 185.50324334357657,
+          "n": 66846,
+          "rmse_seconds": 251.15153658253365
+        },
+        "persistence": {
+          "bias_seconds": -0.9761990246237621,
+          "coverage_fraction": 1.0,
+          "eligible_pairs": 66846,
+          "mae_seconds": 148.8116416838704,
+          "n": 66846,
+          "rmse_seconds": 236.61034107805042
+        },
+        "seasonal_24h": {
+          "bias_seconds": -27.664429631190092,
+          "coverage_fraction": 0.9941806540406307,
+          "eligible_pairs": 66846,
+          "mae_seconds": 154.35606482387107,
+          "n": 66457,
+          "rmse_seconds": 251.40287301928072
+        }
+      },
+      "partition": "validation",
+      "selected_from_validation": {
+        "bias_seconds": -1.619210674981743,
+        "coverage_fraction": 1.0,
+        "eligible_pairs": 66846,
+        "mae_seconds": 148.30139947763777,
+        "n": 66846,
+        "rmse_seconds": 235.64943071038763
+      }
+    },
+    {
+      "horizon_seconds": 900,
+      "models": {
+        "online_linear": {
+          "bias_seconds": -15.614584263742088,
+          "coverage_fraction": 1.0,
+          "eligible_pairs": 69331,
+          "mae_seconds": 198.1842612964858,
+          "n": 69331,
+          "rmse_seconds": 267.3288135021313
+        },
+        "persistence": {
+          "bias_seconds": 0.6496516709696961,
+          "coverage_fraction": 1.0,
+          "eligible_pairs": 69331,
+          "mae_seconds": 146.33325640766756,
+          "n": 69331,
+          "rmse_seconds": 233.1375041261018
+        },
+        "seasonal_24h": {
+          "bias_seconds": 13.890110376578916,
+          "coverage_fraction": 0.9774559720759833,
+          "eligible_pairs": 69331,
+          "mae_seconds": 162.28321626726478,
+          "n": 67768,
+          "rmse_seconds": 267.29462417124813
+        }
+      },
+      "partition": "test",
+      "selected_from_validation": {
+        "bias_seconds": -0.4739332050225696,
+        "coverage_fraction": 1.0,
+        "eligible_pairs": 69331,
+        "mae_seconds": 146.31331850857387,
+        "n": 69331,
+        "rmse_seconds": 232.4428337322336
+      }
+    },
+    {
+      "horizon_seconds": 1800,
+      "models": {
+        "online_linear": {
+          "bias_seconds": -17.6414375724166,
+          "coverage_fraction": 1.0,
+          "eligible_pairs": 66574,
+          "mae_seconds": 211.96934415753364,
+          "n": 66574,
+          "rmse_seconds": 280.17236693419966
+        },
+        "persistence": {
+          "bias_seconds": -1.5926187400486675,
+          "coverage_fraction": 1.0,
+          "eligible_pairs": 66574,
+          "mae_seconds": 168.69485084267131,
+          "n": 66574,
+          "rmse_seconds": 259.0151180155151
+        },
+        "seasonal_24h": {
+          "bias_seconds": -27.831850117096018,
+          "coverage_fraction": 0.9941568780605041,
+          "eligible_pairs": 66574,
+          "mae_seconds": 154.71322807282618,
+          "n": 66185,
+          "rmse_seconds": 252.18024910533845
+        }
+      },
+      "partition": "validation",
+      "selected_from_validation": {
+        "bias_seconds": 3.620992682576807,
+        "coverage_fraction": 1.0,
+        "eligible_pairs": 66574,
+        "mae_seconds": 165.7746122219341,
+        "n": 66574,
+        "rmse_seconds": 252.98929981542088
+      }
+    },
+    {
+      "horizon_seconds": 1800,
+      "models": {
+        "online_linear": {
+          "bias_seconds": -21.93338572307246,
+          "coverage_fraction": 1.0,
+          "eligible_pairs": 69132,
+          "mae_seconds": 227.4047878021127,
+          "n": 69132,
+          "rmse_seconds": 301.01910472777826
+        },
+        "persistence": {
+          "bias_seconds": 1.670630098941156,
+          "coverage_fraction": 1.0,
+          "eligible_pairs": 69132,
+          "mae_seconds": 166.04417635827113,
+          "n": 69132,
+          "rmse_seconds": 258.35018342763584
+        },
+        "seasonal_24h": {
+          "bias_seconds": 13.945542944966602,
+          "coverage_fraction": 0.9788231209859399,
+          "eligible_pairs": 69132,
+          "mae_seconds": 162.12441626765974,
+          "n": 67668,
+          "rmse_seconds": 267.18358381780286
+        }
+      },
+      "partition": "test",
+      "selected_from_validation": {
+        "bias_seconds": 4.824222072105087,
+        "coverage_fraction": 1.0,
+        "eligible_pairs": 69132,
+        "mae_seconds": 165.4569355857101,
+        "n": 69132,
+        "rmse_seconds": 256.01123356535993
+      }
+    }
+  ],
+  "export_integrity": {
+    "schema": "mta-export-integrity-audit-v1",
+    "export_days": 44,
+    "verified_days": 44,
+    "total_rows": 806630656,
+    "total_parquet_bytes": 6403335601,
+    "first_day": "2026-09-24",
+    "last_day": "2026-11-06",
+    "errors": []
+  },
+  "analysis_source_sha256": "b77e1932930d1b30ea594593ef156d7227263737b6f338123817ebd60862d0c0",
+  "source_summary_sha256": "90a08902117cd92ef6fb05e85f46bee938d70424d7f56741d8888693681d52b6",
+  "limitations": [
+    "Target is a later feed prediction proxy, not observed train passages, actual headway or passenger waiting time.",
+    "Public-feed provenance does not establish official incident labels or operational causality.",
+    "Chronological holdouts, delayed train labels and train-only platform cohorts prevent future-label fitting; validation alone selects the algorithm.",
+    "Seasonal_24h is missing when no exact 24-hour-lag proxy exists; no default zero or fabricated seasonal accuracy.",
+    "Predictions use an offline-trained shadow model; no confidence intervals or broad superiority claims."
+  ]
+}
